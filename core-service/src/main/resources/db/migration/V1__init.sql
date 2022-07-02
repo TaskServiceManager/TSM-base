@@ -29,6 +29,7 @@ create table processes
     executor_id         bigserial not null,
     executor_short_name varchar(25) not null,
     executor_long_name  varchar(100) not null,
+    task                varchar(1000) not null,
 
 
 
@@ -53,8 +54,9 @@ create table time_points(
         id                  bigserial primary key,
         process_id          bigserial not null,
         executor_id         bigserial not null,
-        status              varchar(12) not null,
+        is_at_work          boolean not null,
         created_at          timestamp default current_timestamp,
+        finished_at         timestamp,
         updated_at          timestamp default current_timestamp,
         FOREIGN KEY (process_id)  REFERENCES processes (id),
         FOREIGN KEY (executor_id)  REFERENCES processes (executor_id)

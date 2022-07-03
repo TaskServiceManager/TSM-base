@@ -12,7 +12,7 @@ create table orders
     user_long_name      varchar(100) not null,
 
     status              varchar(16) not null,
-    executors           varchar(500),
+
 
 
     completed_at        timestamp,

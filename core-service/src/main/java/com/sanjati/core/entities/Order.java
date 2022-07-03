@@ -49,8 +49,6 @@ public class Order {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "executors")
-    private String executors;
 
 
 

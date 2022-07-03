@@ -24,6 +24,8 @@ public class TimePoint {
     private Process process;
     @Column(name = "executor_id")
     private Long executorId;
+    @Column(name = "is_at_work")
+    private Boolean isAtWork;
 
     @Column(name = "finished_at")
     private LocalDateTime finishedAt;

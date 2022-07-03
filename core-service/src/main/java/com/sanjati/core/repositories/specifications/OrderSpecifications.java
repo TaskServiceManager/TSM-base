@@ -12,6 +12,8 @@ public class OrderSpecifications {
     public static Specification<Order> timeLessThanOrEqualsThan(Long time) {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("created_at"), time);
     }
-
+    public static Specification<Order> idEquals(Long id){
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("user_id"), id);
+    }
 
 }

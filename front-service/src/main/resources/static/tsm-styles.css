@@ -55,3 +55,24 @@ nav a{
 nav a:hover{
   color: #2a3a32 !important;
 }
+
+.modal {
+  background-color: black;
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-transition: 0.5s;
+  overflow: auto;
+  transition: all 0.3s linear;
+}
+
+.modal .close {
+  border-color: #198754;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: thin;
+}
+
+.modal .close:hover {
+  background-color: #146c43;
+  border-color: #146c43;
+  color: white;
+}

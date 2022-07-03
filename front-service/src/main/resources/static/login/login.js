@@ -4,7 +4,6 @@ angular.module('ttsystem-front').controller('loginController', function ($scope,
 
     $rootScope.auth = function () {
         $rootScope.user=$scope.user;
-        console.log($rootScope.user);
         $http.post(contextPath+'/auth', $rootScope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {

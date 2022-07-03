@@ -16,6 +16,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -26,21 +28,19 @@
 
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <a class="navbar-brand" href="#">  TTSystem</a>
-                <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <ul class="nav nav-tabs">
 <!--                    <li class="nav-item">-->
 <!--                        <a class="nav-link" href="#!/">TTSystem</a>-->
 <!--                    </li>-->
                     <li class="nav-item" ng-show="isUserLoggedIn()">
                         <a class="nav-link" href="#!/orders">Мои заявки</a>
                     </li>
-                    <li class="nav-item" ng-show="isUserLoggedIn()">
-                        <a class="nav-link" href="#!/form">Оставить заявку</a>
-                    </li>
-
-                    <li class="nav-item" ng-show="isUserLoggedIn()">
-                        <a class="nav-link" href="#!/personal">Персональное</a>
-                    </li>
-
+<!--                    <li class="nav-item" ng-show="isUserLoggedIn()">-->
+<!--                        <a class="nav-link" href="#!/form">Оставить заявку</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item" ng-show="isUserLoggedIn()">-->
+<!--                        <a class="nav-link" href="#!/personal">Персональное</a>-->
+<!--                    </li>-->
 <!--                    <li class="nav-item" ng-show="isUserLoggedIn()&&isAllowed('ROLE_SENIOR')">-->
 <!--                        <a class="nav-link" href="#!/personal">Статистика</a>-->
 <!--                    </li>-->
@@ -67,7 +67,7 @@
     <script src="index.js"></script>
     <script src="login/login.js"></script>
     <script src="welcome/welcome.js"></script>
-<!--    <script src="orders/orders.js"></script>-->
+    <script src="orders/orders.js"></script>
 <!--    <script src="details/details.js"></script>-->
 <!--    <script src="personal/personal.js"></script>-->
 <!--    <script src="form/form.js"></script>-->

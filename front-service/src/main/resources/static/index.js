@@ -14,15 +14,15 @@
                 templateUrl: 'login/login.html',
                 controller: 'loginController'
             })
+            .when('/orders', {
+                templateUrl: 'orders/orders.html',
+                controller: 'ordersController'
+            })
 //            .when('/form', {
 //                templateUrl: 'form/form.html',
 //                controller: 'formController'
 //            })
 //
-//            .when('/orders', {
-//                templateUrl: 'orders/orders.html',
-//                controller: 'ordersController'
-//            })
 //            .when('/details', {
 //                templateUrl: 'details/details.html',
 //                controller: 'detailsController'

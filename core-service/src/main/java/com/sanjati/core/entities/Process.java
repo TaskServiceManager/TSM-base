@@ -31,7 +31,7 @@ public class Process {
     private Boolean onConfirm;
     @Column(name = "executor_id")
     private Long executorId;
-    @OneToMany(mappedBy = "process",fetch = EAGER)
+    @OneToMany(mappedBy = "process")
     private List<TimePoint> timePoints;
 
 

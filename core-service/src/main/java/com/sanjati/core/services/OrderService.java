@@ -2,6 +2,7 @@ package com.sanjati.core.services;
 
 
 import com.sanjati.api.core.OrderDetailsDto;
+import com.sanjati.api.core.OrderDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Order;
 import com.sanjati.core.repositories.OrdersRepository;
@@ -11,13 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class OrderService {
-    private final OrdersRepository ordersRepository;
 
+    private final OrdersRepository ordersRepository;
+    private final ProcessService processService;
 
 
     @Transactional
@@ -38,4 +39,5 @@ public class OrderService {
         order.setStatus(status);
 
     }
+
 }

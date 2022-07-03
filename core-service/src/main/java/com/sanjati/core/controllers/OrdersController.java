@@ -6,6 +6,12 @@ import com.sanjati.api.core.OrderDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.converters.OrderConverter;
 import com.sanjati.core.services.OrderService;
+import com.sanjati.core.services.ProcessService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
 
@@ -23,6 +29,7 @@ import java.util.stream.Collectors;
 public class OrdersController {
     private final OrderService orderService;
     private final OrderConverter orderConverter;
+    private final ProcessService processService;
 
     @GetMapping("/getRole")
     public List<String> getRoles(@RequestHeader String username, @RequestHeader String role) {
@@ -52,5 +59,20 @@ public class OrdersController {
     @GetMapping("/{id}")
     public OrderDto getOrderById(@PathVariable Long id, @RequestHeader String role) {
         return orderConverter.entityToDto(orderService.findById(id).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
+    }
+
+
+    @Operation(
+            summary = "Запрос на получение всех заявок исполнителя",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ",responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = OrderDto.class))
+                    )
+            }
+    )
+    @GetMapping("/executor")
+    public List<OrderDto> getExecutorsOrders(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
+        return processService.getAllExecutorsOrders(id).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
     }
 }

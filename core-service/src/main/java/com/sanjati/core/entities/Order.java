@@ -52,9 +52,6 @@ public class Order {
     @Column(name = "executors")
     private String executors;
 
-    @Column(name = "executor_commit")
-    private String executorCommit;
-
 
 
 

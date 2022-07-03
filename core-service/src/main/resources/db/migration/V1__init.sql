@@ -32,11 +32,11 @@ create table processes
     task                varchar(1000) not null,
 
 
-
+    status              varchar(25) not null,
     assigned_at         timestamp default current_timestamp,
     accepted_at         timestamp,
     finished_at         timestamp,
-    in_process-total    timestamp,
+    in_process_total    timestamp,
 
     updated_at          timestamp default current_timestamp,
     FOREIGN KEY (order_id)  REFERENCES orders (id)

@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,7 +73,7 @@ public class OrdersController {
             }
     )
     @GetMapping("/executor")
-    public List<OrderDto> getExecutorsOrders(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
-        return processService.getAllExecutorsOrders(id).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
+    public Page<OrderDto> getExecutorsOrders(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
+        return processService.getAllExecutorsOrders(id).map(orderConverter::entityToDto);
     }
 }

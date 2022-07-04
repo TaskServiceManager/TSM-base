@@ -9,9 +9,11 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.ExceptionHandlingConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
@@ -21,17 +23,29 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        ExceptionHandlingConfigurer<HttpSecurity> httpSecurityExceptionHandlingConfigurer = http
                 .csrf().disable()
                 .cors().disable()
                 .authorizeRequests()
-                .anyRequest().permitAll()
+                .antMatchers("**/admin/**").hasRole("ADMIN")
+                .antMatchers("**/orders/**", "**/statistics/**").hasAnyRole("EXECUTOR", "MANAGER")
+                .antMatchers("**/front/#!/personal/**", "**/details/**").hasAnyRole("USER", "EXECUTOR", "MANAGER")
+                .antMatchers("**/form/**").hasRole("USER")
+                .antMatchers("/", "/welcome", "/auth").permitAll()
+                .anyRequest().authenticated()
+//                .anyRequest().permitAll()  // v
+                .and()
+                .httpBasic()
+//                .formLogin().loginPage("/auth").defaultSuccessUrl("/welcome").permitAll()
+                .and()
+                .logout().permitAll().logoutSuccessUrl("/welcome").deleteCookies("JSESSIONID")
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .headers().frameOptions().disable()
                 .and()
                 .exceptionHandling()
+                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/"))
                 .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED));
     }
 

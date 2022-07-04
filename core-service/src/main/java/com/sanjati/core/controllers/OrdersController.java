@@ -31,7 +31,6 @@ public class OrdersController {
         if(role.contains("ROLE_USER")) roles.add("ROLE_USER");
         if(role.contains("ROLE_EXECUTOR")) roles.add("ROLE_EXECUTOR");
         if(role.contains("ROLE_MANAGER")) roles.add("ROLE_MANAGER");
-        if(role.contains("ROLE_SENIOR")) roles.add("ROLE_SENIOR");
         if(role.contains("ROLE_ADMIN")) roles.add("ROLE_ADMIN");
 
         return roles;

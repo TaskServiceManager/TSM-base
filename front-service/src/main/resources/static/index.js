@@ -22,6 +22,10 @@
                   templateUrl: 'process/process.html',
                   controller: 'processController'
              })
+             .when('/manage', {
+                   templateUrl: 'manage/manage.html',
+                   controller: 'manageController'
+              })
 //            .when('/form', {
 //                templateUrl: 'form/form.html',
 //                controller: 'formController'

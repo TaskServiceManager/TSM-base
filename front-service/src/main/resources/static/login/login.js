@@ -12,7 +12,7 @@ angular.module('ttsystem-front').controller('loginController', function ($scope,
                     $rootScope.user.username = null;
                     $rootScope.user.password = null;
                     $http({
-                       url: corePath+'/api/v1/orders/getRole',
+                       url: corePath+'/api/v1/orders/roles',
                        method: 'GET'
                    }).then(function (response) {
                        console.log(response.data);

@@ -12,4 +12,7 @@ import java.util.List;
 public interface OrdersRepository extends JpaRepository<Order, Long> {
     @Query("select o from Order o where o.username = ?1")
     List<Order> findAllByUsername(String username);
+
+    @Query("select o from Order o where o.managerId = ?1")
+    List<Order> findAllManagerOrdersById(Long id);
 }

@@ -19,7 +19,6 @@ public class OrderService {
     private final OrdersRepository ordersRepository;
 
 
-
     @Transactional
     public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
 
@@ -38,4 +37,9 @@ public class OrderService {
         order.setStatus(status);
 
     }
+
+    public List<Order> getAllManagerOrders(Long id) {
+        return  ordersRepository.findAllManagerOrdersById(id);
+    }
+
 }

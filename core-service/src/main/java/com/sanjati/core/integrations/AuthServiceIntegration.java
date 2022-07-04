@@ -1,6 +1,7 @@
 package com.sanjati.core.integrations;
 
 
+import com.sanjati.api.auth.ExecutorDto;
 import com.sanjati.api.auth.UserDto;
 
 import com.sanjati.api.exceptions.AuthAppError;
@@ -39,5 +40,27 @@ public class AuthServiceIntegration {
                 .bodyToMono(UserDto.class)
                 .block();
         return user;
+    }
+
+    public ExecutorDto getExecutorDto(String username) {
+        ExecutorDto executorDto = cartServiceWebClient.get()
+                //TODO в auth-service добавить эндпоинт для получения данных о Executor
+                .uri("/api/v1/data/executor")
+                .header("username", username)
+                .retrieve()
+                .onStatus(
+                        httpStatus -> httpStatus.is4xxClientError(), // HttpStatus::is4xxClientError
+                        clientResponse -> clientResponse.bodyToMono(AuthAppError.class).map(
+                                body -> {
+                                    if (body.getCode().equals(AuthAppError.CartServiceErrors.USER_NOT_FOUND.name())) {
+                                        return new AuthServiceIntegrationException("Пользователь  найден");
+                                    }
+                                    return new AuthServiceIntegrationException("Выполнен некорректный запрос к сервису : причина неизвестна");
+                                }
+                        )
+                )
+                .bodyToMono(ExecutorDto.class)
+                .block();
+        return executorDto;
     }
 }

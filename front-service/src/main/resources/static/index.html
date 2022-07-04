@@ -29,17 +29,14 @@
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <a class="navbar-brand" href="#">  TTSystem</a>
                 <ul class="nav nav-tabs">
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" href="#!/">TTSystem</a>-->
-<!--                    </li>-->
                     <li class="nav-item" ng-show="isUserLoggedIn()">
                         <a class="nav-link" href="#!/orders">Мои заявки</a>
                     </li>
+                    <li class="nav-item" ng-show="isUserLoggedIn()">
+                        <a class="nav-link" href="#!/process">Заявки к исполнению</a>
+                    </li>
 <!--                    <li class="nav-item" ng-show="isUserLoggedIn()">-->
 <!--                        <a class="nav-link" href="#!/form">Оставить заявку</a>-->
-<!--                    </li>-->
-<!--                    <li class="nav-item" ng-show="isUserLoggedIn()">-->
-<!--                        <a class="nav-link" href="#!/personal">Персональное</a>-->
 <!--                    </li>-->
 <!--                    <li class="nav-item" ng-show="isUserLoggedIn()&&isAllowed('ROLE_SENIOR')">-->
 <!--                        <a class="nav-link" href="#!/personal">Статистика</a>-->
@@ -60,16 +57,15 @@
             </div>
         </nav>
 
-    </div>
 
+    </div>
     <ng-view></ng-view>
 
     <script src="index.js"></script>
     <script src="login/login.js"></script>
     <script src="welcome/welcome.js"></script>
     <script src="orders/orders.js"></script>
-<!--    <script src="details/details.js"></script>-->
-<!--    <script src="personal/personal.js"></script>-->
+    <script src="process/process.js"></script>
 <!--    <script src="form/form.js"></script>-->
 <!--<script src="statistics/statistics.js"></script>-->
 

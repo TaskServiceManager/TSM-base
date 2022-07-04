@@ -4,6 +4,8 @@ import com.sanjati.core.entities.Order;
 import com.sanjati.core.entities.Process;
 import com.sanjati.core.repositories.ProcessRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +16,8 @@ public class ProcessService {
 
     private final ProcessRepository processRepository;
 
-    public List<Order> getAllExecutorsOrders(Long id){
-        return processRepository.findAllExecutorsOrdersById(id);
+    public Page<Order> getAllExecutorsOrders(Long id){
+        return processRepository.findAllExecutorsOrdersById(id, PageRequest.of(0, 100));
     }
 
 

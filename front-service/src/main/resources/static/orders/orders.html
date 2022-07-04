@@ -1,22 +1,103 @@
 <div>
-    <p></p>
-    <h3>Мои заявки</h3>
-    <p></p>
 
-    <table class="table table-hover">
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+
+            <form novalidate class="align-middle" ng-submit="loadOrders()">
+                <div class="input-group input-group-sm" style="padding: 4px;">
+                    <button   class="btn btn-outline-warning btn-sm"
+                              style="margin-left: 10px;" type="reset" ng-click="clearForm()" >сбросить
+                    </button>
+
+                    <input type="datetime-local" id="OldDateFileld" class="form-control" ng-model="filter.oldDate"
+                           aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
+
+                    <input type="datetime-local" id="navNewDateField" class="form-control" ng-model="filter.newDate"
+                           aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
+
+                    <button id="navSettingsSubmit"  class="btn btn-outline-warning btn-sm"
+                            style="margin-left: 10px;" type="submit">Применить
+                    </button>
+                </div>
+            </form>
+
+        </div>
+
+    </nav>
+
+    <table class="table table-primary">
         <tr>
             <td>ID</td>
+            <td>Тема</td>
+            <td>Статус</td>
+            <td>Время создания</td>
+            <td>Подробно</td>
 
             <td></td>
         </tr>
         <tbody>
-        <tr ng-repeat="order in MyOrders">
-            <td>{{order.id}}</td>
 
+        <tr ng-repeat="order in OrdersPage.content">
+
+            <td>{{order.id}}</td>
+            <td>{{order.title}}</td>
+            <td>{{order.status}}</td>
+            <td>{{order.createdAt}}</td>
             <td>
-                <button class="btn btn-primary" ng-show="isActual(order.status)" ng-click="goToDetails(order.id)">Детали</button>
+                <button class="btn btn-warning" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" ng-click="getDescription(order.description,order.commits)" aria-controls="offcanvasRight">?</button>
             </td>
+
+
         </tr>
+
+
         </tbody>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <div class="offcanvas-header">
+                <h5 id="offcanvasRightLabel">Подробности заявки</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+
+
+                <div>
+                    <h3>
+                        Информация
+                    </h3>
+                </div>
+
+                <div>
+                    {{myText}}
+                </div>
+
+                <div>
+                    <h3>
+                        Комментарии
+                    </h3>
+                </div>
+
+                <div ng-repeat="commit in myCommits track by $index">
+                    {{commit}}
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+
+        </div>
     </table>
+
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item" ng-repeat="pageIndex in paginationArray">
+                <button class="page-link" ng-click="loadOrders(pageIndex)">{{pageIndex}}</button>
+            </li>
+        </ul>
+    </nav>
 </div>

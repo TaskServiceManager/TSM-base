@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
 public class OrderConverter {
 
     //TODO конвертер
-    public OrderDto entityToDto(Order orElseThrow) {
-        return new OrderDto();
+    public OrderDto entityToDto(Order order) {
+        return new OrderDto(order.getId(), order.getTitle(),order.getDescription(),order.getStatus(),order.getCompletedAt(),order.getCreatedAt(),order.getUpdatedAt());
+
     }
 }

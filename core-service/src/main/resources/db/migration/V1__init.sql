@@ -58,8 +58,8 @@ create table time_points(
         created_at          timestamp default current_timestamp,
         finished_at         timestamp,
         updated_at          timestamp default current_timestamp,
-        FOREIGN KEY (process_id)  REFERENCES processes (id),
-        FOREIGN KEY (executor_id)  REFERENCES processes (executor_id)
+        FOREIGN KEY (process_id)  REFERENCES processes (id)
+
 
 
 );
@@ -69,7 +69,7 @@ create table time_points(
 
 
 
-insert into orders (is_active,title, description, user_nick,user_id,user_short_name,user_long_name, status,executors)
+insert into orders (is_active,title, description, user_nick,user_id,user_short_name,user_long_name, status)
 values ( true,
         'create app',
         'blabla bla uchet vremeni bla bla blalalalala',
@@ -77,11 +77,10 @@ values ( true,
         5,
         'Aleksandrov.AA',
         'Alexandrov Alexandr Alexandrovich',
-        'expected',
-        'admin');
+        'expected');
 
-insert into processes (order_id, is_active,executor_id,executor_short_name,executor_long_name)
-values (1,true,false,5,'Aleksandrov.AA','Alexandrov Alexandr Alexandrovich');
+insert into processes (order_id, is_active,on_confirm,executor_id,executor_short_name,executor_long_name,task,status)
+values (1,true,false,5,'Aleksandrov.AA','Alexandrov Alexandr Alexandrovich','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore','status');
 insert into commits (order_id, executor_commit)
 values (1,'Aleksandrov.AA >> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.');
 

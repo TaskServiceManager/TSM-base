@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,10 +25,11 @@ public class OrdersController {
     private final OrderService orderService;
     private final OrderConverter orderConverter;
 
-    @GetMapping("/getRole")
-    public List<String> getRoles(@RequestHeader String username, @RequestHeader String role) {
+    @GetMapping("/roles")
+    public List<String> getRoles(@RequestHeader String username, @RequestHeader String id,@RequestHeader String role) {
 
         ArrayList<String> roles = new ArrayList<>();
+
         if(role.contains("ROLE_USER")) roles.add("ROLE_USER");
         if(role.contains("ROLE_EXECUTOR")) roles.add("ROLE_EXECUTOR");
         if(role.contains("ROLE_MANAGER")) roles.add("ROLE_MANAGER");
@@ -39,18 +41,25 @@ public class OrdersController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestHeader String username, @RequestHeader String role, @RequestBody OrderDetailsDto orderDetailsDto) {
+    public void createOrder(@RequestHeader String username, @RequestHeader String role, @RequestHeader String id, @RequestBody OrderDetailsDto orderDetailsDto) {
         orderService.createOrder(username, orderDetailsDto);
     }
 
+//    @GetMapping
+//    public List<OrderDto> getCurrentUserOrders(@RequestHeader String username, @RequestHeader String role) {
+//        return orderService.findOrdersByUsername(username).stream()
+//                .map(orderConverter::entityToDto).collect(Collectors.toList());
+//    }
     @GetMapping
-    public List<OrderDto> getCurrentUserOrders(@RequestHeader String username, @RequestHeader String role, @RequestParam Integer from, @RequestParam String to) {
-        return orderService.findOrdersByUsername(username).stream()
-                .map(orderConverter::entityToDto).collect(Collectors.toList());
+    public Page<OrderDto> getCurrentUserOrdersBySpec(@RequestHeader String username, @RequestHeader String role,@RequestHeader String id, @RequestParam Integer page, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
+        if (page < 1) {
+            page = 1;
+        }
+        return orderService.findOrdersById(Long.parseLong(id),from,to,page).map(orderConverter::entityToDto);
     }
 
-    @GetMapping("/{id}")
-    public OrderDto getOrderById(@PathVariable Long id, @RequestHeader String role) {
-        return orderConverter.entityToDto(orderService.findById(id).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
+    @GetMapping("/{uid}")
+    public OrderDto getOrderById(@PathVariable Long uid, @RequestHeader String role,@RequestHeader String id) {
+        return orderConverter.entityToDto(orderService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
     }
 }

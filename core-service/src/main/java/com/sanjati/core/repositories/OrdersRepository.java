@@ -11,6 +11,5 @@ import java.util.List;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
-    @Query("select o from Order o where o.username = ?1")
-    List<Order> findAllByUsername(String username);
+
 }

@@ -26,7 +26,7 @@ public class Order {
     private Boolean isActive;
     @OneToMany(mappedBy = "order")
     private List<Process> processes;
-    @OneToMany(mappedBy = "order",fetch = EAGER)
+    @OneToMany(mappedBy = "order")
     private List<Commit> commits;
 
 

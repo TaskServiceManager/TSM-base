@@ -17,7 +17,7 @@
 
 <body>
 
-<div class="container" ng-controller="indexController">
+<div class="container-fluid" ng-controller="indexController">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
@@ -30,17 +30,16 @@
                 <li class="nav-item" ng-show="isUserLoggedIn()">
                     <a class="nav-link" href="#!/orders">Мои заявки</a>
                 </li>
-
                 <li class="nav-item" ng-show="isUserLoggedIn()">
                     <a class="nav-link" href="#!/personal">Персональное</a>
                 </li>
-                <li class="nav-item" ng-show="isUserLoggedIn()&&isAllowed('ROLE_SENIOR')">
-                    <a class="nav-link" href="#!/personal">Статистика</a>
-                </li>
+
 
                 <li class="nav-item" ng-show="!isUserLoggedIn()">
                     <form class="align-middle" ng-submit="tryToAuth()">
                         <div class="input-group input-group-sm" style="padding: 4px;">
+                            <button type="button" class="btn btn-outline-secondary btn-sm" ng-click="goToRegistration()">Регистрация</button>
+
                             <input id="navLoginField" class="form-control" ng-model="user.username" type="text"
                                    aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
 
@@ -50,6 +49,7 @@
                             <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm"
                                     style="margin-left: 10px;" type="submit">Войти
                             </button>
+
                         </div>
                     </form>
                 </li>
@@ -64,9 +64,12 @@
 
     <script src="index.js"></script>
     <script src="orders/orders.js"></script>
-    <script src="details/details.js"></script>
+    <script src="assigned/assigned.js"></script>
+    <script src="income/income.js"></script>
+    <script src="admin/admin.js"></script>
     <script src="personal/personal.js"></script>
     <script src="form/form.js"></script>
+    <script src="registration/registration.js"></script>
     <script src="welcome/welcome.js"></script>
     <script src="statistics/statistics.js"></script>
     <script

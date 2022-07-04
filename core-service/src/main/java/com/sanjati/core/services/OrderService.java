@@ -2,7 +2,6 @@ package com.sanjati.core.services;
 
 
 import com.sanjati.api.core.OrderDetailsDto;
-import com.sanjati.api.core.OrderDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Order;
 import com.sanjati.core.repositories.OrdersRepository;
@@ -40,4 +39,10 @@ public class OrderService {
 
     }
 
+    @Transactional
+    public void takeOrder(Long orderId, String username) {
+        Order order = findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Order not found"));
+        order.setStatus("accepted");
+        processService.createProcess(order, username);
+    }
 }

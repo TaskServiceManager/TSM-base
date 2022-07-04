@@ -75,4 +75,18 @@ public class OrdersController {
     public List<OrderDto> getExecutorsOrders(@Parameter(description = "username исполнителя", required = true) @RequestHeader String username){
         return processService.getAllExecutorsOrders(username).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
     }
+
+    @Operation(
+            summary = "Запрос на взятие заявки исполнителем",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping("executor/take/{id}")
+    public void executorTakesOrder(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long orderId,
+                                   @Parameter(description = "username исполнителя", required = true) @RequestHeader String username){
+        orderService.takeOrder(orderId, username);
+    }
 }

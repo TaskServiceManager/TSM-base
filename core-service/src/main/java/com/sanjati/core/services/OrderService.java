@@ -40,9 +40,9 @@ public class OrderService {
     }
 
     @Transactional
-    public void takeOrder(Long orderId, String username) {
+    public void takeOrder(Long orderId, Long executorId) {
         Order order = findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Order not found"));
         order.setStatus("accepted");
-        processService.createProcess(order, username);
+        processService.createProcess(order, executorId);
     }
 }

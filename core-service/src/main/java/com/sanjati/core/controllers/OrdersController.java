@@ -72,7 +72,7 @@ public class OrdersController {
             }
     )
     @GetMapping("/executor")
-    public List<OrderDto> getExecutorsOrders(@Parameter(description = "username исполнителя", required = true) @RequestHeader String username){
-        return processService.getAllExecutorsOrders(username).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
+    public List<OrderDto> getExecutorsOrders(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
+        return processService.getAllExecutorsOrders(id).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
     }
 }

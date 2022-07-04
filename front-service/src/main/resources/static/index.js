@@ -18,19 +18,14 @@
                 templateUrl: 'orders/orders.html',
                 controller: 'ordersController'
             })
+            .when('/process', {
+                  templateUrl: 'process/process.html',
+                  controller: 'processController'
+             })
 //            .when('/form', {
 //                templateUrl: 'form/form.html',
 //                controller: 'formController'
 //            })
-//
-//            .when('/details', {
-//                templateUrl: 'details/details.html',
-//                controller: 'detailsController'
-//            })
-//            .when('/personal', {
-//                  templateUrl: 'personal/personal.html',
-//                  controller: 'personalController'
-//             })
             .otherwise({
                 redirectTo: '/'
             });

@@ -40,4 +40,5 @@ public class AuthServiceIntegration {
                 .block();
         return user;
     }
+
 }

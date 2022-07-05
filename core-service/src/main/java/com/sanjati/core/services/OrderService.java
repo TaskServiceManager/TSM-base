@@ -24,8 +24,9 @@ import java.util.stream.Collectors;
 @Slf4j
 @RequiredArgsConstructor
 public class OrderService {
-    private final OrdersRepository ordersRepository;
 
+    private final OrdersRepository ordersRepository;
+    private final ProcessService processService;
 
 
     @Transactional
@@ -47,6 +48,13 @@ public class OrderService {
         Order order = ordersRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Order not found"));
         order.setStatus(status);
 
+    }
+
+    @Transactional
+    public void takeOrder(Long orderId, Long executorId) {
+        Order order = findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Order not found"));
+        order.setStatus("accepted");
+        processService.createProcess(order, executorId);
     }
 
     public Page<Order> findOrdersById(Long id, String from, String to,Integer page) {

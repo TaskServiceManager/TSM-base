@@ -1,0 +1,25 @@
+<div >
+    <div class="table table-hover" ng-show="!AssignedOrders || !AssignedOrders.length>0" align="center">Нет активных заявок</div>
+    <table class="table table-hover" ng-show="AssignedOrders.length>0">
+        <tr>
+            <td>ID</td>
+            <td>Тема</td>
+            <td>Описание</td>
+            <td>Статус</td>
+            <td>Дата создания</td>
+            <td>Автор</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="order in AssignedOrders">
+            <td>{{order.id}}</td>
+            <td>{{order.title}}</td>
+            <td width="40%" data-ng-click="open(order.id)">
+                {{renderDescription(order.description)}}
+            </td>
+            <td>{{order.status}}</td>
+            <td>{{order.createdAt}}</td>
+            <td>-</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

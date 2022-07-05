@@ -1,40 +1,43 @@
-angular.module('ttsystem-front').controller('ordersController', function ($scope, $http, $location,$localStorage) {
-    const contextPathCore = $localStorage.corePath;
+angular.module('ttsystem-front').controller('ordersController', function ($scope, $http, $location) {
+    const contextPath = 'http://localhost:5555/core/';
 
-
-    $scope.loadOrders = function (pageIndex = 1) {
-            $http({
-                url: contextPathCore + '/orders',
+    $scope.loadOrders = function (pageIndex) {
+        $http({
+                url: contextPath + 'api/v1/orders',
                 method: 'GET',
                 params: {
-                    page: pageIndex,
-                    from: $scope.filter ? $scope.filter.oldDate : null,
-                    to: $scope.filter ? $scope.filter.newDate : null
+                    page: pageIndex ? pageIndex : 1,
+//                    from: $scope.newFilter ? $scope.newFilter.from : null,
+//                    to: $scope.newFilter ? $scope.newFilter.to : null,
                 }
-            }).then(function (response) {
-                $scope.OrdersPage = response.data;
-                $scope.paginationArray = $scope.generatePagesIndexes(1, $scope.OrdersPage.totalPages);
-            });
-        };
-
-        $scope.generatePagesIndexes = function (startPage, endPage) {
-            let arr = [];
-                for (let i = startPage; i < endPage + 1; i++) {
-                    arr.push(i);
-                }
-            return arr;
-        }
-        $scope.clearForm = function(){
-            $scope.filter.oldDate = null;
-            $scope.filter.newDate = null;
-
-        }
-
-    $scope.getDescription = function(description, commits){
-        $scope.myText = description;
-        $scope.myCommits = commits;
+        }).then(function (response) {
+            $scope.MyOrders = response.data.content;
+            //[{id: 1, title: 'Ошибка включения компутера', description: 'Не могу включить компутер умираю уже капец блин почините', status: 'Готово', createdAt: ''},
+            //{id: 2, title: 'Не работает', description: 'Не могу включить компутер умираю уже капец блин почините Не могу включить компутер умираю уже капец блин почините Не могу включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините', status: 'В работе', createdAt: '2022-10-01'}];
+            console.log($scope.MyOrders);
+            $scope.currentPage = response.data.number+1;
+            $scope.isFirstPage = response.data.first;
+            $scope.isLastPage = response.data.last;
+        });
     }
 
+    $scope.renderDescription = function (description) {
+       if(description && description.length > 200) {
+            return description.slice(0, 200)+'... (Раскрыть)';
+       }
+       return description;
+    }
+
+    $scope.open = function (orderId) {
+        $scope.showModal = true;
+        $scope.currentItem = $scope.MyOrders.find(o => o.id === orderId);
+        $('#item-modal').show();
+    };
+
+    $scope.cancel = function () {
+        $scope.showModal = false;
+        $('#item-modal').hide();
+    };
 
     $scope.loadOrders();
 });

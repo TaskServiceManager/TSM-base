@@ -1,103 +1,53 @@
 <div>
-
-    <nav class="navbar navbar-light bg-light">
-        <div class="container-fluid">
-
-            <form novalidate class="align-middle" ng-submit="loadOrders()">
-                <div class="input-group input-group-sm" style="padding: 4px;">
-                    <button   class="btn btn-outline-warning btn-sm"
-                              style="margin-left: 10px;" type="reset" ng-click="clearForm()" >сбросить
-                    </button>
-
-                    <input type="datetime-local" id="OldDateFileld" class="form-control" ng-model="filter.oldDate"
-                           aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
-
-                    <input type="datetime-local" id="navNewDateField" class="form-control" ng-model="filter.newDate"
-                           aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
-
-                    <button id="navSettingsSubmit"  class="btn btn-outline-warning btn-sm"
-                            style="margin-left: 10px;" type="submit">Применить
-                    </button>
-                </div>
-            </form>
-
-        </div>
-
-    </nav>
-
-    <table class="table table-primary">
+    <div class="table table-hover" ng-show="!MyOrders || !MyOrders.length>0" align="center">Нет активных заявок</div>
+    <table class="table table-hover" ng-show="MyOrders.length>0">
         <tr>
             <td>ID</td>
             <td>Тема</td>
+            <td>Описание</td>
             <td>Статус</td>
-            <td>Время создания</td>
-            <td>Подробно</td>
+            <td>Дата создания</td>
+            <td>Исполнитель</td>
+            <td>Дата выполнения</td>
 
-            <td></td>
         </tr>
         <tbody>
-
-        <tr ng-repeat="order in OrdersPage.content">
-
+        <tr ng-repeat="order in MyOrders">
             <td>{{order.id}}</td>
             <td>{{order.title}}</td>
+            <td width="40%" data-ng-click="open(order.id)">
+                    {{renderDescription(order.description)}}
+            </td>
             <td>{{order.status}}</td>
             <td>{{order.createdAt}}</td>
-            <td>
-                <button class="btn btn-warning" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" ng-click="getDescription(order.description,order.commits)" aria-controls="offcanvasRight">?</button>
-            </td>
-
-
+            <td>-</td>
+            <td>{{order.completedAt}}</td>
         </tr>
-
-
         </tbody>
-
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-            <div class="offcanvas-header">
-                <h5 id="offcanvasRightLabel">Подробности заявки</h5>
-                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <div class="offcanvas-body">
-
-
-                <div>
-                    <h3>
-                        Информация
-                    </h3>
-                </div>
-
-                <div>
-                    {{myText}}
-                </div>
-
-                <div>
-                    <h3>
-                        Комментарии
-                    </h3>
-                </div>
-
-                <div ng-repeat="commit in myCommits track by $index">
-                    {{commit}}
-                </div>
-
-
-
-
-
-
-
-            </div>
-
-
-        </div>
     </table>
 
-    <nav aria-label="Page navigation">
-        <ul class="pagination">
-            <li class="page-item" ng-repeat="pageIndex in paginationArray">
-                <button class="page-link" ng-click="loadOrders(pageIndex)">{{pageIndex}}</button>
-            </li>
-        </ul>
-    </nav>
+    <p align="center" ng-show="MyOrders.length>0">
+        <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isFirstPage" ng-click="loadOrders(currentPage-1)"><</button>
+        <span>{{currentPage}}</span>
+        <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isLastPage" ng-click="loadOrders(currentPage+1)">></button>
+    </p>
+</div>
+
+<!-- Modal -->
+<div id="item-modal" class="modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                {{currentItem.title}}
+            </div>
+            <div class="modal-body">
+                {{currentItem.description}}
+            </div>
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-default" data-dismiss="modal" data-ng-click="dismissCurrentItem">Close</button>-->
+<!--            </div>-->
+        </div>
+    </div>
 </div>

@@ -1,3 +1,6 @@
+
+
+
 package com.sanjati.core.services;
 
 
@@ -38,4 +41,12 @@ public class OrderService {
         order.setStatus(status);
 
     }
+
+    public List<Order> getAllUserOrders(Long id) {
+        return  ordersRepository.findAllUserOrdersById(id);
+    }
 }
+
+
+
+

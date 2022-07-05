@@ -6,6 +6,9 @@ import com.sanjati.api.core.OrderDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.converters.OrderConverter;
 import com.sanjati.core.services.OrderService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
 
@@ -53,4 +56,20 @@ public class OrdersController {
     public OrderDto getOrderById(@PathVariable Long id, @RequestHeader String role) {
         return orderConverter.entityToDto(orderService.findById(id).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
     }
+
+
+    @Operation(
+            summary = "Запрос на получение всех заявок пользователя",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping("/user")
+    public List<OrderDto> getManagerOrders (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id) {
+        return orderService.getAllUserOrders(id).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
+    }
 }
+
+

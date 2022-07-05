@@ -1,9 +1,10 @@
 angular.module('ttsystem-front').controller('loginController', function ($scope, $rootScope, $http, $localStorage, $location) {
-    const contextPath = 'http://localhost:5555/auth';
-    const corePath = 'http://localhost:5555/core';
+    const contextPath = 'http://localhost:5555/auth/api/v1';
+    const corePath = 'http://localhost:5555/core/api/v1';
 
     $rootScope.auth = function () {
         $rootScope.user=$scope.user;
+        console.log($rootScope.user);
         $http.post(contextPath+'/auth', $rootScope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
@@ -21,6 +22,7 @@ angular.module('ttsystem-front').controller('loginController', function ($scope,
                    $location.path('/');
                 }
             }, function errorCallback(response) {
+                console.log(response);
                 alert("Неверный логин/пароль");
             });
         };

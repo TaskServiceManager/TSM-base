@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 
@@ -123,7 +124,7 @@ public class OrdersController {
 
     @GetMapping("/user")
     public List<OrderDto> getUserOrders (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id) {
-        return orderService.getAllUserOrders(id).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
+        return orderService.findOrdersById(id,null,null,1).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
 
     }
 

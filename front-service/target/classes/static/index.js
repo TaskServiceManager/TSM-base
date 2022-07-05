@@ -10,36 +10,26 @@
                 templateUrl: 'welcome/welcome.html',
                 controller: 'welcomeController'
             })
-            .when('/form', {
-                templateUrl: 'form/form.html',
-                controller: 'formController'
+            .when('/login', {
+                templateUrl: 'login/login.html',
+                controller: 'loginController'
             })
-            .when('/registration', {
-                            templateUrl: 'registration/registration.html',
-                            controller: 'registrationController'
-            })
-
             .when('/orders', {
                 templateUrl: 'orders/orders.html',
                 controller: 'ordersController'
             })
-            .when('/assigned', {
-                templateUrl: 'assigned/assigned.html',
-                controller: 'assignedController'
-            })
-            .when('/admin', {
-                templateUrl: 'admin/admin.html',
-                controller: 'adminController'
-            })
-            .when('/income', {
-                 templateUrl: 'income/income.html',
-                 controller: 'incomeController'
-            })
-            .when('/personal', {
-                  templateUrl: 'personal/personal.html',
-                  controller: 'personalController'
+            .when('/process', {
+                  templateUrl: 'process/process.html',
+                  controller: 'processController'
              })
-
+             .when('/manage', {
+                   templateUrl: 'manage/manage.html',
+                   controller: 'manageController'
+              })
+//            .when('/form', {
+//                templateUrl: 'form/form.html',
+//                controller: 'formController'
+//            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -58,77 +48,14 @@
                 }
             } catch (e) {
             }
-
             if ($localStorage.ttsystemUser) {
                 $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.ttsystemUser.token;
             }
         }
-
     }
 })();
 
 angular.module('ttsystem-front').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
- const oldIp ='10.123.3.228';
- const currentIp = 'localhost';
- const contextPathCore = 'http://'+currentIp+':5555/core/api/v1';
- const contextPathAuth = 'http://'+currentIp+':5555/auth/api/v1';
- $localStorage.corePath = contextPathCore;
- $localStorage.authPath = contextPathAuth;
-
-    $scope.tryToAuth = function () {
-        $http.post( contextPathAuth + '/auth', $scope.user)
-            .then(function successCallback(response) {
-                console.log(response.data);
-                if (response.data.token) {
-
-                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-
-
-                   $localStorage.ttsystemUser = {username: $scope.user.username, token: response.data.token}
-
-
-
-                    $scope.user.username = null;
-                    $scope.user.password = null;
-                    $http({
-                                url: contextPathCore + '/orders/roles',
-                                method: 'GET'
-                            }).then(function (response) {
-
-                                $localStorage.allowance = response.data;
-
-
-                            });
-
-
-
-                    $location.path('/');
-                }
-            }, function errorCallback(response) {
-
-                console.log('login error');
-                console.log (response);
-                $rootScope.tryToLogout();
-            });
-
-    };
-
-
-    $rootScope.tryToLogout = function () {
-
-        $scope.clearUser();
-
-        $scope.user = null;
-
-
-        $location.path('/');
-    };
-
-    $scope.clearUser = function () {
-        delete $localStorage.allowance;
-        delete $localStorage.ttsystemUser;
-        $http.defaults.headers.common.Authorization = '';
-    };
 
     $rootScope.isUserLoggedIn = function () {
         if ($localStorage.ttsystemUser) {
@@ -138,7 +65,34 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
         }
     };
 
-    $scope.goToRegistration = function(){
-         $location.path('/registration');
-    }
+    $rootScope.redirectCheck = function () {
+        if(!$rootScope.isUserLoggedIn()) {
+            $rootScope.wayForAuth = $location.url();
+            $location.path('/login');
+        }
+    };
+
+    $rootScope.redirectCheck();
+
+    $rootScope.logout = function () {
+        $rootScope.clearUser();
+        $rootScope.clearRole();
+        $rootScope.user = null;
+        $rootScope.allowance = null;
+        $location.path('/');
+    };
+
+    $rootScope.clearUser = function () {
+        delete $localStorage.ttsystemUser;
+        $http.defaults.headers.common.Authorization = '';
+    };
+
+    $rootScope.clearRole = function () {
+        delete $localStorage.allowance;
+    };
+//
+//    $rootScope.isAllowed = function(elem){
+//        console.log(elem);
+//       return $localStorage.allowance.indexOf(elem) != -1;
+//    };
 });

@@ -1,3 +1,6 @@
+
+
+
 package com.sanjati.core.services;
 
 
@@ -38,8 +41,18 @@ public class OrderService {
 
     }
 
-    public List<Order> getAllManagerOrders(Long id) {
-        return  ordersRepository.findAllManagerOrdersById(id);
-    }
+  // ребят используем спеки findAll(spec)
+   // public List<Order> getAllUserOrders(Long id) {
+   //    return  ordersRepository.findAllUserOrdersById(id);
+   // }
+
+   // public List<Order> getAllManagerOrders(Long id) {
+   //     return  ordersRepository.findAllManagerOrdersById(id);
+   // }
+
 
 }
+
+
+
+

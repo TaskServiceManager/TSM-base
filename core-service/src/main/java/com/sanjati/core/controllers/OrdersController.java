@@ -9,7 +9,10 @@ import com.sanjati.core.services.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+
+
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -95,15 +98,22 @@ public class OrdersController {
 
 
     @Operation(
-            summary = "Запрос на получение всех заявок менеджера",
+
+            summary = "Запрос на получение всех заявок пользователя",
+
+
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
                     )
             }
     )
-    @GetMapping("/manager")
-    public List<OrderDto> getManagerOrders (@Parameter (description = "ID менеджера", required = true) @RequestHeader Long id) {
-        return orderService.getAllManagerOrders(id).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
+
+    @GetMapping("/user")
+    public List<OrderDto> getUserOrders (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id) {
+        return orderService.getAllUserOrders(id).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
+
     }
 }
+
+

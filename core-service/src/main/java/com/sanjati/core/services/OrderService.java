@@ -22,7 +22,6 @@ public class OrderService {
     private final OrdersRepository ordersRepository;
 
 
-
     @Transactional
     public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
 
@@ -42,9 +41,16 @@ public class OrderService {
 
     }
 
-    public List<Order> getAllUserOrders(Long id) {
-        return  ordersRepository.findAllUserOrdersById(id);
-    }
+  // ребят используем спеки findAll(spec)
+   // public List<Order> getAllUserOrders(Long id) {
+   //    return  ordersRepository.findAllUserOrdersById(id);
+   // }
+
+   // public List<Order> getAllManagerOrders(Long id) {
+   //     return  ordersRepository.findAllManagerOrdersById(id);
+   // }
+
+
 }
 
 

@@ -67,7 +67,7 @@ public class OrdersController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestHeader String username, @RequestHeader String role, @RequestHeader String id, @RequestBody OrderDetailsDto orderDetailsDto) {
+    public void createOrder(@RequestHeader String username, @RequestHeader String role, @RequestBody OrderDetailsDto orderDetailsDto) {
         orderService.createOrder(username, orderDetailsDto);
     }
 

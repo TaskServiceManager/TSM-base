@@ -1,0 +1,71 @@
+<div>
+    <p></p>
+    <h1>REGISTRATION</h1>
+</div>
+<form class="row g-3">
+    <div class="col-md-4">
+        <label for="validationDefault01" class="form-label">Имя</label>
+        <input type="text" class="form-control" id="validationDefault01" value="Василий" ng-model="regDetails.firstName" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault02" class="form-label">Фамилия</label>
+        <input type="text" class="form-control" id="validationDefault02" value="Васютин" ng-model="regDetails.lastName" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault03" class="form-label">Отчество</label>
+        <input type="text" class="form-control" id="validationDefault03" value="Васильевич" ng-model="regDetails.patronymic" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefaultUsername" class="form-label">Username</label>
+        <div class="input-group">
+            <span class="input-group-text" id="inputGroupPrepend2">@</span>
+            <input type="text" class="form-control" id="validationDefaultUsername"  aria-describedby="inputGroupPrepend2" ng-model="regDetails.username" required>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault09" class="form-label">Password</label>
+        <input type="password" class="form-control" id="validationDefault09" value="Васильевич" ng-model="regPass.password1" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault10" class="form-label">Password</label>
+        <input type="password" class="form-control" id="validationDefault10" value="Васильевич" ng-model="regPass.password2" required>
+    </div>
+
+
+    <div class="col-md-4">
+        <label for="validationDefault04" class="form-label">Почта</label>
+        <input type="text" class="form-control" id="validationDefault04" value="Имайл@имайл.туту" ng-model="regDetails.email" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault05" class="form-label">Компания</label>
+        <input type="text" class="form-control" id="validationDefault05" value="АЕЛ" ng-model="regDetails.company" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault06" class="form-label">Телефон</label>
+        <input type="text" class="form-control" id="validationDefault06" value="8-800-112-21-12" ng-model="regDetails.phone" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault07" class="form-label">Корпус</label>
+        <input type="text" class="form-control" id="validationDefault07" ng-model="regDetails.building" required>
+    </div>
+    <div class="col-md-4">
+        <label for="validationDefault08" class="form-label">Офис</label>
+        <input type="text" class="form-control" id="validationDefault08" ng-model="regDetails.office" required>
+    </div>
+    <div class="col-md-4">
+
+    <div class="col-12">
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+            <label class="form-check-label" for="invalidCheck2">
+                Одобрямс!
+            </label>
+        </div>
+    </div>
+    </div>
+
+    <div class="col-12">
+        <button class="btn btn-warning"  type="submit" ng-click="checkForm()">Зарегистрироваться</button>
+    </div>
+    <div id="regAlert"></div>
+</form>

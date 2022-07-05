@@ -6,13 +6,6 @@ import com.sanjati.api.core.OrderDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.converters.OrderConverter;
 import com.sanjati.core.services.OrderService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-
-
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 import lombok.RequiredArgsConstructor;
 
 
@@ -45,9 +38,11 @@ public class OrdersController {
     public List<String> getRoles(@RequestHeader String username, @RequestHeader String role) {
 
         ArrayList<String> roles = new ArrayList<>();
+
         if(role.contains("ROLE_USER")) roles.add("ROLE_USER");
         if(role.contains("ROLE_EXECUTOR")) roles.add("ROLE_EXECUTOR");
         if(role.contains("ROLE_MANAGER")) roles.add("ROLE_MANAGER");
+        if(role.contains("ROLE_SENIOR")) roles.add("ROLE_SENIOR");
         if(role.contains("ROLE_ADMIN")) roles.add("ROLE_ADMIN");
 
         return roles;
@@ -64,10 +59,15 @@ public class OrdersController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestHeader String username, @RequestHeader String role, @RequestBody OrderDetailsDto orderDetailsDto) {
+    public void createOrder(@RequestHeader String username, @RequestHeader String role, @RequestHeader String id, @RequestBody OrderDetailsDto orderDetailsDto) {
         orderService.createOrder(username, orderDetailsDto);
     }
 
+//    @GetMapping
+//    public List<OrderDto> getCurrentUserOrders(@RequestHeader String username, @RequestHeader String role) {
+//        return orderService.findOrdersByUsername(username).stream()
+//                .map(orderConverter::entityToDto).collect(Collectors.toList());
+//    }
     @Operation(
             summary = "Запрос на получение текущего заказа пользователя",
             responses = {
@@ -77,9 +77,11 @@ public class OrdersController {
             }
     )
     @GetMapping
-    public List<OrderDto> getCurrentUserOrders(@RequestHeader String username, @RequestHeader String role) {
-        return orderService.findOrdersByUsername(username).stream()
-                .map(orderConverter::entityToDto).collect(Collectors.toList());
+    public Page<OrderDto> getCurrentUserOrdersBySpec(@RequestHeader String username, @RequestHeader String role,@RequestHeader String id, @RequestParam Integer page, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
+        if (page < 1) {
+            page = 1;
+        }
+        return orderService.findOrdersById(Long.parseLong(id),from,to,page).map(orderConverter::entityToDto);
     }
 
     @Operation(
@@ -90,9 +92,12 @@ public class OrdersController {
                     )
             }
     )
+//    @GetMapping("/{id}")
+//    public OrderDto getOrderById(@PathVariable Long id, @RequestHeader String role) {
+//        return orderConverter.entityToDto(orderService.findById(id).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
     @GetMapping("/{id}")
-    public OrderDto getOrderById(@PathVariable Long id, @RequestHeader String role) {
-        return orderConverter.entityToDto(orderService.findById(id).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
+    public OrderDto getOrderById(@PathVariable Long uid, @RequestHeader String role,@RequestHeader String id) {
+        return orderConverter.entityToDto(orderService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
     }
 
 
@@ -114,5 +119,3 @@ public class OrdersController {
 
     }
 }
-
-

@@ -7,6 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static javax.persistence.FetchType.EAGER;
 
 
 @Entity
@@ -19,6 +22,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    @Column(name = "is_active")
+    private Boolean isActive;
+    @OneToMany(mappedBy = "order")
+    private List<Process> processes;
+    @OneToMany(mappedBy = "order")
+    private List<Commit> commits;
 
 
 
@@ -27,24 +36,25 @@ public class Order {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "username")
-    private String username;
 
-    @Column(name = "executor")
-    private String executor;
-
-    @Column(name = "executor_commit")
-    private String executorCommit;
+    @Column(name = "user_nick")
+    private String userNick;
+    @Column(name = "user_id")
+    private Long userId;
+    @Column(name = "user_short_name")
+    private String userShortName;
+    @Column(name = "user_long_name")
+    private String userLongName;
 
     @Column(name = "status")
     private String status;
 
-    @Column(name = "assignment")
-    private LocalDateTime assignment;
-    @Column(name = "start_progress")
-    private LocalDateTime startProgress;
-    @Column(name = "executed")
-    private LocalDateTime executed;
+
+
+
+
+    @Column(name = "completed_at")
+    private LocalDateTime completedAt;
 
     @CreationTimestamp
     @Column(name = "created_at")

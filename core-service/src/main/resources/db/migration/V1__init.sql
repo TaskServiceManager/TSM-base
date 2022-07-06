@@ -1,67 +1,48 @@
-create table orders
+create table tasks
 (
-    id                  bigserial primary key,
-    is_active           boolean not null,
+        id                          bigserial primary key,
+        title                       varchar(100) not null,
+        description                 varchar(2000) not null,
+        owner_id                    bigint not null,
+        owner_name                  varchar(100) not null,
+        status                      varchar(25) not null,
 
-    title               varchar(100) not null,
-    description         varchar(2000) not null,
-
-    user_nick           varchar(25) not null,
-    user_id             bigserial not null,
-    user_short_name     varchar(25) not null,
-    user_long_name      varchar(100) not null,
-
-    status              varchar(16) not null,
-
-
-
-    completed_at        timestamp,
-    created_at          timestamp default current_timestamp,
-    updated_at          timestamp default current_timestamp
+        completed_at                timestamp,
+        created_at                  timestamp default current_timestamp,
+        updated_at                  timestamp default current_timestamp
 );
-create table processes
-(
-    id                  bigserial primary key,
-    order_id            bigserial not null,
-    is_active           boolean not null,
-    on_confirm          boolean not null,
-
-    executor_id         bigserial not null,
-    executor_short_name varchar(25) not null,
-    executor_long_name  varchar(100) not null,
-    task                varchar(1000) not null,
-
-
-    status              varchar(25) not null,
-    assigned_at         timestamp default current_timestamp,
-    accepted_at         timestamp,
-    finished_at         timestamp,
-    in_process_total    timestamp,
-
-    updated_at          timestamp default current_timestamp,
-    FOREIGN KEY (order_id)  REFERENCES orders (id)
+create table executors(
+        id                          bigint primary key,
+        name                        varchar(100) not null
 );
-create table commits (
-        id                  bigserial primary key,
-        order_id            bigserial not null,
-        executor_commit     varchar(2000),
-        created_at          timestamp default current_timestamp,
-        updated_at          timestamp default current_timestamp,
-        FOREIGN KEY (order_id)  REFERENCES orders (id)
+create table tasks_executors(
+        task_id                     bigint not null,
+        executor_id                 bigint not null,
+
+        PRIMARY KEY (task_id,executor_id),
+        FOREIGN KEY (task_id)       REFERENCES tasks (id),
+        FOREIGN KEY (executors_id)  REFERENCES executors (id)
+
+);
+create table comment (
+        id                          bigserial primary key,
+        task_id                     bigint not null,
+        executor_comment            varchar(2000),
+
+        created_at                  timestamp default current_timestamp,
+        updated_at                  timestamp default current_timestamp,
+        FOREIGN KEY (task_id)       REFERENCES tasks (id)
 
 );
 create table time_points(
-        id                  bigserial primary key,
-        process_id          bigserial not null,
-        executor_id         bigserial not null,
-        is_at_work          boolean not null,
-        created_at          timestamp default current_timestamp,
-        finished_at         timestamp,
-        updated_at          timestamp default current_timestamp,
-        FOREIGN KEY (process_id)  REFERENCES processes (id)
+        id                          bigserial primary key,
+        task_id                     bigint not null,
+        executor_id                 bigsint not null,
+        status                      varchar(25),
 
-
-
+        started_at                  timestamp default current_timestamp,
+        finished_at                 timestamp default current_timestamp,
+        FOREIGN KEY (process_id)    REFERENCES processes (id)
 );
 
 
@@ -69,31 +50,23 @@ create table time_points(
 
 
 
-insert into orders (is_active,title, description, user_nick,user_id,user_short_name,user_long_name, status)
-values ( true,
-        'create app',
-        'blabla bla uchet vremeni bla bla blalalalala',
-        'admin',
-        5,
-        'Aleksandrov.AA',
-        'Alexandrov Alexandr Alexandrovich',
+insert into tasks (title,description, owner_id, owner_name,status)
+values ( 'всё сломалось =(',
+        'плохо, плохо, плохо ничего не работает ',
+        1,
+        'Userov.UU',
         'expected'),
-        ( true,
-                            'create app',
-                            'blabla bla uchet vremeni bla bla blalalalala',
-                            'manager',
-                            3,
-                            'adrf.AA',
-                            'adsgwergqwergewrgewrgewgrewrgewgrrewrgrewgewgewgergregewerg',
-                            'expected');
+        ( 'всё сломалось =(',
+        'плохо, плохо, плохо ничего не работает ',
+        4,
+        'Userov.UU',
+        'expected')
 
-insert into processes (order_id, is_active, on_confirm, executor_id, executor_short_name, executor_long_name, task,
-                       status)
-values (1, true, false, 5, 'Aleksandrov.AA', 'Alexandrov Alexandr Alexandrovich', 'Сделать все нормально', 'expected'),
-       (1, true, false, 4, 'Ivanov I.I.', 'Ivanov Ivan Ivanovich', 'Сделать все нормально', 'expected');
+
+
 insert into commits (order_id, executor_commit)
 values (1,'Aleksandrov.AA >> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'),
-       (1,'Ivanov I.I. >> Все чики пуки');
+       (2,'Ivanov I.I. >> Все чики пуки');
 
 
 

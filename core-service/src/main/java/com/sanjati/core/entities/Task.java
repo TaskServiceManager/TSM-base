@@ -1,5 +1,6 @@
 package com.sanjati.core.entities;
 
+import com.sanjati.core.enums.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,27 +8,32 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
-
-import static javax.persistence.FetchType.EAGER;
 
 
 @Entity
-@Table(name = "orders")
+@Table(name = "tasks")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Order {
+public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "is_active")
-    private Boolean isActive;
-    @OneToMany(mappedBy = "order")
-    private List<Process> processes;
-    @OneToMany(mappedBy = "order")
-    private List<Commit> commits;
+
+    @OneToMany(mappedBy = "task")
+    private List<TimePoint> timePoints;
+
+    @OneToMany(mappedBy = "task")
+    private List<Comment> comments;
+
+    @ManyToMany
+    @JoinTable(name = "tasks_executors",
+            joinColumns = @JoinColumn(name = "executor_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
+    private Collection<Executor> executors;
 
 
 
@@ -37,17 +43,15 @@ public class Order {
     private String description;
 
 
-    @Column(name = "user_nick")
-    private String userNick;
-    @Column(name = "user_id")
-    private Long userId;
-    @Column(name = "user_short_name")
-    private String userShortName;
-    @Column(name = "user_long_name")
-    private String userLongName;
+
+    @Column(name = "owner_id")
+    private Long ownerId;
+    @Column(name = "owner_name")
+    private String ownerName;
+
 
     @Column(name = "status")
-    private String status;
+    private TaskStatus status;
 
 
 

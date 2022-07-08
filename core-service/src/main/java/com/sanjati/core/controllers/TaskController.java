@@ -1,12 +1,12 @@
 package com.sanjati.core.controllers;
 
 
-import com.sanjati.api.core.OrderDetailsDto;
-import com.sanjati.api.core.OrderDto;
+
+import com.sanjati.api.core.TaskDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
-import com.sanjati.core.converters.OrderConverter;
-import com.sanjati.core.services.OrderService;
-import com.sanjati.core.services.ProcessService;
+import com.sanjati.core.converters.TaskConverter;
+import com.sanjati.core.services.TaskService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,10 +27,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 @Tag(name = "Заказы", description = " Методы работы с заказами")
-public class OrdersController {
-    private final OrderService orderService;
-    private final OrderConverter orderConverter;
-    private final ProcessService processService;
+public class TaskController {
+    private final TaskService orderService;
+    private final TaskConverter taskConverter;
+
 
 
     @Operation(
@@ -66,12 +66,12 @@ public class OrdersController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestHeader String username, @RequestHeader String role, @RequestBody OrderDetailsDto orderDetailsDto) {
-        orderService.createOrder(username, orderDetailsDto);
+    public void createOrder(@RequestHeader String username,  @RequestBody TaskCreateDto taskCreateDto) {
+        orderService.createOrder(username, taskCreateDto);
     }
 
 //    @GetMapping
-//    public List<OrderDto> getCurrentUserOrders(@RequestHeader String username, @RequestHeader String role) {
+//    public List<TaskDto> getCurrentUserOrders(@RequestHeader String username, @RequestHeader String role) {
 //        return orderService.findOrdersByUsername(username).stream()
 //                .map(orderConverter::entityToDto).collect(Collectors.toList());
 //    }
@@ -84,11 +84,11 @@ public class OrdersController {
             }
     )
     @GetMapping
-    public Page<OrderDto> getCurrentUserOrdersBySpec(@RequestHeader String username, @RequestHeader String role,@RequestHeader String id, @RequestParam Integer page, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
+    public Page<TaskDto> getCurrentUserOrdersBySpec(@RequestHeader Long id, @RequestParam Integer page, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
         if (page < 1) {
             page = 1;
         }
-        return orderService.findOrdersById(Long.parseLong(id),from,to,page).map(orderConverter::entityToDto);
+        return orderService.findOrdersById(id,from,to,page).map(taskConverter::entityToDto);
     }
 
     @Operation(
@@ -99,12 +99,10 @@ public class OrdersController {
                     )
             }
     )
-//    @GetMapping("/{id}")
-//    public OrderDto getOrderById(@PathVariable Long id, @RequestHeader String role) {
-//        return orderConverter.entityToDto(orderService.findById(id).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
+
     @GetMapping("/{id}")
-    public OrderDto getOrderById(@PathVariable Long uid, @RequestHeader String role,@RequestHeader String id) {
-        return orderConverter.entityToDto(orderService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
+    public TaskDto getOrderById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader String id) {
+        return taskConverter.entityToDto(orderService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
     }
 
 
@@ -121,8 +119,8 @@ public class OrdersController {
     )
 
     @GetMapping("/user")
-    public List<OrderDto> getUserOrders (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id) {
-        return orderService.findOrdersById(id,null,null,1).stream().map(orderConverter::entityToDto).collect(Collectors.toList());
+    public List<TaskDto> getUserOrders (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id) {
+        return orderService.findOrdersById(id,null,null,1).stream().map(taskConverter::entityToDto).collect(Collectors.toList());
 
     }
 
@@ -132,13 +130,13 @@ public class OrdersController {
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ",responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = OrderDto.class))
+                            content = @Content(schema = @Schema(implementation = TaskDto.class))
                     )
             }
     )
     @GetMapping("/executor")
-    public Page<OrderDto> getExecutorsOrders(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
-        return processService.getAllExecutorsOrders(id).map(orderConverter::entityToDto);
+    public Page<TaskDto> getExecutorsOrders(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
+        return processService.getAllExecutorsOrders(id).map(taskConverter::entityToDto);
     }
 
     @Operation(
@@ -152,6 +150,6 @@ public class OrdersController {
     @GetMapping("executor/take/{id}")
     public void executorTakesOrder(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long orderId,
                                    @Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
-        orderService.takeOrder(orderId, id);
+        orderService.takeTask(orderId, id);
     }
 }

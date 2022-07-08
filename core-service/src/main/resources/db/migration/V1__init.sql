@@ -21,13 +21,13 @@ create table tasks_executors(
 
         PRIMARY KEY (task_id,executor_id),
         FOREIGN KEY (task_id)       REFERENCES tasks (id),
-        FOREIGN KEY (executors_id)  REFERENCES executors (id)
+        FOREIGN KEY (executor_id)  REFERENCES executors (id)
 
 );
-create table comment (
+create table comments (
         id                          bigserial primary key,
         task_id                     bigint not null,
-        executor_comment            varchar(2000),
+        description                 varchar(2000),
 
         created_at                  timestamp default current_timestamp,
         updated_at                  timestamp default current_timestamp,
@@ -37,12 +37,13 @@ create table comment (
 create table time_points(
         id                          bigserial primary key,
         task_id                     bigint not null,
-        executor_id                 bigsint not null,
+        executor_id                 bigint not null,
         status                      varchar(25),
 
         started_at                  timestamp default current_timestamp,
         finished_at                 timestamp default current_timestamp,
-        FOREIGN KEY (process_id)    REFERENCES processes (id)
+        FOREIGN KEY (task_id)       REFERENCES tasks (id),
+        FOREIGN KEY (executor_id)   REFERENCES executors (id)
 );
 
 

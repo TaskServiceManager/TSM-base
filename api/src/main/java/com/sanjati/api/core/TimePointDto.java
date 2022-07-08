@@ -1,14 +1,16 @@
 package com.sanjati.api.core;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class TimePointDto {
-
+    @Schema(description = "ID временной отметки", example = "3")
     private Long id;
-
-    private Long processId;
-
+    @Schema(description = "ID задачи", example = "3")
+    private Long taskId;
+    @Schema(description = "ID исполнителя выполняющего задачу", example = "3")
     private Long executorId;
-
-    private Boolean isAtWork;
+    @Schema(description = "статус", example = "IN_PROCESS")
+    private String status;
 
     public Long getId() {
         return id;
@@ -18,12 +20,12 @@ public class TimePointDto {
         this.id = id;
     }
 
-    public Long getProcessId() {
-        return processId;
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public void setProcessId(Long processId) {
-        this.processId = processId;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     public Long getExecutorId() {
@@ -34,11 +36,21 @@ public class TimePointDto {
         this.executorId = executorId;
     }
 
-    public Boolean getAtWork() {
-        return isAtWork;
+    public String getStatus() {
+        return status;
     }
 
-    public void setAtWork(Boolean atWork) {
-        isAtWork = atWork;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public TimePointDto(Long id, Long taskId, Long executorId, String status) {
+        this.id = id;
+        this.taskId = taskId;
+        this.executorId = executorId;
+        this.status = status;
+    }
+
+    public TimePointDto() {
     }
 }

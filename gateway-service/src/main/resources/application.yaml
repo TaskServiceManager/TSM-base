@@ -6,9 +6,13 @@ spring:
   cloud:
     gateway:
       globalcors:
+        add-to-simple-url-handler-mapping: true
         corsConfigurations:
           '[/**]':
-            allowedOrigins: "http://localhost:3000"
+            allowedOrigins:
+              - "http://10.123.3.228:3000"
+              - "http://localhost:3000"
+              - "http://localhost:3000/tsm"
             allowedMethods:
               - GET
               - POST

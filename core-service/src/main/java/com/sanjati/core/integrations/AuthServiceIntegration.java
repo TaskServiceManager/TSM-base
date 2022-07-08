@@ -15,14 +15,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class AuthServiceIntegration {
     private final WebClient cartServiceWebClient;
 
-    public void clearUserCart(String username) {
-        cartServiceWebClient.get()
-                .uri("/api/v1/cart/0/clear")
-                .header("username", username)
-                .retrieve()
-                .toBodilessEntity()
-                .block();
-    }
 
     public UserDto getUser(String username) {
         UserDto user = cartServiceWebClient.get()

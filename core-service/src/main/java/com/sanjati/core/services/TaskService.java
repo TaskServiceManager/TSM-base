@@ -1,14 +1,14 @@
 package com.sanjati.core.services;
 
 
-import com.sanjati.api.core.OrderDetailsDto;
+
 import com.sanjati.api.exceptions.ResourceNotFoundException;
-import com.sanjati.core.entities.Order;
-import com.sanjati.core.repositories.OrdersRepository;
+import com.sanjati.core.entities.Task;
+import com.sanjati.core.enums.TaskStatus;
+import com.sanjati.core.repositories.TaskRepository;
 import com.sanjati.core.repositories.specifications.OrderSpecifications;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.function.Failable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,47 +18,43 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class OrderService {
+public class TaskService {
 
-    private final OrdersRepository ordersRepository;
-    private final ProcessService processService;
+    private final TaskRepository ordersRepository;
 
 
-    @Transactional
-    public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
 
-    }
 
-    public List<Order> findOrdersByUsername(String username) {
-        Specification<Order> spec = Specification.where(null);
+
+    public List<Task> findOrdersByUsername(String username) {
+        Specification<Task> spec = Specification.where(null);
         spec = spec.and(OrderSpecifications.usernameEquals(username));
         return ordersRepository.findAll(spec);
     }
 
-    public Optional<Order> findById(Long id) {
+    public Optional<Task> findById(Long id) {
         return ordersRepository.findById(id);
     }
     @Transactional
     public void changeStatus(Long id, String status){
-        Order order = ordersRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Order not found"));
-        order.setStatus(status);
+        Task task = ordersRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
+        task.setStatus(TaskStatus.valueOf(status));
 
     }
 
     @Transactional
-    public void takeOrder(Long orderId, Long executorId) {
-        Order order = findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Order not found"));
-        order.setStatus("accepted");
-        processService.createProcess(order, executorId);
+    public void takeTask(Long orderId, Long executorId) {
+        Task task = findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
+        task.setStatus(TaskStatus.ASSIGNED);
+        processService.createProcess(task, executorId);
     }
 
-    public Page<Order> findOrdersById(Long id, String from, String to,Integer page) {
-        Specification<Order> spec = Specification.where(null);
+    public Page<Task> findOrdersById(Long id, String from, String to, Integer page) {
+        Specification<Task> spec = Specification.where(null);
         spec = spec.and(OrderSpecifications.idEquals(id));
 
         LocalDateTime newDateFormat;
@@ -77,14 +73,6 @@ public class OrderService {
         return this.ordersRepository.findAll(spec, PageRequest.of(page - 1, 10));
     }
 
-  // ребят используем спеки findAll(spec)
-   // public List<Order> getAllUserOrders(Long id) {
-   //    return  ordersRepository.findAllUserOrdersById(id);
-   // }
-
-   // public List<Order> getAllManagerOrders(Long id) {
-   //     return  ordersRepository.findAllManagerOrdersById(id);
-   // }
 
 
 }

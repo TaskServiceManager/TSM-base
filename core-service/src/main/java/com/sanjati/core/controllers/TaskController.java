@@ -97,7 +97,14 @@ public class TaskController {
             }
     )
     @GetMapping
-    public Page<TaskDto> getCurrentUserTasksBySpec(@RequestHeader Long id, @RequestParam Integer page, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
+    public Page<TaskDto> getCurrentUserTasksBySpec(@Parameter(description = "ID исполнителя", required = true)
+                                                       @RequestHeader Long id,
+                                                   @Parameter(description = "номер страницы", required = true)
+                                                   @RequestParam Integer page,
+                                                   @Parameter(description = "Граница по времени ОТ", required = false)
+                                                       @RequestParam(required = false) String from,
+                                                   @Parameter(description = "Граница по времени ДО", required = false)
+                                                       @RequestParam(required = false) String to) {
         if (page < 1) {
             page = 1;
         }
@@ -132,8 +139,17 @@ public class TaskController {
             }
     )
     @GetMapping("/assigned")
-    public Page<TaskDto> getAssignedTasks(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
-        return taskService.getAllAssignedTasks(id).map(taskConverter::entityToDto);
+    public Page<TaskDto> getAssignedTasks(@Parameter(description = "ID исполнителя", required = true)
+                                              @RequestHeader Long id,
+                                          @Parameter(description = "номер страницы", required = true)
+                                          @RequestParam Integer page,
+                                          @Parameter(description = "Граница по времени ОТ", required = false)
+                                              @RequestParam(required = false) String from,
+                                          @Parameter(description = "Граница по времени ДО", required = false)
+                                              @RequestParam(required = false) String to,
+                                          @Parameter(description = "Статус заявок", required = false)
+                                              @RequestParam(required = false) String status){
+        return taskService.getAllAssignedTasks(id,from,to,page,status).map(taskConverter::entityToDto);
     }
 
     @Operation(

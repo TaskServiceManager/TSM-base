@@ -1,6 +1,6 @@
 (function () {
     angular
-        .module('ttsystem-front', ['ngRoute', 'ngStorage','angular-jwt'])
+        .module('ttsystem-front', ['ngRoute', 'ngStorage'])
         .config(config)
         .run(run);
 
@@ -40,6 +40,7 @@
             try {
                 let jwt = $localStorage.ttsystemUser.token;
                 let payload = JSON.parse(atob(jwt.split('.')[1]));
+                console.log(payload);
                 let currentTime = parseInt(new Date().getTime() / 1000);
                 if (currentTime > payload.exp) {
                     console.log("Token is expired!!!");

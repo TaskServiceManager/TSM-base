@@ -6,7 +6,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
 
-public class OrderSpecifications {
+public class TaskSpecifications {
     public static Specification<Task> timeGreaterOrEqualsThan(LocalDateTime time) {
         return (root, criteriaQuery, criteriaBuilder) -> {
             return criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), time);

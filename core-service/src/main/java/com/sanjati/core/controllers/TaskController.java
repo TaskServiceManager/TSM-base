@@ -2,6 +2,7 @@ package com.sanjati.core.controllers;
 
 
 
+import com.sanjati.api.core.CreationTaskDto;
 import com.sanjati.api.core.TaskDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.converters.TaskConverter;
@@ -24,11 +25,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
-@Tag(name = "Заказы", description = " Методы работы с заказами")
+@Tag(name = "Задачи", description = " Методы работы с заявками")
 public class TaskController {
-    private final TaskService orderService;
+    private final TaskService taskService;
     private final TaskConverter taskConverter;
 
 
@@ -57,7 +58,7 @@ public class TaskController {
 
 
     @Operation(
-            summary = "Запрос на создание нового заказа",
+            summary = "Запрос на создание новой задачи",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
@@ -66,45 +67,22 @@ public class TaskController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestHeader String username,  @RequestBody TaskCreateDto taskCreateDto) {
-        orderService.createOrder(username, taskCreateDto);
+    public void createTask(@RequestHeader String username,  @RequestBody CreationTaskDto taskCreateDto) {
+        taskService.createTask(username, taskCreateDto);
     }
-
+//    @Operation(
+//            summary = "Запрос на получение текущего заказа пользователя", ---> не применимо!
+//            responses = {
+//                    @ApiResponse(
+//                            description = "Успешный ответ", responseCode = "200"
+//                    )
+//            }
+//    )
 //    @GetMapping
 //    public List<TaskDto> getCurrentUserOrders(@RequestHeader String username, @RequestHeader String role) {
 //        return orderService.findOrdersByUsername(username).stream()
 //                .map(orderConverter::entityToDto).collect(Collectors.toList());
 //    }
-    @Operation(
-            summary = "Запрос на получение текущего заказа пользователя",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
-    @GetMapping
-    public Page<TaskDto> getCurrentUserOrdersBySpec(@RequestHeader Long id, @RequestParam Integer page, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
-        if (page < 1) {
-            page = 1;
-        }
-        return orderService.findOrdersById(id,from,to,page).map(taskConverter::entityToDto);
-    }
-
-    @Operation(
-            summary = "Запрос на получение заказа по идентификатору (id)",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
-
-    @GetMapping("/{id}")
-    public TaskDto getOrderById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader String id) {
-        return taskConverter.entityToDto(orderService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
-    }
-
 
     @Operation(
 
@@ -113,16 +91,35 @@ public class TaskController {
 
             responses = {
                     @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = Page.class))
+                    )
+            }
+    )
+    @GetMapping
+    public Page<TaskDto> getCurrentUserTasksBySpec(@RequestHeader Long id, @RequestParam Integer page, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
+        if (page < 1) {
+            page = 1;
+        }
+        return taskService.findOrdersByUserId(id,from,to,page).map(taskConverter::entityToDto);
+    }
+
+    @Operation(
+            summary = "Запрос на получение задач по идентификатору (id)",
+            responses = {
+                    @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
                     )
             }
     )
 
-    @GetMapping("/user")
-    public List<TaskDto> getUserOrders (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id) {
-        return orderService.findOrdersById(id,null,null,1).stream().map(taskConverter::entityToDto).collect(Collectors.toList());
-
+    @GetMapping("/{id}")
+    public TaskDto getTaskById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader String id) {
+        return taskConverter.entityToDto(taskService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
     }
+
+
+
 
 
     @Operation(
@@ -130,13 +127,13 @@ public class TaskController {
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ",responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = TaskDto.class))
+                            content = @Content(schema = @Schema(implementation = Page.class))
                     )
             }
     )
-    @GetMapping("/executor")
-    public Page<TaskDto> getExecutorsOrders(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
-        return processService.getAllExecutorsOrders(id).map(taskConverter::entityToDto);
+    @GetMapping("/assigned")
+    public Page<TaskDto> getAssignedTasks(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
+        return taskService.getAllAssignedTasks(id).map(taskConverter::entityToDto);
     }
 
     @Operation(
@@ -147,9 +144,9 @@ public class TaskController {
                     )
             }
     )
-    @GetMapping("executor/take/{id}")
-    public void executorTakesOrder(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long orderId,
+    @GetMapping("take/{id}")
+    public void executorTakeTaskById(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long orderId,
                                    @Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
-        orderService.takeTask(orderId, id);
+        taskService.takeTask(orderId, id);
     }
 }

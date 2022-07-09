@@ -1,25 +1,52 @@
 package com.sanjati.api.auth;
 
 public class UserDto {
+    private Long id;
+    private String username;
 
     private String firstName;
     private String lastName;
-    private String patronymic;
+    private String middleName;
     private String email;
     private String company;
+    private String companyEmail;
+    private String workPosition;
     private String phone;
     private String office;
     private String building;
 
-    public UserDto(String firstName, String lastName, String patronymic, String email, String company, String phone, String office, String building) {
+    public UserDto(Long id, String username, String firstName,
+                   String lastName, String middleName, String email,
+                   String company, String companyEmail, String workPosition,
+                   String phone, String office, String building) {
+        this.id = id;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.patronymic = patronymic;
+        this.middleName = middleName;
         this.email = email;
         this.company = company;
+        this.companyEmail = companyEmail;
+        this.workPosition = workPosition;
         this.phone = phone;
         this.office = office;
         this.building = building;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -38,12 +65,12 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public String getPatronymic() {
-        return patronymic;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getEmail() {
@@ -60,6 +87,22 @@ public class UserDto {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getCompanyEmail() {
+        return companyEmail;
+    }
+
+    public void setCompanyEmail(String companyEmail) {
+        this.companyEmail = companyEmail;
+    }
+
+    public String getWorkPosition() {
+        return workPosition;
+    }
+
+    public void setWorkPosition(String workPosition) {
+        this.workPosition = workPosition;
     }
 
     public String getPhone() {

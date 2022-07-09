@@ -2,12 +2,15 @@ package com.sanjati.core.services;
 
 
 
-import com.sanjati.api.core.TaskDto;
+import com.sanjati.api.core.CreationTaskDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
+import com.sanjati.core.entities.Executor;
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.enums.TaskStatus;
+import com.sanjati.core.repositories.ExecutorRepository;
 import com.sanjati.core.repositories.TaskRepository;
 import com.sanjati.core.repositories.specifications.TaskSpecifications;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -26,6 +29,10 @@ import java.util.Optional;
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final ExecutorRepository executorRepository;
+
+
+
 
     public List<Task> findTaskByUsername(String username) {
         Specification<Task> spec = Specification.where(null);
@@ -41,6 +48,16 @@ public class TaskService {
     public void changeStatus(Long id, String status){
         Task task = taskRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
         task.setStatus(TaskStatus.valueOf(status));
+
+    }
+
+    @Transactional
+    public void takeTask(Long taskId, Long executorId) {
+        Task task = findById(taskId).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
+        task.setStatus(TaskStatus.ASSIGNED);
+        Executor executor = executorRepository.findById(executorId).orElseThrow(()-> new ResourceNotFoundException("Executor not found"));
+        task.getExecutors().add(executor);
+        taskRepository.save(task);
 
     }
 
@@ -65,15 +82,31 @@ public class TaskService {
     }
 
 
-    public Page<Task> getAssignedTaskByExecutorId(Long id, Integer page) {
-        return taskRepository.getAllAssignedTasksByExecutorId(id, PageRequest.of(page - 1, 10));
+    public void createTask(String username, CreationTaskDto taskCreateDto) {
     }
 
-    public void createTask(String username, TaskDto taskCreateDto) {
-        //реализовать
-    }
+    public Page<Task> getAllAssignedTasks(Long id, String from, String to, Integer page,String status) {//тут будут фильтры
+        Executor executor = executorRepository.getById(id);
+        Specification<Task> spec = Specification.where(null);
+        spec = spec.and(TaskSpecifications.executorsContains(executor));
+        LocalDateTime newDateFormat;
+        if (from != null) {
+            newDateFormat = LocalDateTime.parse(from.substring(0, 22));
+            spec = spec.and(TaskSpecifications.timeGreaterOrEqualsThan(newDateFormat));
+            log.warn(from);
+        }
 
-    public void takeTask(Long orderId, Long id) {
+        if (to != null) {
+            newDateFormat = LocalDateTime.parse(to.substring(0, 22));
+            log.warn(to);
+            spec = spec.and(TaskSpecifications.timeLessThanOrEqualsThan(newDateFormat));
+        }
+        if (status != null) {
+
+            spec = spec.and(TaskSpecifications.statusEquals(status));
+        }
+
+        return taskRepository.findAll(spec, PageRequest.of(page - 1, 10));
     }
 
     public Page<Task> getIncomingTasks(Integer page) {

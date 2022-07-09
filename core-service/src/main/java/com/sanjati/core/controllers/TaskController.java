@@ -2,6 +2,7 @@ package com.sanjati.core.controllers;
 
 
 
+import com.sanjati.api.core.CreationTaskDto;
 import com.sanjati.api.core.TaskDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.converters.TaskConverter;
@@ -21,12 +22,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.stream.Collectors;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
-@Tag(name = "Заказы", description = " Методы работы с заказами")
+@Tag(name = "Задачи", description = " Методы работы с заявками")
 public class TaskController {
     private final TaskService taskService;
     private final TaskConverter taskConverter;
@@ -55,7 +56,7 @@ public class TaskController {
 
 
     @Operation(
-            summary = "Запрос на создание нового заказа",
+            summary = "Запрос на создание новой задачи",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
@@ -64,33 +65,49 @@ public class TaskController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTask(@RequestHeader String username,  @RequestBody TaskDto taskCreateDto) {
+    public void createTask(@RequestHeader String username,  @RequestBody CreationTaskDto taskCreateDto) {
         taskService.createTask(username, taskCreateDto);
     }
-
+//    @Operation(
+//            summary = "Запрос на получение текущего заказа пользователя", ---> не применимо!
+//            responses = {
+//                    @ApiResponse(
+//                            description = "Успешный ответ", responseCode = "200"
+//                    )
+//            }
+//    )
 //    @GetMapping
 //    public List<TaskDto> getCurrentUserOrders(@RequestHeader String username, @RequestHeader String role) {
 //        return orderService.findOrdersByUsername(username).stream()
 //                .map(orderConverter::entityToDto).collect(Collectors.toList());
 //    }
+
     @Operation(
-            summary = "Запрос на получение текущего заказа пользователя",
+            summary = "Запрос на получение всех заявок пользователя",
             responses = {
                     @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
+                            description = "Успешный ответ", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = Page.class))
                     )
             }
     )
     @GetMapping
-    public Page<TaskDto> getCurrentUserTaskBySpec(@RequestHeader Long id, @RequestParam Integer page, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
+    public Page<TaskDto> getCurrentUserTasksBySpec(@Parameter(description = "ID исполнителя", required = true)
+                                                       @RequestHeader Long id,
+                                                   @Parameter(description = "номер страницы", required = true)
+                                                   @RequestParam Integer page,
+                                                   @Parameter(description = "Граница по времени ОТ", required = false)
+                                                       @RequestParam(required = false) String from,
+                                                   @Parameter(description = "Граница по времени ДО", required = false)
+                                                       @RequestParam(required = false) String to) {
         if (page < 1) {
             page = 1;
         }
-        return taskService.findTasksByUserId(id,from,to,page).map(taskConverter::entityToDto);
+        return taskService.findOrdersByUserId(id,from,to,page).map(taskConverter::entityToDto);
     }
 
     @Operation(
-            summary = "Запрос на получение заказа по идентификатору (id)",
+            summary = "Запрос на получение задач по идентификатору (id)",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
@@ -129,27 +146,17 @@ public class TaskController {
             }
     )
     @GetMapping("/assigned")
-    public Page<TaskDto> getAssignedTasks(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id,
-                                          @Parameter(description = "Номер страницы") @RequestParam(defaultValue = "1") Integer page){
-        if (page < 1) {
-            page = 1;
-        }
-        return taskService.getAssignedTaskByExecutorId(id, page).map(taskConverter::entityToDto);
-    }
-
-    @Operation(
-            summary = "Запрос на получение всех заявок, которые еще не были обработаны",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ",responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = TaskDto.class))
-                    )
-            }
-    )
-    @GetMapping("/incoming")
-    public Page<TaskDto> getIncomingTasks(@Parameter(description = "Номер страницы")@RequestParam Integer page){
-        //TODO реализовать логику метода 'getIncomingTasks(Integer page)';
-        return taskService.getIncomingTasks(page).map(taskConverter::entityToDto);
+    public Page<TaskDto> getAssignedTasks(@Parameter(description = "ID исполнителя", required = true)
+                                              @RequestHeader Long id,
+                                          @Parameter(description = "номер страницы", required = true)
+                                          @RequestParam Integer page,
+                                          @Parameter(description = "Граница по времени ОТ", required = false)
+                                              @RequestParam(required = false) String from,
+                                          @Parameter(description = "Граница по времени ДО", required = false)
+                                              @RequestParam(required = false) String to,
+                                          @Parameter(description = "Статус заявок", required = false)
+                                              @RequestParam(required = false) String status){
+        return taskService.getAllAssignedTasks(id,from,to,page,status).map(taskConverter::entityToDto);
     }
 
     @Operation(

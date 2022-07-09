@@ -32,8 +32,6 @@ public class TaskService {
     private final ExecutorRepository executorRepository;
 
 
-
-
     public List<Task> findTaskByUsername(String username) {
         Specification<Task> spec = Specification.where(null);
         spec = spec.and(TaskSpecifications.usernameEquals(username));

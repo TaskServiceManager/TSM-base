@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/tasks")
@@ -103,7 +103,7 @@ public class TaskController {
         if (page < 1) {
             page = 1;
         }
-        return taskService.findOrdersByUserId(id,from,to,page).map(taskConverter::entityToDto);
+        return taskService.findTasksByUserId(id,from,to,page).map(taskConverter::entityToDto);
     }
 
     @Operation(
@@ -114,7 +114,6 @@ public class TaskController {
                     )
             }
     )
-
     @GetMapping("/{id}")
     public TaskDto getTaskById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader String id) {
         return taskConverter.entityToDto(taskService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
@@ -130,8 +129,10 @@ public class TaskController {
             }
     )
     @GetMapping("/my")
-    public Page<TaskDto> getMyTasks (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id) {
-        return taskService.findTasksByUserId(id,null,null,1).map(taskConverter::entityToDto);
+    public Page<TaskDto> getMyTasks (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id,
+                                     @Parameter(description = "Граница по времени ОТ", required = false) @RequestParam(required = false) String from,
+                                     @Parameter(description = "Граница по времени ДО", required = false) @RequestParam(required = false) String to) {
+        return taskService.findTasksByUserId(id,from,to,1).map(taskConverter::entityToDto);
 
     }
 
@@ -157,6 +158,12 @@ public class TaskController {
                                           @Parameter(description = "Статус заявок", required = false)
                                               @RequestParam(required = false) String status){
         return taskService.getAllAssignedTasks(id,from,to,page,status).map(taskConverter::entityToDto);
+    }
+
+    @GetMapping("/incoming")
+    public Page<TaskDto> getIncomingTasks(){
+        //TODO необходимо реализовать
+        return Page.empty();
     }
 
     @Operation(

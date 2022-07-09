@@ -21,17 +21,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/orders")
+@RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
 @Tag(name = "Заказы", description = " Методы работы с заказами")
 public class TaskController {
-    private final TaskService orderService;
+    private final TaskService taskService;
     private final TaskConverter taskConverter;
-
-
 
     @Operation(
             summary = "Список ролей",
@@ -66,8 +64,8 @@ public class TaskController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createOrder(@RequestHeader String username,  @RequestBody TaskCreateDto taskCreateDto) {
-        orderService.createOrder(username, taskCreateDto);
+    public void createTask(@RequestHeader String username,  @RequestBody TaskDto taskCreateDto) {
+        taskService.createTask(username, taskCreateDto);
     }
 
 //    @GetMapping
@@ -84,11 +82,11 @@ public class TaskController {
             }
     )
     @GetMapping
-    public Page<TaskDto> getCurrentUserOrdersBySpec(@RequestHeader Long id, @RequestParam Integer page, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
+    public Page<TaskDto> getCurrentUserTaskBySpec(@RequestHeader Long id, @RequestParam Integer page, @RequestParam(required = false) String from, @RequestParam(required = false) String to) {
         if (page < 1) {
             page = 1;
         }
-        return orderService.findOrdersById(id,from,to,page).map(taskConverter::entityToDto);
+        return taskService.findTasksByUserId(id,from,to,page).map(taskConverter::entityToDto);
     }
 
     @Operation(
@@ -101,26 +99,22 @@ public class TaskController {
     )
 
     @GetMapping("/{id}")
-    public TaskDto getOrderById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader String id) {
-        return taskConverter.entityToDto(orderService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
+    public TaskDto getTaskById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader String id) {
+        return taskConverter.entityToDto(taskService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
     }
 
 
     @Operation(
-
-            summary = "Запрос на получение всех заявок пользователя",
-
-
+            summary = "Запрос на получение всех заявок пользователя, которые он оставил",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
                     )
             }
     )
-
-    @GetMapping("/user")
-    public List<TaskDto> getUserOrders (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id) {
-        return orderService.findOrdersById(id,null,null,1).stream().map(taskConverter::entityToDto).collect(Collectors.toList());
+    @GetMapping("/my")
+    public Page<TaskDto> getMyTasks (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id) {
+        return taskService.findTasksByUserId(id,null,null,1).map(taskConverter::entityToDto);
 
     }
 
@@ -134,9 +128,28 @@ public class TaskController {
                     )
             }
     )
-    @GetMapping("/executor")
-    public Page<TaskDto> getExecutorsOrders(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
-        return processService.getAllExecutorsOrders(id).map(taskConverter::entityToDto);
+    @GetMapping("/assigned")
+    public Page<TaskDto> getAssignedTasks(@Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id,
+                                          @Parameter(description = "Номер страницы") @RequestParam(defaultValue = "1") Integer page){
+        if (page < 1) {
+            page = 1;
+        }
+        return taskService.getAssignedTaskByExecutorId(id, page).map(taskConverter::entityToDto);
+    }
+
+    @Operation(
+            summary = "Запрос на получение всех заявок, которые еще не были обработаны",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ",responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = TaskDto.class))
+                    )
+            }
+    )
+    @GetMapping("/incoming")
+    public Page<TaskDto> getIncomingTasks(@Parameter(description = "Номер страницы")@RequestParam Integer page){
+        //TODO реализовать логику метода 'getIncomingTasks(Integer page)';
+        return taskService.getIncomingTasks(page).map(taskConverter::entityToDto);
     }
 
     @Operation(
@@ -147,9 +160,9 @@ public class TaskController {
                     )
             }
     )
-    @GetMapping("executor/take/{id}")
-    public void executorTakesOrder(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long orderId,
-                                   @Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
-        orderService.takeTask(orderId, id);
+    @PatchMapping("/take/{id}")
+    public void takeTask(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long orderId,
+                                   @Parameter(description = "ID исполнителя", required = true) @RequestHeader(name = "id") Long executorId){
+        taskService.takeTask(orderId, executorId);
     }
 }

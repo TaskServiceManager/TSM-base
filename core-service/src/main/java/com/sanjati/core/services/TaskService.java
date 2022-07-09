@@ -2,11 +2,12 @@ package com.sanjati.core.services;
 
 
 
+import com.sanjati.api.core.TaskDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.repositories.TaskRepository;
-import com.sanjati.core.repositories.specifications.OrderSpecifications;
+import com.sanjati.core.repositories.specifications.TaskSpecifications;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -24,55 +25,59 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TaskService {
 
-    private final TaskRepository ordersRepository;
+    private final TaskRepository taskRepository;
 
-
-
-
-
-    public List<Task> findOrdersByUsername(String username) {
+    public List<Task> findTaskByUsername(String username) {
         Specification<Task> spec = Specification.where(null);
-        spec = spec.and(OrderSpecifications.usernameEquals(username));
-        return ordersRepository.findAll(spec);
+        spec = spec.and(TaskSpecifications.usernameEquals(username));
+        return taskRepository.findAll(spec);
     }
 
     public Optional<Task> findById(Long id) {
-        return ordersRepository.findById(id);
+        return taskRepository.findById(id);
     }
+
     @Transactional
     public void changeStatus(Long id, String status){
-        Task task = ordersRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
+        Task task = taskRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
         task.setStatus(TaskStatus.valueOf(status));
 
     }
 
-    @Transactional
-    public void takeTask(Long orderId, Long executorId) {
-        Task task = findById(orderId).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
-        task.setStatus(TaskStatus.ASSIGNED);
-        processService.createProcess(task, executorId);
-    }
-
-    public Page<Task> findOrdersById(Long id, String from, String to, Integer page) {
+    public Page<Task> findTasksByUserId(Long id, String from, String to, Integer page) {
         Specification<Task> spec = Specification.where(null);
-        spec = spec.and(OrderSpecifications.idEquals(id));
+        spec = spec.and(TaskSpecifications.idEquals(id));
 
         LocalDateTime newDateFormat;
         if (from != null) {
             newDateFormat = LocalDateTime.parse(from.substring(0, 22));
-            spec = spec.and(OrderSpecifications.timeGreaterOrEqualsThan(newDateFormat));
+            spec = spec.and(TaskSpecifications.timeGreaterOrEqualsThan(newDateFormat));
             log.warn(from);
         }
 
         if (to != null) {
             newDateFormat = LocalDateTime.parse(to.substring(0, 22));
             log.warn(to);
-            spec = spec.and(OrderSpecifications.timeLessThanOrEqualsThan(newDateFormat));
+            spec = spec.and(TaskSpecifications.timeLessThanOrEqualsThan(newDateFormat));
         }
 
-        return this.ordersRepository.findAll(spec, PageRequest.of(page - 1, 10));
+        return this.taskRepository.findAll(spec, PageRequest.of(page - 1, 10));
     }
 
 
+    public Page<Task> getAssignedTaskByExecutorId(Long id, Integer page) {
+        return taskRepository.getAllAssignedTasksByExecutorId(id, PageRequest.of(page - 1, 10));
+    }
 
+    public void createTask(String username, TaskDto taskCreateDto) {
+        //реализовать
+    }
+
+    public void takeTask(Long orderId, Long id) {
+    }
+
+    public Page<Task> getIncomingTasks(Integer page) {
+        //заглушка
+        return Page.empty();
+    }
 }

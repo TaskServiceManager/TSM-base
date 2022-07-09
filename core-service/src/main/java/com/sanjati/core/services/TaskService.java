@@ -10,7 +10,7 @@ import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.repositories.ExecutorRepository;
 import com.sanjati.core.repositories.TaskRepository;
 import com.sanjati.core.repositories.specifications.TaskSpecifications;
-import io.netty.util.AsyncMapping;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -85,8 +85,30 @@ public class TaskService {
     public void createTask(String username, CreationTaskDto taskCreateDto) {
     }
 
-    public Page<Task> getAllAssignedTasks(Long id) {//тут будут фильтры
-        throw  new UnsupportedOperationException();
+    public Page<Task> getAllAssignedTasks(Long id, String from, String to, Integer page,String status) {//тут будут фильтры
+        Executor executor = executorRepository.getById(id);
+        Specification<Task> spec = Specification.where(null);
+        spec = spec.and(TaskSpecifications.executorsContains(executor));
+        LocalDateTime newDateFormat;
+        if (from != null) {
+            newDateFormat = LocalDateTime.parse(from.substring(0, 22));
+            spec = spec.and(TaskSpecifications.timeGreaterOrEqualsThan(newDateFormat));
+            log.warn(from);
+        }
+
+        if (to != null) {
+            newDateFormat = LocalDateTime.parse(to.substring(0, 22));
+            log.warn(to);
+            spec = spec.and(TaskSpecifications.timeLessThanOrEqualsThan(newDateFormat));
+        }
+        if (status != null) {
+
+            spec = spec.and(TaskSpecifications.statusEquals(status));
+        }
+
+
+        return taskRepository.
+                findAll(spec,PageRequest.of(page - 1, 10));
 
     }
 }

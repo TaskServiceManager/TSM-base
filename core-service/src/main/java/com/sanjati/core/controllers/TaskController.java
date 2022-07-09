@@ -33,29 +33,6 @@ public class TaskController {
     private final TaskConverter taskConverter;
 
     @Operation(
-            summary = "Список ролей",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
-    @GetMapping("/getRole")
-    public List<String> getRoles(@RequestHeader String username, @RequestHeader String role) {
-
-        ArrayList<String> roles = new ArrayList<>();
-
-        if(role.contains("ROLE_USER")) roles.add("ROLE_USER");
-        if(role.contains("ROLE_EXECUTOR")) roles.add("ROLE_EXECUTOR");
-        if(role.contains("ROLE_MANAGER")) roles.add("ROLE_MANAGER");
-        if(role.contains("ROLE_SENIOR")) roles.add("ROLE_SENIOR");
-        if(role.contains("ROLE_ADMIN")) roles.add("ROLE_ADMIN");
-
-        return roles;
-    }
-
-
-    @Operation(
             summary = "Запрос на создание новой задачи",
             responses = {
                     @ApiResponse(

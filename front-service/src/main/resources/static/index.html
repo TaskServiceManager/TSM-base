@@ -17,6 +17,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular-route.min.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="lib/angular-jwt/dist/angular-jwt.js"></script>
 
 </head>
 
@@ -30,7 +31,7 @@
                 <a class="navbar-brand" href="#">  TTSystem</a>
                 <ul class="nav nav-tabs">
                     <li class="nav-item" ng-show="isUserLoggedIn()">
-                        <a class="nav-link" href="#!/orders">Мои заявки</a>
+                        <a class="nav-link" href="#!/tasks">Мои заявки</a>
                     </li>
                     <li class="nav-item" ng-show="isUserLoggedIn()">
                         <a class="nav-link" href="#!/process">Заявки к исполнению</a>
@@ -64,7 +65,7 @@
     <script src="index.js"></script>
     <script src="login/login.js"></script>
     <script src="welcome/welcome.js"></script>
-    <script src="orders/orders.js"></script>
+    <script src="tasks/tasks.js"></script>
     <script src="process/process.js"></script>
     <script src="manage/manage.js"></script>
     <!--    <script src="form/form.js"></script>-->

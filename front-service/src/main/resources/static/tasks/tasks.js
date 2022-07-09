@@ -1,9 +1,9 @@
-angular.module('ttsystem-front').controller('ordersController', function ($scope, $http, $location) {
+angular.module('ttsystem-front').controller('tasksController', function ($scope, $http, $location) {
     const contextPath = 'http://localhost:5555/core/';
 
-    $scope.loadOrders = function (pageIndex) {
+    $scope.loadTasks = function (pageIndex) {
         $http({
-                url: contextPath + 'api/v1/orders',
+                url: contextPath + 'api/v1/tasks',
                 method: 'GET',
                 params: {
                     page: pageIndex ? pageIndex : 1,
@@ -11,10 +11,10 @@ angular.module('ttsystem-front').controller('ordersController', function ($scope
 //                    to: $scope.newFilter ? $scope.newFilter.to : null,
                 }
         }).then(function (response) {
-            $scope.MyOrders = response.data.content;
+            $scope.MyTasks = response.data.content;
             //[{id: 1, title: 'Ошибка включения компутера', description: 'Не могу включить компутер умираю уже капец блин почините', status: 'Готово', createdAt: ''},
             //{id: 2, title: 'Не работает', description: 'Не могу включить компутер умираю уже капец блин почините Не могу включить компутер умираю уже капец блин почините Не могу включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините', status: 'В работе', createdAt: '2022-10-01'}];
-            console.log($scope.MyOrders);
+            console.log($scope.MyTasks);
             $scope.currentPage = response.data.number+1;
             $scope.isFirstPage = response.data.first;
             $scope.isLastPage = response.data.last;
@@ -28,9 +28,9 @@ angular.module('ttsystem-front').controller('ordersController', function ($scope
        return description;
     }
 
-    $scope.open = function (orderId) {
+    $scope.open = function (taskId) {
         $scope.showModal = true;
-        $scope.currentItem = $scope.MyOrders.find(o => o.id === orderId);
+        $scope.currentItem = $scope.MyTasks.find(o => o.id === taskId);
         $('#item-modal').show();
     };
 
@@ -39,5 +39,5 @@ angular.module('ttsystem-front').controller('ordersController', function ($scope
         $('#item-modal').hide();
     };
 
-    $scope.loadOrders();
+    $scope.loadTasks();
 });

@@ -1,6 +1,6 @@
 (function () {
     angular
-        .module('ttsystem-front', ['ngRoute', 'ngStorage'])
+        .module('ttsystem-front', ['ngRoute', 'ngStorage','angular-jwt'])
         .config(config)
         .run(run);
 
@@ -14,9 +14,9 @@
                 templateUrl: 'login/login.html',
                 controller: 'loginController'
             })
-            .when('/orders', {
-                templateUrl: 'orders/orders.html',
-                controller: 'ordersController'
+            .when('/tasks', {
+                templateUrl: 'tasks/tasks.html',
+                controller: 'tasksController'
             })
             .when('/process', {
                   templateUrl: 'process/process.html',

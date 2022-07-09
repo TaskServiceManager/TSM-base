@@ -11,6 +11,8 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
-    @Query("select o from Task o where o.userNick = ?1")
+
+    @Query("select o from Task o where o.ownerName = ?1")
     List<Task> findAllByUsername(String username);
+
 }

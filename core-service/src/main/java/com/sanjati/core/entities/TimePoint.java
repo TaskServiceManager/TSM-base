@@ -23,8 +23,6 @@ public class TimePoint {
     @ManyToOne
     @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task task;
-    @Column(name = "task_id")
-    private Long taskId;
     @Column(name = "executor_id")
     private Long executorId;
     @Column(name = "status")

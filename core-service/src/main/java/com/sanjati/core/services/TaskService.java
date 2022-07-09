@@ -32,10 +32,7 @@ public class TaskService {
     private final ExecutorRepository executorRepository;
 
 
-
-
-
-    public List<Task> findOrdersByUsername(String username) {
+    public List<Task> findTaskByUsername(String username) {
         Specification<Task> spec = Specification.where(null);
         spec = spec.and(TaskSpecifications.usernameEquals(username));
         return taskRepository.findAll(spec);
@@ -44,6 +41,7 @@ public class TaskService {
     public Optional<Task> findById(Long id) {
         return taskRepository.findById(id);
     }
+
     @Transactional
     public void changeStatus(Long id, String status){
         Task task = taskRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
@@ -58,10 +56,10 @@ public class TaskService {
         Executor executor = executorRepository.findById(executorId).orElseThrow(()-> new ResourceNotFoundException("Executor not found"));
         task.getExecutors().add(executor);
         taskRepository.save(task);
-        
+
     }
 
-    public Page<Task> findOrdersByUserId(Long id, String from, String to, Integer page) {
+    public Page<Task> findTasksByUserId(Long id, String from, String to, Integer page) {
         Specification<Task> spec = Specification.where(null);
         spec = spec.and(TaskSpecifications.idEquals(id));
 
@@ -106,9 +104,11 @@ public class TaskService {
             spec = spec.and(TaskSpecifications.statusEquals(status));
         }
 
+        return taskRepository.findAll(spec, PageRequest.of(page - 1, 10));
+    }
 
-        return taskRepository.
-                findAll(spec,PageRequest.of(page - 1, 10));
-
+    public Page<Task> getIncomingTasks(Integer page) {
+        //заглушка
+        return Page.empty();
     }
 }

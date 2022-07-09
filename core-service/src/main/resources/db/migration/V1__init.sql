@@ -11,10 +11,12 @@ create table tasks
         created_at                  timestamp default current_timestamp,
         updated_at                  timestamp default current_timestamp
 );
+
 create table executors(
         id                          bigint primary key,
         name                        varchar(100) not null
 );
+
 create table tasks_executors(
         task_id                     bigint not null,
         executor_id                 bigint not null,
@@ -24,6 +26,7 @@ create table tasks_executors(
         FOREIGN KEY (executor_id)  REFERENCES executors (id)
 
 );
+
 create table comments (
         id                          bigserial primary key,
         task_id                     bigint not null,
@@ -34,6 +37,7 @@ create table comments (
         FOREIGN KEY (task_id)       REFERENCES tasks (id)
 
 );
+
 create table time_points(
         id                          bigserial primary key,
         task_id                     bigint not null,
@@ -46,26 +50,27 @@ create table time_points(
         FOREIGN KEY (executor_id)   REFERENCES executors (id)
 );
 
-
-
-
-
-
 insert into tasks (title,description, owner_id, owner_name,status)
 values ( 'всё сломалось =(',
         'плохо, плохо, плохо ничего не работает ',
         1,
         'Userov.UU',
-        'expected'),
+        'ACCEPTED'),
         ( 'всё сломалось =(',
         'плохо, плохо, плохо ничего не работает ',
         4,
         'Userov.UU',
-        'expected')
+        'ACCEPTED');
 
+insert into executors (id, name)
+values (1, 'executor1'),
+       (2, 'executor2');
 
+insert into tasks_executors (task_id, executor_id)
+values (2, 1),
+       (1, 2);
 
-insert into commits (order_id, executor_commit)
+insert into comments (task_id, description)
 values (1,'Aleksandrov.AA >> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'),
        (2,'Ivanov I.I. >> Все чики пуки');
 

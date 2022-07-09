@@ -10,7 +10,7 @@ public class CommentConverter {
     public CommentDto entityToDto(Comment entity){
         CommentDto dto = new CommentDto();
         dto.setId(entity.getId());
-        dto.setTaskId(entity.getTaskId());
+        dto.setTaskId(entity.getTask().getId());
         dto.setDescription(entity.getDescription());
         return dto;
     }

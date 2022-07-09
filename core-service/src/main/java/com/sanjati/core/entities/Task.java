@@ -35,27 +35,21 @@ public class Task {
             inverseJoinColumns = @JoinColumn(name = "task_id"))
     private Collection<Executor> executors;
 
-
-
     @Column(name = "title")
     private String title;
+
     @Column(name = "description")
     private String description;
 
-
-
     @Column(name = "owner_id")
     private Long ownerId;
+
     @Column(name = "owner_name")
     private String ownerName;
 
-
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private TaskStatus status;
-
-
-
-
 
     @Column(name = "completed_at")
     private LocalDateTime completedAt;

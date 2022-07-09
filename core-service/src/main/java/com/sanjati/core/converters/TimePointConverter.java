@@ -10,7 +10,7 @@ public class TimePointConverter {
     public TimePointDto entityToDto(TimePoint entity){
         TimePointDto dto = new TimePointDto();
         dto.setId(entity.getId());
-        dto.setTaskId(entity.getTaskId());
+        dto.setTaskId(entity.getTask().getId());
         dto.setExecutorId(entity.getExecutorId());
         dto.setStatus(entity.getStatus().toString());
         return dto;

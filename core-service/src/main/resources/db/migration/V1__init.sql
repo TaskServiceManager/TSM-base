@@ -55,12 +55,12 @@ values ( 'всё сломалось =(',
         'плохо, плохо, плохо ничего не работает ',
         1,
         'Userov.UU',
-        'expected'),
+        'ACCEPTED'),
         ( 'всё сломалось =(',
         'плохо, плохо, плохо ничего не работает ',
         4,
         'Userov.UU',
-        'expected');
+        'ACCEPTED');
 
 insert into executors (id, name)
 values (1, 'executor1'),

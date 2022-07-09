@@ -47,6 +47,7 @@ public class Task {
     @Column(name = "owner_name")
     private String ownerName;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "status")
     private TaskStatus status;
 

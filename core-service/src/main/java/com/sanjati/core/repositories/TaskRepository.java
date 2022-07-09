@@ -17,7 +17,6 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
     @Query("select o from Task o where o.ownerName = ?1")
     List<Task> findAllByUsername(String username);
 
-    //не работает, потом исправлю, хочу спать
-    @Query("select t from Task t join fetch Executor e where e.id = ?1")
+    @Query("select t from Task t join t.executors as e where e.id = ?1")
     Page<Task> getAllAssignedTasksByExecutorId(Long executorId, Pageable pageable);
 }

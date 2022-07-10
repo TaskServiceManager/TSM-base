@@ -22,9 +22,9 @@
                   templateUrl: 'assigned/assigned.html',
                   controller: 'assignedController'
              })
-             .when('/manage', {
-                   templateUrl: 'manage/manage.html',
-                   controller: 'manageController'
+             .when('/incoming', {
+                   templateUrl: 'incoming/incoming.html',
+                   controller: 'incomingController'
               })
 //            .when('/form', {
 //                templateUrl: 'form/form.html',

@@ -21,9 +21,9 @@ public class Executor {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany
-    @JoinTable(name = "tasks_executors",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "executor_id"))
-    private Collection<Task> tasks;
+//    @ManyToMany //из-за этого стек оверфлоу может быть
+//    @JoinTable(name = "tasks_executors",
+//            joinColumns = @JoinColumn(name = "executor_id"),
+//            inverseJoinColumns = @JoinColumn(name = "task_id"))
+//    private Collection<Task> tasks;
 }

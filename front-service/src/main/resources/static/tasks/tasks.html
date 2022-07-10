@@ -2,13 +2,13 @@
     <div class="table table-hover" ng-show="!MyTasks || !MyTasks.length>0" align="center">Нет активных заявок</div>
     <table class="table table-hover" ng-show="MyTasks.length>0">
         <tr>
-            <td>ID</td>
-            <td>Тема</td>
-            <td>Описание</td>
-            <td>Статус</td>
-            <td>Дата создания</td>
-            <td>Исполнитель</td>
-            <td>Дата выполнения</td>
+            <td width="3%">ID</td>
+            <td width="15%">Тема</td>
+            <td width="30%">Описание</td>
+            <td width="7%">Статус</td>
+            <td width="10%">Дата создания</td>
+            <td width="10%">Исполнители</td>
+            <td width="10%">Дата выполнения</td>
 
         </tr>
         <tbody>
@@ -19,9 +19,9 @@
                     {{renderDescription(task.description)}}
             </td>
             <td>{{task.status}}</td>
-            <td>{{task.createdAt}}</td>
-            <td>-</td>
-            <td>{{task.completedAt}}</td>
+            <td>{{task.createdAt!=null ? task.createdAt : '-' }}</td>
+            <td>{{task.executors[0]!=null ? task.executors.join(', ') : 'Не назначены'}}</td>
+            <td>{{task.completedAt!=null ? task.completedAt : '-' }}</td>
         </tr>
         </tbody>
     </table>

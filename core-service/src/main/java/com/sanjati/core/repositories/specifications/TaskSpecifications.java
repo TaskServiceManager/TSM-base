@@ -20,10 +20,10 @@ public class TaskSpecifications {
         };
     }
     public static Specification<Task> idEquals(Long id){
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("owner_id"), id);
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("ownerId"), id);
     }
     public static Specification<Task> usernameEquals(String username){
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("owner_name"), username);
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("ownerName"), username);
     }
     public static Specification<Task> statusEquals(String status){
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), status);

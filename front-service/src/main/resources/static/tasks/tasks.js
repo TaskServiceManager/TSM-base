@@ -12,9 +12,6 @@ angular.module('ttsystem-front').controller('tasksController', function ($scope,
                 }
         }).then(function (response) {
             $scope.MyTasks = response.data.content;
-            //[{id: 1, title: 'Ошибка включения компутера', description: 'Не могу включить компутер умираю уже капец блин почините', status: 'Готово', createdAt: ''},
-            //{id: 2, title: 'Не работает', description: 'Не могу включить компутер умираю уже капец блин почините Не могу включить компутер умираю уже капец блин почините Не могу включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините', status: 'В работе', createdAt: '2022-10-01'}];
-            console.log($scope.MyTasks);
             $scope.currentPage = response.data.number+1;
             $scope.isFirstPage = response.data.first;
             $scope.isLastPage = response.data.last;

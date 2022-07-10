@@ -18,9 +18,9 @@
                 templateUrl: 'tasks/tasks.html',
                 controller: 'tasksController'
             })
-            .when('/process', {
-                  templateUrl: 'process/process.html',
-                  controller: 'processController'
+            .when('/assigned', {
+                  templateUrl: 'assigned/assigned.html',
+                  controller: 'assignedController'
              })
              .when('/manage', {
                    templateUrl: 'manage/manage.html',
@@ -40,7 +40,6 @@
             try {
                 let jwt = $localStorage.ttsystemUser.token;
                 let payload = JSON.parse(atob(jwt.split('.')[1]));
-                console.log(payload);
                 let currentTime = parseInt(new Date().getTime() / 1000);
                 if (currentTime > payload.exp) {
                     console.log("Token is expired!!!");
@@ -56,7 +55,7 @@
     }
 })();
 
-angular.module('ttsystem-front').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
+angular.module('ttsystem-front').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage, $filter) {
 
     $rootScope.isUserLoggedIn = function () {
         if ($localStorage.ttsystemUser) {
@@ -91,9 +90,13 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
     $rootScope.clearRole = function () {
         delete $localStorage.allowance;
     };
-//
-//    $rootScope.isAllowed = function(elem){
-//        console.log(elem);
-//       return $localStorage.allowance.indexOf(elem) != -1;
-//    };
+
+    $rootScope.isAllowed = function(viewName){
+        if($rootScope.isUserLoggedIn()) {
+            const permissions = $localStorage.permissions;
+            const viewRules = $filter('filter')(permissions, {'view':viewName});
+            return $localStorage.ttsystemUser.roles.indexOf(viewRules[0].role)!=-1;
+        }
+        return false;
+    };
 });

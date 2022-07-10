@@ -29,13 +29,13 @@
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <a class="navbar-brand" href="#">  TTSystem</a>
                 <ul class="nav nav-tabs">
-                    <li class="nav-item" ng-show="isUserLoggedIn()">
+                    <li class="nav-item" ng-show="isAllowed('myTasks')">
                         <a class="nav-link" href="#!/tasks">Мои заявки</a>
                     </li>
-                    <li class="nav-item" ng-show="isUserLoggedIn()">
+                    <li class="nav-item" ng-show="isAllowed('assigned')">
                         <a class="nav-link" href="#!/process">Заявки к исполнению</a>
                     </li>
-                    <li class="nav-item" ng-show="isUserLoggedIn()">
+                    <li class="nav-item" ng-show="isAllowed('incoming')">
                         <a class="nav-link" href="#!/manage">Распределение заявок</a>
                     </li>
 <!--                    <li class="nav-item" ng-show="isUserLoggedIn()&&isAllowed('ROLE_SENIOR')">-->
@@ -65,7 +65,7 @@
     <script src="login/login.js"></script>
     <script src="welcome/welcome.js"></script>
     <script src="tasks/tasks.js"></script>
-    <script src="process/process.js"></script>
+    <script src="assigned/assigned.js"></script>
     <script src="manage/manage.js"></script>
     <!--    <script src="form/form.js"></script>-->
 <!--<script src="statistics/statistics.js"></script>-->

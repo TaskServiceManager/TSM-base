@@ -18,6 +18,10 @@ angular.module('ttsystem-front').controller('loginController', function ($scope,
 
                     $rootScope.user.username = null;
                     $rootScope.user.password = null;
+
+                    $localStorage.permissions = [{view: 'myTasks', role: 'ROLE_USER'},
+                                                {view: 'incoming', role: 'ROLE_MANAGER'},
+                                                {view: 'assigned', role: 'ROLE_EXECUTOR'}];
                     $location.path('/');
                 }
             }, function errorCallback(response) {

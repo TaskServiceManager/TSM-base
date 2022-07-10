@@ -29,8 +29,8 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "patronymic")
-    private String patronymic;
+    @Column(name = "middle_name")
+    private String middleName;
 
 
     @Column(name = "email")
@@ -38,6 +38,10 @@ public class User {
 
     @Column(name = "company")
     private String company;
+    @Column(name = "company_email")
+    private String companyEmail;
+    @Column(name = "work_position")
+    private String workPosition;
 
     @Column(name = "phone")
     private String phone;

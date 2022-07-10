@@ -1,4 +1,4 @@
-h2, hr {
+h4, hr {
   color: #198754;
 }
 
@@ -40,7 +40,7 @@ h2, hr {
   color: #146c43;
 }
 
-.login-form .form-control:focus {
+.form-control:focus {
     color: #0c432a;
     background-color: #fff;
     border-color: #146c43;

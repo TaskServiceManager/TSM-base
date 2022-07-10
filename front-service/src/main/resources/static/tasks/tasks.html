@@ -12,10 +12,10 @@
 
         </tr>
         <tbody>
-        <tr ng-repeat="task in MyTasks">
+        <tr ng-repeat="task in MyTasks" data-ng-click="goToDetails(task.id)" style="cursor: pointer">
             <td>{{task.id}}</td>
             <td>{{task.title}}</td>
-            <td width="40%" data-ng-click="open(task.id)">
+            <td width="40%">
                     {{renderDescription(task.description)}}
             </td>
             <td>{{task.status}}</td>
@@ -34,20 +34,20 @@
 </div>
 
 <!-- Modal -->
-<div id="item-modal" class="modal">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" data-ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                {{currentItem.title}}
-            </div>
-            <div class="modal-body">
-                {{currentItem.description}}
-            </div>
-<!--            <div class="modal-footer">-->
-<!--                <button type="button" class="btn btn-default" data-dismiss="modal" data-ng-click="dismissCurrentItem">Close</button>-->
+<!--<div id="item-modal" class="modal">-->
+<!--    <div class="modal-dialog modal-dialog-centered">-->
+<!--        <div class="modal-content">-->
+<!--            <div class="modal-header">-->
+<!--                <button type="button" class="close" data-dismiss="modal" data-ng-click="cancel()" aria-label="Close"><span aria-hidden="true">&times;</span>-->
+<!--                </button>-->
+<!--                {{currentItem.title}}-->
 <!--            </div>-->
-        </div>
-    </div>
-</div>
+<!--            <div class="modal-body">-->
+<!--                {{currentItem.description}}-->
+<!--            </div>-->
+<!--&lt;!&ndash;            <div class="modal-footer">&ndash;&gt;-->
+<!--&lt;!&ndash;                <button type="button" class="btn btn-default" data-dismiss="modal" data-ng-click="dismissCurrentItem">Close</button>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->

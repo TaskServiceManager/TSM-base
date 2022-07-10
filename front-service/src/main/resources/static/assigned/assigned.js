@@ -25,5 +25,9 @@ angular.module('ttsystem-front').controller('assignedController', function ($sco
        return description;
     }
 
+    $scope.goToDetails = function (taskId) {
+        $location.path('/tasks/'+taskId);
+    };
+
     $scope.loadTasks();
 });

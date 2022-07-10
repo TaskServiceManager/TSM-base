@@ -39,6 +39,7 @@ public class TaskConverter {
                 .executors(executorsList)
                 .createdAt(entity.getCreatedAt()!=null ? entity.getCreatedAt().format(formatter) : null)
                 .completedAt(entity.getCompletedAt()!=null ? entity.getCompletedAt().format(formatter) : null)
+                .updatedAt(entity.getUpdatedAt()!=null ? entity.getUpdatedAt().format(formatter) : null)
                 .build();
     }
 }

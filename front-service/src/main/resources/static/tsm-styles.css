@@ -1,3 +1,7 @@
+h2, hr {
+  color: #198754;
+}
+
 .login-form {
   border-radius: 25px;
   border-color: #198754;
@@ -75,4 +79,21 @@ nav a:hover{
   background-color: #146c43;
   border-color: #146c43;
   color: white;
+}
+
+#details td {
+  width: 50%;
+}
+
+#details label {
+  align-self: center;
+  width: 30%;
+}
+
+#details .form-group {
+  width: 100%;
+}
+
+#details .col-md-6, .col-md-4 {
+  width: 60%;
 }

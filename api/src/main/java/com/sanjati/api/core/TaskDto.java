@@ -42,6 +42,9 @@ public class TaskDto {
     @Schema(description = "Дата выполнения заявки", example = "2022-07-10 16:30:19")
     private String completedAt;
 
+    @Schema(description = "Дата последнего обновления", example = "2022-07-10 16:30:19")
+    private String updatedAt;
+
 //    public List<CommentDto> getComments() {
 //        return comments;
 //    }
@@ -59,6 +62,14 @@ public class TaskDto {
 //    }
 //
 
+
+    public String getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(String updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 
     public List<String> getExecutors() {
         return executors;
@@ -135,7 +146,7 @@ public class TaskDto {
     public TaskDto() {
     }
 
-    public TaskDto(Long id, String status, String title, String description, Long ownerId, String ownerName, List<String> executors, String createdAt, String completedAt) {
+    public TaskDto(Long id, String status, String title, String description, Long ownerId, String ownerName, List<String> executors, String createdAt, String completedAt, String updatedAt) {
         this.id = id;
         this.status = status;
         this.title = title;
@@ -145,5 +156,6 @@ public class TaskDto {
         this.executors = executors;
         this.createdAt = createdAt;
         this.completedAt = completedAt;
+        this.updatedAt = updatedAt;
     }
 }

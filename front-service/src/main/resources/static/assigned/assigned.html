@@ -10,10 +10,10 @@
             <td>Автор</td>
         </tr>
         <tbody>
-        <tr ng-repeat="task in AssignedTasks">
+        <tr ng-repeat="task in AssignedTasks" data-ng-click="goToDetails(task.id)" style="cursor: pointer">
             <td>{{task.id}}</td>
             <td>{{task.title}}</td>
-            <td width="40%" data-ng-click="open(task.id)">
+            <td width="40%">
                 {{renderDescription(task.description)}}
             </td>
             <td>{{task.status}}</td>

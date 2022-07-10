@@ -18,6 +18,10 @@
                 templateUrl: 'tasks/tasks.html',
                 controller: 'tasksController'
             })
+            .when('/tasks/:id', {
+                templateUrl: 'details/details.html',
+                controller: 'detailsController'
+            })
             .when('/assigned', {
                   templateUrl: 'assigned/assigned.html',
                   controller: 'assignedController'

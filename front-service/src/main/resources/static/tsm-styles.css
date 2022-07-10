@@ -30,6 +30,16 @@ h2, hr {
   border-color: #146c43;
 }
 
+#detailsButton {
+  border: none;
+  background: none;
+  color: #198754;
+}
+
+#detailsButton:hover {
+  color: #146c43;
+}
+
 .login-form .form-control:focus {
     color: #0c432a;
     background-color: #fff;

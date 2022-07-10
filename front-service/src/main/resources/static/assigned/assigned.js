@@ -1,4 +1,4 @@
-angular.module('ttsystem-front').controller('assignedController', function ($scope, $http, $location) {
+angular.module('ttsystem-front').controller('assignedController', function ($scope, $http, $location, $localStorage, $rootScope) {
     const contextPath = 'http://localhost:5555/core/';
 
     $scope.loadTasks = function (pageIndex) {
@@ -24,10 +24,6 @@ angular.module('ttsystem-front').controller('assignedController', function ($sco
        }
        return description;
     }
-
-    $scope.goToDetails = function (taskId) {
-        $location.path('/tasks/'+taskId);
-    };
 
     $scope.loadTasks();
 });

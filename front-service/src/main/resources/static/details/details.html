@@ -1,0 +1,83 @@
+<div>
+    <h4>Детализация</h4>
+    <br>
+    <form id="details">
+        <div class="table table-hover">
+            <table style="width:100%; border-color:white;">
+                <tr>
+                    <td>
+                        <div class="form-group row">
+                            <label>ID</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" value="{{Task.id}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group row">
+                            <label>Статус</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" value="{{Task.status}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group row">
+                            <label>Тема</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" value="{{Task.title}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group row">
+                            <label>Дата создания</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" value="{{Task.createdAt}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan=3>
+                        <div class="form-group row">
+                            <label style="align-self: baseline">Описание</label>
+                            <div class="form-group col-md-6">{{Task.description}}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group row">
+                            <label>Дата последнего обновления</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" value="{{Task.updatedAt}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group row">
+                            <label>Дата выполнения</label>
+                            <div class="form-group col-md-6">
+                                <input type="textarea" class="form-control" value="{{Task.completedAt}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group row">
+                            <label>Исполнители</label>
+                            <div class="form-group col-md-6">{{Task.executors[0]!=null ? Task.executors.join(', ') : 'Не назначены'}}</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <hr>
+    <h4>Комментарии</h4>
+    <br>
+</div>

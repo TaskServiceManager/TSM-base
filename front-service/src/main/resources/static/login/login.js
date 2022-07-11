@@ -4,22 +4,25 @@ angular.module('ttsystem-front').controller('loginController', function ($scope,
 
     $rootScope.auth = function () {
         $rootScope.user=$scope.user;
-        console.log($rootScope.user);
         $http.post(contextPath+'/auth', $rootScope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                    $localStorage.ttsystemUser = {username: $rootScope.user.username, token: response.data.token};
+                    const jwt = response.data.token;
+                    const payload = JSON.parse(atob(jwt.split('.')[1]));
+
+                    $localStorage.ttsystemUser = {username: $rootScope.user.username,
+                                                userId: payload.id,
+                                                roles: payload.role,
+                                                token: jwt};
+
                     $rootScope.user.username = null;
                     $rootScope.user.password = null;
-                    $http({
-                       url: corePath+'/api/v1/orders/roles',
-                       method: 'GET'
-                   }).then(function (response) {
-                       console.log(response.data);
-                       $localStorage.allowance = response.data;
-                   });
-                   $location.path('/');
+
+                    $localStorage.permissions = [{view: 'myTasks', roles: ['ROLE_USER']},
+                                                {view: 'incoming', roles: ['ROLE_MANAGER','ROLE_EXECUTOR']},
+                                                {view: 'assigned', roles: ['ROLE_EXECUTOR']}];
+                    $location.path('/');
                 }
             }, function errorCallback(response) {
                 console.log(response);

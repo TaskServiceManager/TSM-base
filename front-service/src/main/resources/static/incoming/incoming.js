@@ -1,4 +1,4 @@
-angular.module('ttsystem-front').controller('manageController', function ($scope, $http, $location) {
+angular.module('ttsystem-front').controller('incomingController', function ($scope, $http, $location) {
     const contextPath = 'http://localhost:5555/core/';
 
     $scope.loadTasks = function (pageIndex) {

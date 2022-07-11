@@ -101,7 +101,11 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
         if($rootScope.isUserLoggedIn()) {
             const permissions = $localStorage.permissions;
             const viewRules = $filter('filter')(permissions, {'view':viewName});
-            return $localStorage.ttsystemUser.roles.indexOf(viewRules[0].role)!=-1;
+            let isAllowed = false;
+            for (var i=0; i<viewRules[0].roles.length; i++) {
+                if($localStorage.ttsystemUser.roles.indexOf(viewRules[0].roles[i])!=-1) isAllowed = true;
+            }
+            return isAllowed;
         }
         return false;
     };

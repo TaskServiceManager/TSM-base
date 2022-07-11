@@ -112,7 +112,7 @@ public class TaskController {
 //    }
 
     @Operation(
-            summary = "Запрос на получение всех заявок исполнителя",
+            summary = "Запрос на получение всех назначенных на исполнителя заявок по его ID",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ",responseCode = "200",
@@ -121,8 +121,8 @@ public class TaskController {
             }
     )
     @GetMapping("/assigned")
-    public Page<TaskDto> getAssignedTasks(@Parameter(description = "ID исполнителя", required = true)
-                                                @RequestHeader Long id,
+    public Page<TaskDto> getAssignedTasksByExecutorId(@Parameter(description = "ID исполнителя", required = true)
+                                                @RequestHeader(name = "id") Long executorId,
                                           @Parameter(description = "номер страницы", required = true)
                                                 @RequestParam Integer page,
                                           @Parameter(description = "Граница по времени ОТ", required = false)
@@ -134,7 +134,7 @@ public class TaskController {
         if (page < 1) {
             page = 1;
         }
-        return taskService.getAllAssignedTasks(id,from,to,page,status).map(taskConverter::entityToDto);
+        return taskService.getAssignedTasksByExecutorId(executorId, from, to, page, status).map(taskConverter::entityToDto);
     }
 
     @GetMapping("/incoming")
@@ -144,7 +144,7 @@ public class TaskController {
     }
 
     @Operation(
-            summary = "Запрос на взятие заявки исполнителем",
+            summary = "Запрос исполнителя на взятие заявки в работу по ее ID",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
@@ -152,8 +152,8 @@ public class TaskController {
             }
     )
     @PatchMapping("/take/{id}")
-    public void takeTask(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long orderId,
-                                   @Parameter(description = "ID исполнителя", required = true) @RequestHeader(name = "id") Long executorId){
-        taskService.takeTask(orderId, executorId);
+    public void takeTaskById(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long taskId,
+                             @Parameter(description = "ID исполнителя", required = true) @RequestHeader(name = "id") Long executorId){
+        taskService.takeTask(taskId, executorId);
     }
 }

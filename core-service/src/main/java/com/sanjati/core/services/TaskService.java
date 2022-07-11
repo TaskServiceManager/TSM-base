@@ -83,8 +83,8 @@ public class TaskService {
     public void createTask(String username, CreationTaskDto taskCreateDto) {
     }
 
-    public Page<Task> getAllAssignedTasks(Long id, String from, String to, Integer page,String status) {//тут будут фильтры
-        Executor executor = executorRepository.getById(id);
+    public Page<Task> getAssignedTasksByExecutorId(Long id, String from, String to, Integer page,String status) {//тут будут фильтры
+        Executor executor = executorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Executor not found"));
         Specification<Task> spec = Specification.where(null);
         spec = spec.and(TaskSpecifications.executorsContains(executor));
         LocalDateTime newDateFormat;

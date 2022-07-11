@@ -4,10 +4,10 @@ package com.sanjati.core.services;
 
 import com.sanjati.api.core.CreationTaskDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
+import com.sanjati.core.entities.Comment;
 import com.sanjati.core.entities.Executor;
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.enums.TaskStatus;
-import com.sanjati.core.repositories.ExecutorRepository;
 import com.sanjati.core.repositories.TaskRepository;
 import com.sanjati.core.repositories.specifications.TaskSpecifications;
 
@@ -29,7 +29,8 @@ import java.util.Optional;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final ExecutorRepository executorRepository;
+    private final ExecutorService executorService;
+    private final CommentService commentService;
 
 
     public List<Task> findTaskByUsername(String username) {
@@ -50,11 +51,19 @@ public class TaskService {
     }
 
     @Transactional
-    public void takeTask(Long taskId, Long executorId) {
+    public void takeTask(Long taskId, Long executorId,Long managerId) {
         Task task = findById(taskId).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
-        task.setStatus(TaskStatus.ASSIGNED);
-        Executor executor = executorRepository.findById(executorId).orElseThrow(()-> new ResourceNotFoundException("Executor not found"));
+        if (task.getStatus().equals(TaskStatus.CREATED))task.setStatus(TaskStatus.ASSIGNED);
+        Executor executor = executorService.findExecutorByExecutorId(executorId);
+        Executor manager;
         task.getExecutors().add(executor);
+        if(executorId != managerId)
+        {
+            manager = executorService.findExecutorByExecutorId(managerId);
+        }else {
+            manager = executor;
+        }
+        commentService.leaveComment(manager,executor,">> назначил исполнителя >> ",task);
         taskRepository.save(task);
 
     }
@@ -80,11 +89,19 @@ public class TaskService {
     }
 
 
-    public void createTask(String username, CreationTaskDto taskCreateDto) {
+    public void createTask(Long ownerId,String ownerName ,CreationTaskDto taskCreateDto) {
+        //TODO написать создание заявки
+        Task task = new Task();
+        task.setOwnerId(ownerId);
+        task.setOwnerName(ownerName);
+        task.setTitle(taskCreateDto.getTitle());
+        task.setDescription(taskCreateDto.getDescription());
+        task.setStatus(TaskStatus.CREATED);
+        taskRepository.save(task);
     }
 
     public Page<Task> getAllAssignedTasks(Long id, String from, String to, Integer page,String status) {//тут будут фильтры
-        Executor executor = executorRepository.getById(id);
+        Executor executor = executorService.findExecutorByExecutorId(id);
         Specification<Task> spec = Specification.where(null);
         spec = spec.and(TaskSpecifications.executorsContains(executor));
         LocalDateTime newDateFormat;
@@ -111,4 +128,6 @@ public class TaskService {
         //заглушка
         return Page.empty();
     }
+
+
 }

@@ -39,8 +39,10 @@ public class TaskController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTask(@RequestHeader String username,  @RequestBody CreationTaskDto taskCreateDto) {
-        taskService.createTask(username, taskCreateDto);
+    public void createTask(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id ,
+                           @Parameter(description = "Фамилия и инициалы пользователя", required = true)@RequestHeader String shortName ,
+                           @RequestBody CreationTaskDto taskCreateDto) {
+        taskService.createTask(id,shortName ,taskCreateDto);
     }
 
 
@@ -127,7 +129,7 @@ public class TaskController {
     @PatchMapping("/take/{id}")
     public void takeTask(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long taskId,
                                    @Parameter(description = "ID исполнителя", required = true) @RequestHeader(name = "id") Long executorId){
-        taskService.takeTask(taskId, executorId);
+        taskService.takeTask(taskId, executorId,executorId);
     }
     @Operation(
             summary = "Запрос на назначение заявки исполнителю от менеджера",
@@ -138,10 +140,11 @@ public class TaskController {
             }
     )
     @PatchMapping("/set")
-    public void assignFor(@Parameter(description = "ID менеджера", required = true) @RequestHeader(name = "id") Long managerId,
+    public void assignTask(@Parameter(description = "ID менеджера", required = true) @RequestHeader(name = "id") Long managerId,
                           @Parameter(description = "ID исполнителя", required = true)@RequestParam(required = true) Long executorId,
                           @Parameter(description = "ID задачи", required = true)@RequestParam(required = true) Long taskId){
-        taskService.takeTask(taskId, executorId);
+
+        taskService.takeTask(taskId, executorId,managerId);
     }
 
 }

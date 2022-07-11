@@ -41,6 +41,11 @@ public class Process {
     private String executorShortName;
     @Column(name = "executor_long_name")
     private String executorLongName;
+
+    @Column(name = "manager_short_name")
+    private String managerShortName;
+    @Column(name = "manager_long_name")
+    private String managerLongName;
     @Column(name = "task")
     private String task;
 

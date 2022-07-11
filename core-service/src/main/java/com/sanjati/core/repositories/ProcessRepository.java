@@ -15,4 +15,8 @@ public interface ProcessRepository extends JpaRepository<Process, Long> {
 
     @Query("select p.order from Process p where p.executorId = ?1")
     Page<Order> findAllExecutorsOrdersById(Long id, Pageable pageable);
+
+    @Query("select p.order from Process p where p.managerId = ?1")
+    Page<Order> findAllManagerOrdersById(Long id, Pageable pageable);
+
 }

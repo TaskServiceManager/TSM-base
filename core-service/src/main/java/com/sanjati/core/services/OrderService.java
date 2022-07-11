@@ -8,6 +8,7 @@ import com.sanjati.core.repositories.OrdersRepository;
 import com.sanjati.core.repositories.specifications.OrderSpecifications;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.jar.asm.commons.Remapper;
 import org.apache.commons.lang3.function.Failable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -77,7 +78,8 @@ public class OrderService {
         return this.ordersRepository.findAll(spec, PageRequest.of(page - 1, 10));
     }
 
-  // ребят используем спеки findAll(spec)
+
+    // ребят используем спеки findAll(spec)
    // public List<Order> getAllUserOrders(Long id) {
    //    return  ordersRepository.findAllUserOrdersById(id);
    // }

@@ -154,4 +154,19 @@ public class OrdersController {
                                    @Parameter(description = "ID исполнителя", required = true) @RequestHeader Long id){
         orderService.takeOrder(orderId, id);
     }
+
+    @Operation(
+            summary = "Запрос на получение всех заявок менеджера",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping("/manager")
+    public Page<OrderDto> getManagerOrders (@Parameter (description = "ID менеджера", required = true) @RequestHeader Long id) {
+        return processService.getAllManagerOrders(id).map(orderConverter::entityToDto);
+    }
+
+
 }

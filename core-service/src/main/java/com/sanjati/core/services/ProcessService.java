@@ -22,6 +22,11 @@ public class ProcessService {
         return processRepository.findAllExecutorsOrdersById(id, PageRequest.of(0, 100));
     }
 
+    public Page<Order> getAllManagerOrders(Long id){
+        return processRepository.findAllManagerOrdersById(id, PageRequest.of(0,100));
+    }
+
+
 
     public void createProcess(Order order, Long id){
         Process process = new Process();
@@ -31,7 +36,9 @@ public class ProcessService {
         process.setExecutorId(id);
         //TODO добавить запрос на получение shortName и longName у auth-service
         process.setExecutorShortName("executor.getShortName()");
+        process.setManagerShortName("manager.getShortName()");
         process.setExecutorLongName("executor.getLongName()");
+        process.setManagerLongName("manager.getLongName()");
         process.setTask(order.getDescription());
         process.setStatus("take_to_work");
         processRepository.save(process);

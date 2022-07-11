@@ -12,16 +12,16 @@
 
         </tr>
         <tbody>
-        <tr ng-repeat="order in MyOrders">
-            <td>{{order.id}}</td>
-            <td>{{order.title}}</td>
-            <td width="40%" data-ng-click="open(order.id)">
-                    {{renderDescription(order.description)}}
+        <tr ng-repeat="task in MyOrders">
+            <td>{{task.id}}</td>
+            <td>{{task.title}}</td>
+            <td width="40%" data-ng-click="open(task.id)">
+                    {{renderDescription(task.description)}}
             </td>
-            <td>{{order.status}}</td>
-            <td>{{order.createdAt}}</td>
+            <td>{{task.status}}</td>
+            <td>{{task.createdAt}}</td>
             <td>-</td>
-            <td>{{order.completedAt}}</td>
+            <td>{{task.completedAt}}</td>
         </tr>
         </tbody>
     </table>

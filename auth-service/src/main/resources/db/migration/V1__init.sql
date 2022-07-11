@@ -40,6 +40,7 @@ insert into roles (name)
 values  ('ROLE_USER'),
         ('ROLE_EXECUTOR'),
         ('ROLE_MANAGER'),
+        ('ROLE_SENIOR'),
         ('ROLE_ADMIN');
 
 
@@ -49,13 +50,15 @@ insert into users (username, password,first_name, last_name,middle_name ,email,c
 values ('user', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Vasiliy','Vasiliev','Vasilievich','v@gmail.com','CTO','CTO@lalla.lu','worker','2-22-222','B','105'),
        ('executor', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Boris','Borisov','Borisovich','b@gmail.com','SUP','SUp@kuku.ku','admin','1-11-111','G','106'),
        ('manager', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Dmitriy','Dmitriev','Dmitrievich','d@gmail.com','SUP','SUp@kuku.ku','manager','3-33-333','G','105'),
+       ('senior', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Tatiana','Tatianova','Tatianovna','t@gmail.com','SUP','5-55-555','A','205'),
        ('admin', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Alexandr','Alexandrov','Alexandrovich','a@gmail.com','SUP','SUp@kuku.ku','super admin','7-77-777','G','105');
 
 insert into users_roles (user_id, role_id)
 values (1, 1),
        (2, 2),
        (3, 3),
-       (4, 4);
+       (4, 4),
+       (5, 5);
 
 
 

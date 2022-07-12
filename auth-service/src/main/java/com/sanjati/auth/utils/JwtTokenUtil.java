@@ -1,20 +1,21 @@
 package com.sanjati.auth.utils;
 
 
-import com.sanjati.api.exceptions.AuthAppError;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.entities.User;
 import com.sanjati.auth.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -33,11 +34,13 @@ public class JwtTokenUtil {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         claims.put("role", rolesList);
+
         User user =userService.findByUsername(userDetails.getUsername()).orElseThrow(()->new ResourceNotFoundException("всё плохо"));
         claims.put("id",user.getId().toString());
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(user.getLastName()).append('.').append(user.getFirstName().charAt(0)).append('.').append(user.getMiddleName().charAt(0));
         claims.put("shortName",stringBuilder.toString() );
+
 
 
         Date issuedDate = new Date();

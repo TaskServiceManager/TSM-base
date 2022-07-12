@@ -42,7 +42,7 @@ public class AuthController {
 
         return ResponseEntity.ok(new JwtResponse(token));
     }
-    @Autowired
+
     @GetMapping("/data")
     public UserDto getFullData(@RequestHeader String username){
         User user = userService.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));

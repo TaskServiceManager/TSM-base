@@ -15,4 +15,7 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
     @Query("select o from Task o where o.ownerName = ?1")
     List<Task> findAllByUsername(String username);
 
+    @Query("select  o from Task o where o.ownerId = ?1")
+    List<Task> findAllUserTaskById(Long id);
+
 }

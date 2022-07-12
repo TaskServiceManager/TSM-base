@@ -111,4 +111,7 @@ public class TaskService {
         //заглушка
         return Page.empty();
     }
+    public List<Task> findTasksByUserId(Long id){
+        return  taskRepository.findAllUserTaskById(id);
+    }
 }

@@ -18,8 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -40,7 +40,7 @@ public class TaskController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTask(@RequestHeader String username,  @RequestBody CreationTaskDto taskCreateDto) {
+    public void createTask(@RequestHeader String username, @RequestBody CreationTaskDto taskCreateDto) {
         taskService.createTask(username, taskCreateDto);
     }
 
@@ -69,17 +69,17 @@ public class TaskController {
     )
     @GetMapping
     public Page<TaskDto> getCurrentUserTasksBySpec(@Parameter(description = "ID исполнителя", required = true)
-                                                        @RequestHeader Long id,
+                                                       @RequestHeader Long id,
                                                    @Parameter(description = "номер страницы", required = true)
-                                                        @RequestParam Integer page,
+                                                       @RequestParam Integer page,
                                                    @Parameter(description = "Граница по времени ОТ", required = false)
-                                                        @RequestParam(required = false) String from,
+                                                       @RequestParam(required = false) String from,
                                                    @Parameter(description = "Граница по времени ДО", required = false)
-                                                        @RequestParam(required = false) String to) {
+                                                       @RequestParam(required = false) String to) {
         if (page < 1) {
             page = 1;
         }
-        return taskService.findTasksByUserId(id,from,to,page).map(taskConverter::entityToDto);
+        return taskService.findTasksByUserId(id, from, to, page).map(taskConverter::entityToDto);
     }
 
     @Operation(
@@ -115,30 +115,30 @@ public class TaskController {
             summary = "Запрос на получение всех заявок исполнителя",
             responses = {
                     @ApiResponse(
-                            description = "Успешный ответ",responseCode = "200",
+                            description = "Успешный ответ", responseCode = "200",
                             content = @Content(schema = @Schema(implementation = TaskDto.class))
                     )
             }
     )
     @GetMapping("/assigned")
     public Page<TaskDto> getAssignedTasks(@Parameter(description = "ID исполнителя", required = true)
-                                                @RequestHeader Long id,
+                                          @RequestHeader Long id,
                                           @Parameter(description = "номер страницы", required = true)
-                                                @RequestParam Integer page,
+                                          @RequestParam Integer page,
                                           @Parameter(description = "Граница по времени ОТ", required = false)
-                                                @RequestParam(required = false) String from,
+                                          @RequestParam(required = false) String from,
                                           @Parameter(description = "Граница по времени ДО", required = false)
-                                                @RequestParam(required = false) String to,
+                                          @RequestParam(required = false) String to,
                                           @Parameter(description = "Статус заявок", required = false)
-                                                @RequestParam(required = false) String status){
+                                          @RequestParam(required = false) String status) {
         if (page < 1) {
             page = 1;
         }
-        return taskService.getAllAssignedTasks(id,from,to,page,status).map(taskConverter::entityToDto);
+        return taskService.getAllAssignedTasks(id, from, to, page, status).map(taskConverter::entityToDto);
     }
 
     @GetMapping("/incoming")
-    public Page<TaskDto> getIncomingTasks(){
+    public Page<TaskDto> getIncomingTasks() {
         //TODO необходимо реализовать
         return Page.empty();
     }
@@ -153,7 +153,19 @@ public class TaskController {
     )
     @PatchMapping("/take/{id}")
     public void takeTask(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long orderId,
-                                   @Parameter(description = "ID исполнителя", required = true) @RequestHeader(name = "id") Long executorId){
+                         @Parameter(description = "ID исполнителя", required = true) @RequestHeader(name = "id") Long executorId) {
         taskService.takeTask(orderId, executorId);
+    }
+    @Operation(
+            summary = "Запрос на получение всех заявок пользователя",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping("/my")
+    public List<TaskDto> getAllUserTask(@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id) {
+        return taskService.findTasksByUserId(id).stream().map(taskConverter::entityToDto).collect(Collectors.toList());
     }
 }

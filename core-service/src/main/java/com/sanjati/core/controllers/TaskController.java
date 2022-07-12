@@ -87,7 +87,7 @@ public class TaskController {
 
 
     @Operation(
-            summary = "Запрос на получение всех заявок исполнителя",
+            summary = "Запрос на получение всех назначенных на исполнителя заявок по его ID",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ",responseCode = "200",
@@ -119,7 +119,7 @@ public class TaskController {
     }
 
     @Operation(
-            summary = "Запрос на взятие заявки исполнителем",
+            summary = "Запрос исполнителя на взятие заявки в работу по ее ID",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"

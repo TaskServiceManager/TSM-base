@@ -14,17 +14,21 @@
                 templateUrl: 'login/login.html',
                 controller: 'loginController'
             })
-            .when('/orders', {
-                templateUrl: 'orders/orders.html',
-                controller: 'ordersController'
+            .when('/tasks', {
+                templateUrl: 'tasks/tasks.html',
+                controller: 'tasksController'
             })
-            .when('/process', {
-                  templateUrl: 'process/process.html',
-                  controller: 'processController'
+            .when('/tasks/:id', {
+                templateUrl: 'details/details.html',
+                controller: 'detailsController'
+            })
+            .when('/assigned', {
+                  templateUrl: 'assigned/assigned.html',
+                  controller: 'assignedController'
              })
-             .when('/manage', {
-                   templateUrl: 'manage/manage.html',
-                   controller: 'manageController'
+             .when('/incoming', {
+                   templateUrl: 'incoming/incoming.html',
+                   controller: 'incomingController'
               })
 //            .when('/form', {
 //                templateUrl: 'form/form.html',
@@ -55,7 +59,7 @@
     }
 })();
 
-angular.module('ttsystem-front').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage) {
+angular.module('ttsystem-front').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage, $filter, $route) {
 
     $rootScope.isUserLoggedIn = function () {
         if ($localStorage.ttsystemUser) {
@@ -79,6 +83,8 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
         $rootScope.clearRole();
         $rootScope.user = null;
         $rootScope.allowance = null;
+        delete $localStorage.permissions;
+        delete $localStorage.detailsOpen;
         $location.path('/');
     };
 
@@ -90,9 +96,46 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
     $rootScope.clearRole = function () {
         delete $localStorage.allowance;
     };
-//
-//    $rootScope.isAllowed = function(elem){
-//        console.log(elem);
-//       return $localStorage.allowance.indexOf(elem) != -1;
-//    };
+
+    $rootScope.isAllowed = function(viewName){
+        if($rootScope.isUserLoggedIn()) {
+            const permissions = $localStorage.permissions;
+            const viewRules = $filter('filter')(permissions, {'view':viewName});
+            let isAllowed = false;
+            for (var i=0; i<viewRules[0].roles.length; i++) {
+                if($localStorage.ttsystemUser.roles.indexOf(viewRules[0].roles[i])!=-1) isAllowed = true;
+            }
+            return isAllowed;
+        }
+        return false;
+    };
+
+    $rootScope.goToDetails = function (taskId) {
+        if(!$localStorage.detailsOpen) {
+            $localStorage.detailsOpen=[];
+        }
+        if($localStorage.detailsOpen.indexOf(taskId)==-1) {
+            $localStorage.detailsOpen.push(taskId);
+        }
+        $rootScope.loadDetailsOpen();
+        $rootScope.preDetailsView = $location.url();
+        $location.path('/tasks/'+taskId);
+    };
+
+    $rootScope.loadDetailsOpen = function () {
+        $rootScope.Details = $localStorage.detailsOpen;
+    };
+
+    $rootScope.deleteFromDetailsOpen = function (taskId) {
+        const index = $localStorage.detailsOpen.indexOf(taskId);
+        if(index!=-1) {
+            $localStorage.detailsOpen.splice(index, 1);
+        }
+        $rootScope.loadDetailsOpen();
+        if($route.current.params.id==taskId) {
+            $location.path($rootScope.preDetailsView);
+        }
+    };
+
+    $rootScope.loadDetailsOpen();
 });

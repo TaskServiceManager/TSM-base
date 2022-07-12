@@ -31,8 +31,8 @@ public class Task {
 
     @ManyToMany
     @JoinTable(name = "tasks_executors",
-            joinColumns = @JoinColumn(name = "executor_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id"))
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "executor_id"))
     private Collection<Executor> executors;
 
     @Column(name = "title")

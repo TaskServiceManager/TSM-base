@@ -2,6 +2,7 @@ package com.sanjati.auth.utils;
 
 
 import com.sanjati.api.exceptions.ResourceNotFoundException;
+import com.sanjati.auth.entities.User;
 import com.sanjati.auth.services.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -33,7 +34,13 @@ public class JwtTokenUtil {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         claims.put("role", rolesList);
-        claims.put("id", userService.findByUsername(userDetails.getUsername()).orElseThrow(() -> new ResourceNotFoundException("всё плохо")).getId().toString());
+
+        User user =userService.findByUsername(userDetails.getUsername()).orElseThrow(()->new ResourceNotFoundException("всё плохо"));
+        claims.put("id",user.getId().toString());
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(user.getLastName()).append('.').append(user.getFirstName().charAt(0)).append('.').append(user.getMiddleName().charAt(0));
+        claims.put("shortName",stringBuilder.toString() );
+
 
 
         Date issuedDate = new Date();

@@ -55,16 +55,9 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @Operation(
-            summary = "Информация о пользователе",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
-    @Autowired
-    @GetMapping(DATA_PATH)
+
+    @GetMapping("/data")
+
     public UserDto getFullData(@RequestHeader String username){
         User user = userService.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
         return userConverter.modelToDto(user);

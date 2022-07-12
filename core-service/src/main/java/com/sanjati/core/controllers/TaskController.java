@@ -1,9 +1,8 @@
 package com.sanjati.core.controllers;
 
-
-
 import com.sanjati.api.core.CreationTaskDto;
 import com.sanjati.api.core.TaskDto;
+
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.converters.TaskConverter;
 import com.sanjati.core.services.TaskService;
@@ -20,8 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -33,29 +31,6 @@ public class TaskController {
     private final TaskConverter taskConverter;
 
     @Operation(
-            summary = "Список ролей",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
-    @GetMapping("/getRole")
-    public List<String> getRoles(@RequestHeader String username, @RequestHeader String role) {
-
-        ArrayList<String> roles = new ArrayList<>();
-
-        if(role.contains("ROLE_USER")) roles.add("ROLE_USER");
-        if(role.contains("ROLE_EXECUTOR")) roles.add("ROLE_EXECUTOR");
-        if(role.contains("ROLE_MANAGER")) roles.add("ROLE_MANAGER");
-        if(role.contains("ROLE_SENIOR")) roles.add("ROLE_SENIOR");
-        if(role.contains("ROLE_ADMIN")) roles.add("ROLE_ADMIN");
-
-        return roles;
-    }
-
-
-    @Operation(
             summary = "Запрос на создание новой задачи",
             responses = {
                     @ApiResponse(
@@ -65,22 +40,13 @@ public class TaskController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTask(@RequestHeader String username,  @RequestBody CreationTaskDto taskCreateDto) {
-        taskService.createTask(username, taskCreateDto);
+    public void createTask(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id ,
+                           @Parameter(description = "Фамилия и инициалы пользователя", required = true)@RequestHeader String shortName ,
+                           @RequestBody CreationTaskDto taskCreateDto) {
+        taskService.createTask(id,shortName ,taskCreateDto);
     }
-//    @Operation(
-//            summary = "Запрос на получение текущего заказа пользователя", ---> не применимо!
-//            responses = {
-//                    @ApiResponse(
-//                            description = "Успешный ответ", responseCode = "200"
-//                    )
-//            }
-//    )
-//    @GetMapping
-//    public List<TaskDto> getCurrentUserOrders(@RequestHeader String username, @RequestHeader String role) {
-//        return orderService.findOrdersByUsername(username).stream()
-//                .map(orderConverter::entityToDto).collect(Collectors.toList());
-//    }
+
+
 
     @Operation(
             summary = "Запрос на получение всех заявок пользователя",
@@ -92,14 +58,14 @@ public class TaskController {
             }
     )
     @GetMapping
-    public Page<TaskDto> getCurrentUserTasksBySpec(@Parameter(description = "ID исполнителя", required = true)
-                                                       @RequestHeader Long id,
-                                                   @Parameter(description = "номер страницы", required = true)
-                                                   @RequestParam Integer page,
-                                                   @Parameter(description = "Граница по времени ОТ", required = false)
-                                                       @RequestParam(required = false) String from,
-                                                   @Parameter(description = "Граница по времени ДО", required = false)
-                                                       @RequestParam(required = false) String to) {
+    public Page<TaskDto> getAllCurrentUserTasksBySpec(@Parameter(description = "ID исполнителя", required = true)
+                                                        @RequestHeader Long id,
+                                                      @Parameter(description = "номер страницы", required = true)
+                                                        @RequestParam Integer page,
+                                                      @Parameter(description = "Граница по времени ОТ", required = false)
+                                                        @RequestParam(required = false) String from,
+                                                      @Parameter(description = "Граница по времени ДО", required = false)
+                                                        @RequestParam(required = false) String to) {
         if (page < 1) {
             page = 1;
         }
@@ -114,31 +80,15 @@ public class TaskController {
                     )
             }
     )
-    @GetMapping("/{id}")
+    @GetMapping("/{uid}")
     public TaskDto getTaskById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader String id) {
-        return taskConverter.entityToDto(taskService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
+        return taskConverter.entityToDto(taskService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("TASK NOT FOUND")));
     }
 
 
-    @Operation(
-            summary = "Запрос на получение всех заявок пользователя, которые он оставил",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
-    @GetMapping("/my")
-    public Page<TaskDto> getMyTasks (@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id,
-                                     @Parameter(description = "Граница по времени ОТ", required = false) @RequestParam(required = false) String from,
-                                     @Parameter(description = "Граница по времени ДО", required = false) @RequestParam(required = false) String to) {
-        return taskService.findTasksByUserId(id,from,to,1).map(taskConverter::entityToDto);
-
-    }
-
 
     @Operation(
-            summary = "Запрос на получение всех заявок исполнителя",
+            summary = "Запрос на получение всех назначенных на исполнителя заявок по его ID",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ",responseCode = "200",
@@ -147,27 +97,30 @@ public class TaskController {
             }
     )
     @GetMapping("/assigned")
-    public Page<TaskDto> getAssignedTasks(@Parameter(description = "ID исполнителя", required = true)
-                                              @RequestHeader Long id,
-                                          @Parameter(description = "номер страницы", required = true)
-                                          @RequestParam Integer page,
-                                          @Parameter(description = "Граница по времени ОТ", required = false)
-                                              @RequestParam(required = false) String from,
-                                          @Parameter(description = "Граница по времени ДО", required = false)
-                                              @RequestParam(required = false) String to,
-                                          @Parameter(description = "Статус заявок", required = false)
-                                              @RequestParam(required = false) String status){
+    public Page<TaskDto> getAllAssignedTasksByExecutorId(@Parameter(description = "ID исполнителя", required = true)
+                                                @RequestHeader Long id,
+                                                         @Parameter(description = "номер страницы", required = true)
+                                                @RequestParam Integer page,
+                                                         @Parameter(description = "Граница по времени ОТ", required = false)
+                                                @RequestParam(required = false) String from,
+                                                         @Parameter(description = "Граница по времени ДО", required = false)
+                                                @RequestParam(required = false) String to,
+                                                         @Parameter(description = "Статус заявок", required = false)
+                                                @RequestParam(required = false) String status){
+        if (page < 1) {
+            page = 1;
+        }
         return taskService.getAllAssignedTasks(id,from,to,page,status).map(taskConverter::entityToDto);
     }
 
     @GetMapping("/incoming")
-    public Page<TaskDto> getIncomingTasks(){
+    public Page<TaskDto> getAllIncomingTasks(){
         //TODO необходимо реализовать
         return Page.empty();
     }
 
     @Operation(
-            summary = "Запрос на взятие заявки исполнителем",
+            summary = "Запрос исполнителя на взятие заявки в работу по ее ID",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
@@ -175,8 +128,24 @@ public class TaskController {
             }
     )
     @PatchMapping("/take/{id}")
-    public void takeTask(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long orderId,
+    public void takeTask(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long taskId,
                                    @Parameter(description = "ID исполнителя", required = true) @RequestHeader(name = "id") Long executorId){
-        taskService.takeTask(orderId, executorId);
+        taskService.takeTask(taskId, executorId,executorId);
     }
+    @Operation(
+            summary = "Запрос на назначение заявки исполнителю от менеджера",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @PatchMapping("/set")
+    public void assignTask(@Parameter(description = "ID менеджера", required = true) @RequestHeader(name = "id") Long managerId,
+                          @Parameter(description = "ID исполнителя", required = true)@RequestParam(required = true) Long executorId,
+                          @Parameter(description = "ID задачи", required = true)@RequestParam(required = true) Long taskId){
+
+        taskService.takeTask(taskId, executorId,managerId);
+    }
+
 }

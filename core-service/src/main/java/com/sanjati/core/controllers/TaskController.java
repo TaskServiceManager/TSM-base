@@ -57,13 +57,13 @@ public class TaskController {
             }
     )
     @GetMapping
-    public Page<TaskDto> getCurrentUserTasksBySpec(@Parameter(description = "ID исполнителя", required = true)
+    public Page<TaskDto> getAllCurrentUserTasksBySpec(@Parameter(description = "ID исполнителя", required = true)
                                                         @RequestHeader Long id,
-                                                   @Parameter(description = "номер страницы", required = true)
+                                                      @Parameter(description = "номер страницы", required = true)
                                                         @RequestParam Integer page,
-                                                   @Parameter(description = "Граница по времени ОТ", required = false)
+                                                      @Parameter(description = "Граница по времени ОТ", required = false)
                                                         @RequestParam(required = false) String from,
-                                                   @Parameter(description = "Граница по времени ДО", required = false)
+                                                      @Parameter(description = "Граница по времени ДО", required = false)
                                                         @RequestParam(required = false) String to) {
         if (page < 1) {
             page = 1;
@@ -96,15 +96,15 @@ public class TaskController {
             }
     )
     @GetMapping("/assigned")
-    public Page<TaskDto> getAssignedTasks(@Parameter(description = "ID исполнителя", required = true)
+    public Page<TaskDto> getAllAssignedTasksByExecutorId(@Parameter(description = "ID исполнителя", required = true)
                                                 @RequestHeader Long id,
-                                          @Parameter(description = "номер страницы", required = true)
+                                                         @Parameter(description = "номер страницы", required = true)
                                                 @RequestParam Integer page,
-                                          @Parameter(description = "Граница по времени ОТ", required = false)
+                                                         @Parameter(description = "Граница по времени ОТ", required = false)
                                                 @RequestParam(required = false) String from,
-                                          @Parameter(description = "Граница по времени ДО", required = false)
+                                                         @Parameter(description = "Граница по времени ДО", required = false)
                                                 @RequestParam(required = false) String to,
-                                          @Parameter(description = "Статус заявок", required = false)
+                                                         @Parameter(description = "Статус заявок", required = false)
                                                 @RequestParam(required = false) String status){
         if (page < 1) {
             page = 1;
@@ -113,7 +113,7 @@ public class TaskController {
     }
 
     @GetMapping("/incoming")
-    public Page<TaskDto> getIncomingTasks(){
+    public Page<TaskDto> getAllIncomingTasks(){
         //TODO необходимо реализовать
         return Page.empty();
     }

@@ -82,7 +82,7 @@ public class TaskController {
     )
     @GetMapping("/{uid}")
     public TaskDto getTaskById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader String id) {
-        return taskConverter.entityToDto(taskService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
+        return taskConverter.entityToDto(taskService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("TASK NOT FOUND")));
     }
 
 

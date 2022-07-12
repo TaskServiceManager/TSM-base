@@ -10,20 +10,22 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "commits")
+@Table(name = "comments")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Commit {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
     @ManyToOne
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
-    private Order order;
-    @Column(name = "executor_commit")
-    private String executorCommit;
+    @JoinColumn(name = "task_id", referencedColumnName = "id")
+    private Task task;
+
+    @Column(name = "description")
+    private String description;
 
     @CreationTimestamp
     @Column(name = "created_at")

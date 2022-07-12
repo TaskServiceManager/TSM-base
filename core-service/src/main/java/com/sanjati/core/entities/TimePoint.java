@@ -1,5 +1,6 @@
 package com.sanjati.core.entities;
 
+import com.sanjati.core.enums.TimePointStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,21 +21,17 @@ public class TimePoint {
     @Column(name = "id")
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "process_id", referencedColumnName = "id")
-    private Process process;
+    @JoinColumn(name = "task_id", referencedColumnName = "id")
+    private Task task;
     @Column(name = "executor_id")
     private Long executorId;
-    @Column(name = "is_at_work")
-    private Boolean isAtWork;
+    @Column(name = "status")
+    private TimePointStatus status;
 
+    @CreationTimestamp
+    @Column(name = "started_at")
+    private LocalDateTime startedAt;
     @Column(name = "finished_at")
     private LocalDateTime finishedAt;
 
-    @CreationTimestamp
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }

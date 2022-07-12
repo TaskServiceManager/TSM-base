@@ -22,21 +22,32 @@
 
 <body>
 
+<div ng-controller="indexController" style="margin-top:5%;margin-left:5%;position:fixed" ng-show="Details.length>0&&isUserLoggedIn()">
+    <nav class="nav flex-column">
+        <ul class="nav nav-tabs" ng-repeat="detailId in Details">
+            <li class="nav-item" style="display: flex; width:100%">
+                <a class="nav-link" ng-href="#!/tasks/{{detailId}}" style="width:100%">Заявка {{detailId}}</a>
+                <button type="button" data-ng-click="deleteFromDetailsOpen(detailId)" id="detailsButton"><span aria-hidden="true">x</span></button>
+            </li>
+        </ul>
+    </nav>
+</div>
+
 <div class="container" style="margin-top:2%">
-    <div ng-controller="indexController" style="margin-bottom:5%">
+    <div ng-controller="indexController" style="margin-bottom:5%; position:fixed; width:70%">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
             <div class="collapse navbar-collapse" id="navbarToggler">
                 <a class="navbar-brand" href="#">  TTSystem</a>
                 <ul class="nav nav-tabs">
-                    <li class="nav-item" ng-show="isUserLoggedIn()">
-                        <a class="nav-link" href="#!/orders">Мои заявки</a>
+                    <li class="nav-item" ng-show="isAllowed('myTasks')">
+                        <a class="nav-link" href="#!/tasks">Мои заявки</a>
                     </li>
-                    <li class="nav-item" ng-show="isUserLoggedIn()">
-                        <a class="nav-link" href="#!/process">Заявки к исполнению</a>
+                    <li class="nav-item" ng-show="isAllowed('assigned')">
+                        <a class="nav-link" href="#!/assigned">Заявки к исполнению</a>
                     </li>
-                    <li class="nav-item" ng-show="isUserLoggedIn()">
-                        <a class="nav-link" href="#!/manage">Распределение заявок</a>
+                    <li class="nav-item" ng-show="isAllowed('incoming')">
+                        <a class="nav-link" href="#!/incoming">Распределение заявок</a>
                     </li>
 <!--                    <li class="nav-item" ng-show="isUserLoggedIn()&&isAllowed('ROLE_SENIOR')">-->
 <!--                        <a class="nav-link" href="#!/personal">Статистика</a>-->
@@ -59,14 +70,15 @@
 
 
     </div>
-    <ng-view></ng-view>
+    <ng-view style="margin-top:5%; position:fixed; width:70%"></ng-view>
 
     <script src="index.js"></script>
     <script src="login/login.js"></script>
     <script src="welcome/welcome.js"></script>
-    <script src="orders/orders.js"></script>
-    <script src="process/process.js"></script>
-    <script src="manage/manage.js"></script>
+    <script src="tasks/tasks.js"></script>
+    <script src="assigned/assigned.js"></script>
+    <script src="incoming/incoming.js"></script>
+    <script src="details/details.js"></script>
     <!--    <script src="form/form.js"></script>-->
 <!--<script src="statistics/statistics.js"></script>-->
 

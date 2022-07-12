@@ -12,6 +12,7 @@ import com.sanjati.auth.services.UserService;
 import com.sanjati.auth.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
+    private final UserConverter userConverter;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
@@ -40,10 +42,11 @@ public class AuthController {
 
         return ResponseEntity.ok(new JwtResponse(token));
     }
+
     @GetMapping("/data")
     public UserDto getFullData(@RequestHeader String username){
         User user = userService.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
-        return UserConverter.modelToDto(user);
+        return userConverter.modelToDto(user);
 
     }
 

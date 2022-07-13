@@ -58,8 +58,8 @@ public class AuthController {
 
     @GetMapping("/data")
 
-    public UserDto getFullData(@RequestHeader String username){
-        User user = userService.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
+    public UserDto getFullData(@RequestHeader Long userId){
+        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToDto(user);
 
     }

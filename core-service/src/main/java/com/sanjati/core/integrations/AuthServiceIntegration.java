@@ -16,10 +16,10 @@ public class AuthServiceIntegration {
     private final WebClient cartServiceWebClient;
 
 
-    public UserDto getUser(String username) {
+    public UserDto getUser(Long userId) {
         UserDto user = cartServiceWebClient.get()
                 .uri("/api/v1/data")
-                .header("username", username)
+                .header("id", String.valueOf(userId))
                 // .bodyValue(body) // for POST
                 .retrieve()
                 .onStatus(

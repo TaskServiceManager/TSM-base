@@ -34,12 +34,10 @@ public class JwtTokenUtil {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
         claims.put("role", rolesList);
-
-        User user =userService.findByUsername(userDetails.getUsername()).orElseThrow(()->new ResourceNotFoundException("всё плохо"));
+        User user =userService.findByUsername(userDetails.getUsername()).orElseThrow(()->new ResourceNotFoundException("пользователь не найден"));
         claims.put("id",user.getId().toString());
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(user.getLastName()).append('.').append(user.getFirstName().charAt(0)).append('.').append(user.getMiddleName().charAt(0));
-        claims.put("shortName",stringBuilder.toString() );
+
+
 
 
 
@@ -47,7 +45,7 @@ public class JwtTokenUtil {
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime);
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(userDetails.getUsername())
+                //.setSubject(userDetails.getUsername())
                 .setIssuedAt(issuedDate)
                 .setExpiration(expiredDate)
                 .signWith(SignatureAlgorithm.HS256, secret)

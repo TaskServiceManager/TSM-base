@@ -30,11 +30,9 @@ public class TaskDto {
     @Schema(description = "ID создателя заявки", example = "2")
     private Long ownerId;
 
-    @Schema(description = "Краткое имя создателя заявки", example = "Иванов И.И.")
-    private String ownerName;
 
     @Schema(description = "Список назначенных исполнителей", example = "2022-07-10 16:30:19")
-    private List<String> executors;
+    private List<Long> executors;
 
     @Schema(description = "Дата создания заявки", example = "2022-07-10 16:30:19")
     private String createdAt;
@@ -71,11 +69,11 @@ public class TaskDto {
         this.updatedAt = updatedAt;
     }
 
-    public List<String> getExecutors() {
+    public List<Long> getExecutors() {
         return executors;
     }
 
-    public void setExecutors(List<String> executors) {
+    public void setExecutors(List<Long> executors) {
         this.executors = executors;
     }
 
@@ -135,24 +133,17 @@ public class TaskDto {
         this.ownerId = ownerId;
     }
 
-    public String getOwnerName() {
-        return ownerName;
-    }
 
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
 
     public TaskDto() {
     }
 
-    public TaskDto(Long id, String status, String title, String description, Long ownerId, String ownerName, List<String> executors, String createdAt, String completedAt, String updatedAt) {
+    public TaskDto(Long id, String status, String title, String description, Long ownerId,  List<Long> executors, String createdAt, String completedAt, String updatedAt) {
         this.id = id;
         this.status = status;
         this.title = title;
         this.description = description;
         this.ownerId = ownerId;
-        this.ownerName = ownerName;
         this.executors = executors;
         this.createdAt = createdAt;
         this.completedAt = completedAt;

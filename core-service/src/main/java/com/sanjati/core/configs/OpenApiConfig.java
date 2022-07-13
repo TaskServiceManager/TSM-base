@@ -12,7 +12,7 @@ public class OpenApiConfig {
         return new OpenAPI()
                 .info(
                         new Info()
-                                .title("timonin.a,koshelev.s,tananina.i,gavrilov.v,aushin.e,beliakov.s,ivan - TaskServiceManager - Сервис позволяющий распределять задачи")
+                                .title("timonin.a,koshelev.s,tananina.i,gavrilov.v,aushin.e,beliakov.s,antasuk.i - TaskServiceManager - Сервис позволяющий распределять задачи")
                                 .version("1")
                 );
     }

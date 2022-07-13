@@ -8,6 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -26,14 +27,14 @@ public class Task {
     @OneToMany(mappedBy = "task")
     private List<TimePoint> timePoints;
 
-    @OneToMany(mappedBy = "task")
+    @OneToMany(mappedBy = "taskId")
     private List<Comment> comments;
 
-    @ManyToMany
-    @JoinTable(name = "tasks_executors",
-            joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "executor_id"))
-    private Collection<Executor> executors;
+
+    @ElementCollection // 1
+    @CollectionTable(name = "tasks_executors", joinColumns = @JoinColumn(name = "task_id")) // 2
+    @Column(name = "executor_id") // 3
+    private List<Long> executors= new ArrayList<>();
 
     @Column(name = "title")
     private String title;
@@ -43,9 +44,6 @@ public class Task {
 
     @Column(name = "owner_id")
     private Long ownerId;
-
-    @Column(name = "owner_name")
-    private String ownerName;
 
     @Enumerated(value = EnumType.STRING)
     @Column(name = "status")

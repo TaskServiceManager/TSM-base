@@ -4,6 +4,8 @@ package com.sanjati.auth.services;
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
 import com.sanjati.auth.repositories.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,11 +24,25 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    public Optional<User> findByUsername(String username) {
+    @Operation(
+            summary = "Поиск имени пользователя",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    @Override
+    @Operation(
+            summary = "Загрузка пользователя по имени",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )@Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));

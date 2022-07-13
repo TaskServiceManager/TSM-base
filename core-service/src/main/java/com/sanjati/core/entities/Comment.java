@@ -20,9 +20,11 @@ public class Comment {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
     @JoinColumn(name = "task_id", referencedColumnName = "id")
-    private Task task;
+    private Long taskId;
+
+    @Column(name = "author_id")
+    private Long authorId;
 
     @Column(name = "description")
     private String description;

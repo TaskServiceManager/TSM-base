@@ -1,7 +1,7 @@
 package com.sanjati.core.repositories.specifications;
 
 
-import com.sanjati.core.entities.Executor;
+
 import com.sanjati.core.entities.Task;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -28,8 +28,8 @@ public class TaskSpecifications {
     public static Specification<Task> statusEquals(String status){
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("status"), status);
     }
-    public static Specification<Task> executorsContains(Executor executor){
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.isMember(executor,root.get("executors"));
+    public static Specification<Task> executorIdContainsIn(Long executorId){
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.isMember(executorId,root.get("executors"));
     }
 
 

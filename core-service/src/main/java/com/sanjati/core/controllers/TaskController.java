@@ -41,9 +41,9 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createTask(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id ,
-                           @Parameter(description = "Фамилия и инициалы пользователя", required = true)@RequestHeader String shortName ,
+
                            @RequestBody CreationTaskDto taskCreateDto) {
-        taskService.createTask(id,shortName ,taskCreateDto);
+        taskService.createTask(id,taskCreateDto);
     }
 
 
@@ -69,7 +69,7 @@ public class TaskController {
         if (page < 1) {
             page = 1;
         }
-        return taskService.findTasksByUserId(id,from,to,page).map(taskConverter::entityToDto);
+        return taskService.findAllTasksBySpec(id,from,to,page,null).map(taskConverter::entityToDto);
     }
 
     @Operation(
@@ -110,11 +110,28 @@ public class TaskController {
         if (page < 1) {
             page = 1;
         }
-        return taskService.getAllAssignedTasks(id,from,to,page,status).map(taskConverter::entityToDto);
+        return taskService.findAllTasksBySpec(id,from,to,page,status).map(taskConverter::entityToDto);
     }
-
+    @Operation(
+            summary = "Запрос на получение полного списка всех заявок для дальнейших операций над ними",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ",responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = TaskDto.class))
+                    )
+            }
+    )
     @GetMapping("/incoming")
-    public Page<TaskDto> getAllIncomingTasks(){
+    public Page<TaskDto> getAllIncomingTasks(@Parameter(description = "ID исполнителя", required = true)
+                                                 @RequestHeader Long id,
+                                             @Parameter(description = "номер страницы", required = true)
+                                                 @RequestParam Integer page,
+                                             @Parameter(description = "Граница по времени ОТ", required = false)
+                                                 @RequestParam(required = false) String from,
+                                             @Parameter(description = "Граница по времени ДО", required = false)
+                                                 @RequestParam(required = false) String to,
+                                             @Parameter(description = "Статус заявок", required = false)
+                                                 @RequestParam(required = false) String status){
         //TODO необходимо реализовать
         return Page.empty();
     }
@@ -130,7 +147,7 @@ public class TaskController {
     @PatchMapping("/take/{id}")
     public void takeTask(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long taskId,
                                    @Parameter(description = "ID исполнителя", required = true) @RequestHeader(name = "id") Long executorId){
-        taskService.takeTask(taskId, executorId,executorId);
+        taskService.assignTask(taskId, executorId,executorId);
     }
     @Operation(
             summary = "Запрос на назначение заявки исполнителю от менеджера",
@@ -145,7 +162,7 @@ public class TaskController {
                           @Parameter(description = "ID исполнителя", required = true)@RequestParam(required = true) Long executorId,
                           @Parameter(description = "ID задачи", required = true)@RequestParam(required = true) Long taskId){
 
-        taskService.takeTask(taskId, executorId,managerId);
+        taskService.assignTask(taskId, executorId,managerId);
     }
 
 }

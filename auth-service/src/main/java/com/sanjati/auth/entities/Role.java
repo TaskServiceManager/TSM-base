@@ -19,7 +19,6 @@ public class Role {
     private Long id;
 
     @Column(name = "name")
-    @Schema(description = "Имя роли")
     private String name;
 
     

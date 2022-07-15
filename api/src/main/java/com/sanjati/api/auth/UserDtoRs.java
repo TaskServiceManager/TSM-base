@@ -1,6 +1,6 @@
 package com.sanjati.api.auth;
 
-public class UserDto {
+public class UserDtoRs {
     private Long id;
     private String username;
 
@@ -15,10 +15,10 @@ public class UserDto {
     private String office;
     private String building;
 
-    public UserDto(Long id, String username, String firstName,
-                   String lastName, String middleName, String email,
-                   String company, String companyEmail, String workPosition,
-                   String phone, String office, String building) {
+    public UserDtoRs(Long id, String username, String firstName,
+                     String lastName, String middleName, String email,
+                     String company, String companyEmail, String workPosition,
+                     String phone, String office, String building) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -129,6 +129,6 @@ public class UserDto {
         this.building = building;
     }
 
-    public UserDto() {
+    public UserDtoRs() {
     }
 }

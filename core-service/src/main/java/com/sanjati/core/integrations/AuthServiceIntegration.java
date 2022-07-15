@@ -1,7 +1,7 @@
 package com.sanjati.core.integrations;
 
 
-import com.sanjati.api.auth.UserDto;
+import com.sanjati.api.auth.UserDtoRs;
 
 import com.sanjati.api.exceptions.AuthAppError;
 import com.sanjati.core.exceptions.AuthServiceIntegrationException;
@@ -16,8 +16,8 @@ public class AuthServiceIntegration {
     private final WebClient cartServiceWebClient;
 
 
-    public UserDto getUser(Long userId) {
-        UserDto user = cartServiceWebClient.get()
+    public UserDtoRs getUser(Long userId) {
+        UserDtoRs user = cartServiceWebClient.get()
                 .uri("/api/v1/data")
                 .header("id", String.valueOf(userId))
                 // .bodyValue(body) // for POST
@@ -36,7 +36,7 @@ public class AuthServiceIntegration {
                 )
 //                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new CartServiceIntegrationException("Выполнен некорректный запрос к сервису ")))
 //                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new CartServiceIntegrationException("Сервис сломался")))
-                .bodyToMono(UserDto.class)
+                .bodyToMono(UserDtoRs.class)
                 .block();
         return user;
     }

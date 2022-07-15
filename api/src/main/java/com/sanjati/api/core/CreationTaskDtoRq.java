@@ -1,6 +1,6 @@
 package com.sanjati.api.core;
 
-public class CreationTaskDto {
+public class CreationTaskDtoRq {
     private String title;
     private String description;
 
@@ -20,11 +20,11 @@ public class CreationTaskDto {
         this.description = description;
     }
 
-    public CreationTaskDto(String title, String description) {
+    public CreationTaskDtoRq(String title, String description) {
         this.title = title;
         this.description = description;
     }
 
-    public CreationTaskDto() {
+    public CreationTaskDtoRq() {
     }
 }

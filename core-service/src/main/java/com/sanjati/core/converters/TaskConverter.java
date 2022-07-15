@@ -1,6 +1,6 @@
 package com.sanjati.core.converters;
 
-import com.sanjati.api.core.TaskDto;
+import com.sanjati.api.core.TaskDtoRs;
 
 import com.sanjati.core.entities.Task;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class TaskConverter {
 
     private final CommentConverter commitsConverter;
 
-    public TaskDto entityToDto(Task entity) {
+    public TaskDtoRs entityToDto(Task entity) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -29,7 +29,7 @@ public class TaskConverter {
             executorsList = entity.getExecutors();
         }
 
-        return TaskDto.builder()
+        return TaskDtoRs.builder()
                 .id(entity.getId())
                 .status(entity.getStatus().getRus())
                 .title(entity.getTitle())

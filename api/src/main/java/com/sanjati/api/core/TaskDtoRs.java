@@ -6,7 +6,7 @@ import java.util.List;
 
 @Builder
 @Schema(description = "Основная модель задачи")
-public class TaskDto {
+public class TaskDtoRs {
 
     @Schema(description = "ID задачи", example = "3")
     private Long id;
@@ -135,10 +135,10 @@ public class TaskDto {
 
 
 
-    public TaskDto() {
+    public TaskDtoRs() {
     }
 
-    public TaskDto(Long id, String status, String title, String description, Long ownerId,  List<Long> executors, String createdAt, String completedAt, String updatedAt) {
+    public TaskDtoRs(Long id, String status, String title, String description, Long ownerId, List<Long> executors, String createdAt, String completedAt, String updatedAt) {
         this.id = id;
         this.status = status;
         this.title = title;

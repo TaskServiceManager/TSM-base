@@ -2,7 +2,7 @@ package com.sanjati.api.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class UserDto {
+public class UserDtoRs {
     @Schema(description = "ID пользователя", example = "3")
     private Long id;
     @Schema(description = "Короткое имя пользователя", example = "userHi")
@@ -29,10 +29,10 @@ public class UserDto {
     @Schema(description = "Номер помещения на работе у пользователя", example = "3")
     private String building;
 
-    public UserDto(Long id, String username, String firstName,
-                   String lastName, String middleName, String email,
-                   String company, String companyEmail, String workPosition,
-                   String phone, String office, String building) {
+    public UserDtoRs(Long id, String username, String firstName,
+                     String lastName, String middleName, String email,
+                     String company, String companyEmail, String workPosition,
+                     String phone, String office, String building) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -143,6 +143,6 @@ public class UserDto {
         this.building = building;
     }
 
-    public UserDto() {
+    public UserDtoRs() {
     }
 }

@@ -1,7 +1,7 @@
 package com.sanjati.auth.controllers;
 
 
-import com.sanjati.api.auth.UserDto;
+import com.sanjati.api.auth.UserDtoRs;
 
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -65,7 +64,7 @@ public class AuthController {
     )
     @GetMapping(PATH_DATA)
 
-    public UserDto getFullData(@RequestHeader Long userId){
+    public UserDtoRs getFullData(@RequestHeader Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToDto(user);
 

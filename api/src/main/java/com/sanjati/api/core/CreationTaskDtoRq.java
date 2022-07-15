@@ -2,7 +2,7 @@ package com.sanjati.api.core;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class CreationTaskDto {
+public class CreationTaskDtoRq {
     @Schema(description = "Имя задачи")
     private String title;
     @Schema(description = "Описание задачи")
@@ -24,11 +24,11 @@ public class CreationTaskDto {
         this.description = description;
     }
 
-    public CreationTaskDto(String title, String description) {
+    public CreationTaskDtoRq(String title, String description) {
         this.title = title;
         this.description = description;
     }
 
-    public CreationTaskDto() {
+    public CreationTaskDtoRq() {
     }
 }

@@ -1,7 +1,7 @@
 package com.sanjati.core.controllers;
 
-import com.sanjati.api.core.CreationTaskDto;
-import com.sanjati.api.core.TaskDto;
+import com.sanjati.api.core.CreationTaskDtoRq;
+import com.sanjati.api.core.TaskDtoRs;
 
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.converters.TaskConverter;
@@ -16,9 +16,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 
 
 @Slf4j
@@ -42,7 +44,7 @@ public class TaskController {
     @ResponseStatus(HttpStatus.CREATED)
     public void createTask(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id ,
 
-                           @RequestBody CreationTaskDto taskCreateDto) {
+                           @RequestBody CreationTaskDtoRq taskCreateDto) {
         taskService.createTask(id,taskCreateDto);
     }
 
@@ -58,14 +60,16 @@ public class TaskController {
             }
     )
     @GetMapping
-    public Page<TaskDto> getAllCurrentUserTasksBySpec(@Parameter(description = "ID исполнителя", required = true)
-                                                        @RequestHeader Long id,
-                                                      @Parameter(description = "номер страницы", required = true)
-                                                        @RequestParam Integer page,
-                                                      @Parameter(description = "Граница по времени ОТ", required = false)
-                                                        @RequestParam(required = false) String from,
-                                                      @Parameter(description = "Граница по времени ДО", required = false)
-                                                        @RequestParam(required = false) String to) {
+    public Page<TaskDtoRs> getAllCurrentUserTasksBySpec(@Parameter(description = "ID исполнителя", required = true)
+                                                            @RequestHeader Long id,
+                                                        @Parameter(description = "номер страницы", required = true)
+                                                            @RequestParam Integer page,
+                                                        @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
+                                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                            @RequestParam(required = false) LocalDateTime from,
+                                                        @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'." , required = false)
+                                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                            @RequestParam(required = false) LocalDateTime to) {
         if (page < 1) {
             page = 1;
         }
@@ -81,8 +85,8 @@ public class TaskController {
             }
     )
     @GetMapping("/{uid}")
-    public TaskDto getTaskById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader String id) {
-        return taskConverter.entityToDto(taskService.findById(uid).orElseThrow(() -> new ResourceNotFoundException("TASK NOT FOUND")));
+    public TaskDtoRs getTaskById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader Long id) {
+        return taskConverter.entityToDto(taskService.findById(uid, role, id));
     }
 
 
@@ -92,21 +96,23 @@ public class TaskController {
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ",responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = TaskDto.class))
+                            content = @Content(schema = @Schema(implementation = TaskDtoRs.class))
                     )
             }
     )
     @GetMapping("/assigned")
-    public Page<TaskDto> getAllAssignedTasksByExecutorId(@Parameter(description = "ID исполнителя", required = true)
-                                                @RequestHeader Long id,
-                                                         @Parameter(description = "номер страницы", required = true)
-                                                @RequestParam Integer page,
-                                                         @Parameter(description = "Граница по времени ОТ", required = false)
-                                                @RequestParam(required = false) String from,
-                                                         @Parameter(description = "Граница по времени ДО", required = false)
-                                                @RequestParam(required = false) String to,
-                                                         @Parameter(description = "Статус заявок", required = false)
-                                                @RequestParam(required = false) String status){
+    public Page<TaskDtoRs> getAllAssignedTasksByExecutorId(@Parameter(description = "ID исполнителя", required = true)
+                                                               @RequestHeader Long id,
+                                                           @Parameter(description = "номер страницы", required = true)
+                                                               @RequestParam Integer page,
+                                                           @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
+                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                               @RequestParam(required = false) LocalDateTime from,
+                                                           @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'.", required = false)
+                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                               @RequestParam(required = false) LocalDateTime to,
+                                                           @Parameter(description = "Статус заявок", required = false)
+                                                               @RequestParam(required = false) String status){
         if (page < 1) {
             page = 1;
         }
@@ -117,21 +123,23 @@ public class TaskController {
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ",responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = TaskDto.class))
+                            content = @Content(schema = @Schema(implementation = TaskDtoRs.class))
                     )
             }
     )
     @GetMapping("/incoming")
-    public Page<TaskDto> getAllIncomingTasks(@Parameter(description = "ID исполнителя", required = true)
-                                                 @RequestHeader Long id,
-                                             @Parameter(description = "номер страницы", required = true)
-                                                 @RequestParam Integer page,
-                                             @Parameter(description = "Граница по времени ОТ", required = false)
-                                                 @RequestParam(required = false) String from,
-                                             @Parameter(description = "Граница по времени ДО", required = false)
-                                                 @RequestParam(required = false) String to,
-                                             @Parameter(description = "Статус заявок", required = false)
-                                                 @RequestParam(required = false) String status){
+    public Page<TaskDtoRs> getAllIncomingTasks(@Parameter(description = "ID исполнителя", required = true)
+                                                   @RequestHeader Long id,
+                                               @Parameter(description = "номер страницы", required = true)
+                                                   @RequestParam Integer page,
+                                               @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
+                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                   @RequestParam(required = false) LocalDateTime from,
+                                               @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'.", required = false)
+                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                   @RequestParam(required = false) LocalDateTime to,
+                                               @Parameter(description = "Статус заявок", required = false)
+                                                   @RequestParam(required = false) String status){
         //TODO необходимо реализовать
         return Page.empty();
     }

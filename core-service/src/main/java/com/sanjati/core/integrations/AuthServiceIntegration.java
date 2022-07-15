@@ -14,11 +14,12 @@ import org.springframework.web.reactive.function.client.WebClient;
 @RequiredArgsConstructor
 public class AuthServiceIntegration {
     private final WebClient cartServiceWebClient;
-
+    private final String PATH_MODULE = "/api";
+    private final String PATH_VERSION = "/v1";
 
     public UserDtoRs getUser(Long userId) {
         UserDtoRs user = cartServiceWebClient.get()
-                .uri("/api/v1/data")
+                .uri(PATH_MODULE+PATH_VERSION+"/data")
                 .header("id", String.valueOf(userId))
                 // .bodyValue(body) // for POST
                 .retrieve()

@@ -28,8 +28,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
-    private static final String AUTH_PATH = "/auth";
-    private static final String DATA_PATH = "/data";
+    private final String AUTH_PATH = "/auth";
+    private final String DATA_PATH = "/data";
     private final UserConverter userConverter;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
@@ -55,8 +55,15 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-
-    @GetMapping("/data")
+    @Operation(
+            summary = "Чтение данных пользователя",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping(DATA_PATH)
 
     public UserDto getFullData(@RequestHeader Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));

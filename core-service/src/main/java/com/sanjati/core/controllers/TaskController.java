@@ -2,8 +2,6 @@ package com.sanjati.core.controllers;
 
 import com.sanjati.api.core.CreationTaskDtoRq;
 import com.sanjati.api.core.TaskDtoRs;
-
-import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.converters.TaskConverter;
 import com.sanjati.core.services.TaskService;
 
@@ -28,13 +26,13 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
-@Tag(name = "Задачи", description = " Методы работы с заявками")
+@Tag(name = "Заявки", description = "Методы работы с заявками")
 public class TaskController {
     private final TaskService taskService;
     private final TaskConverter taskConverter;
 
     @Operation(
-            summary = "Запрос на создание новой задачи",
+            summary = "Запрос на создание новой заявки",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
@@ -49,10 +47,8 @@ public class TaskController {
         taskService.createTask(id,taskCreateDto);
     }
 
-
-
     @Operation(
-            summary = "Запрос на получение всех заявок пользователя",
+            summary = "Запрос на получение всех заявок удовлетворяющих условиям",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200",
@@ -61,24 +57,28 @@ public class TaskController {
             }
     )
     @GetMapping
-    public Page<TaskDtoRs> getAllCurrentUserTasksBySpec(@Parameter(description = "ID автора заявки", required = true)
-                                                            @RequestHeader Long id,
-                                                        @Parameter(description = "номер страницы", required = true)
-                                                            @RequestParam Integer page,
-                                                        @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
-                                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                            @RequestParam(required = false) LocalDateTime from,
-                                                        @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'." , required = false)
-                                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                            @RequestParam(required = false) LocalDateTime to) {
+    public Page<TaskDtoRs> getAllTasksBySpec(@Parameter(description = "ID автора", required = false)
+                                                @RequestParam(required = false) Long ownerId,
+                                            @Parameter(description = "номер страницы", required = true)
+                                                @RequestParam Integer page,
+                                            @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
+                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                @RequestParam(required = false) LocalDateTime from,
+                                            @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'." , required = false)
+                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                @RequestParam(required = false) LocalDateTime to,
+                                            @Parameter(description = "Статус заявок", required = false, example = "Создана")
+                                                @RequestParam(required = false) String status,
+                                            @Parameter(description = "ID исполнителя", required = false)
+                                                @RequestParam(required = false) Long executorId) {
         if (page < 1) {
             page = 1;
         }
-        return taskService.findAllTasksBySpec(id,from,to,page).map(taskConverter::entityToDto);
+        return taskService.findAllTasksBySpec(ownerId,from,to,page,status,executorId).map(taskConverter::entityToDto);
     }
 
     @Operation(
-            summary = "Запрос на получение задач по идентификатору (id)",
+            summary = "Запрос на получение заявки по идентификатору (id)",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
@@ -91,61 +91,6 @@ public class TaskController {
             if(!taskService.checkTaskOwnerId(userId,taskId)) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к чужим заявкам");
         }
         return taskConverter.entityToDto(taskService.findById(taskId));
-    }
-
-
-
-    @Operation(
-            summary = "Запрос на получение всех назначенных на исполнителя заявок по его ID",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ",responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = TaskDtoRs.class))
-                    )
-            }
-    )
-    @GetMapping("/assigned")
-    public Page<TaskDtoRs> getAllAssignedTasksByExecutorId(@Parameter(description = "ID исполнителя", required = true)
-                                                               @RequestHeader Long id,
-                                                           @Parameter(description = "номер страницы", required = true)
-                                                               @RequestParam Integer page,
-                                                           @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
-                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                               @RequestParam(required = false) LocalDateTime from,
-                                                           @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'.", required = false)
-                                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                               @RequestParam(required = false) LocalDateTime to,
-                                                           @Parameter(description = "Статус заявок", required = false)
-                                                               @RequestParam(required = false) String status){
-        if (page < 1) {
-            page = 1;
-        }
-        return taskService.findAllTasksBySpec(from,to,page,status, id).map(taskConverter::entityToDto);
-    }
-    @Operation(
-            summary = "Запрос на получение полного списка всех заявок для дальнейших операций над ними",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ",responseCode = "200",
-                            content = @Content(schema = @Schema(implementation = TaskDtoRs.class))
-                    )
-            }
-    )
-    @GetMapping("/incoming")
-    public Page<TaskDtoRs> getAllIncomingTasks(@Parameter(description = "ID исполнителя", required = true)
-                                                   @RequestHeader Long id,
-                                               @Parameter(description = "номер страницы", required = true)
-                                                   @RequestParam Integer page,
-                                               @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
-                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                   @RequestParam(required = false) LocalDateTime from,
-                                               @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'.", required = false)
-                                                   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                   @RequestParam(required = false) LocalDateTime to,
-                                               @Parameter(description = "Статус заявок", required = false)
-                                                   @RequestParam(required = false) String status){
-        //TODO необходимо реализовать
-        return Page.empty();
     }
 
     @Operation(

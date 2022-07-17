@@ -6,6 +6,7 @@ angular.module('ttsystem-front').controller('tasksController', function ($scope,
                 url: contextPath + 'api/v1/tasks',
                 method: 'GET',
                 params: {
+                    ownerId: $localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null,
                     page: pageIndex ? pageIndex : 1,
 //                    from: $scope.newFilter ? $scope.newFilter.from : null,
 //                    to: $scope.newFilter ? $scope.newFilter.to : null,

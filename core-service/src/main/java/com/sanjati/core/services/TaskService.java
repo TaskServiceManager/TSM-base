@@ -123,7 +123,7 @@ public class TaskService {
 
     public boolean checkTaskOwnerId(Long userId,Long taskId){
         Task task = taskRepository.findById(taskId).orElseThrow(()-> new ResourceNotFoundException("Задача не найдена"));
-        if(task.getOwnerId()==userId) return true;
+        if(task.getOwnerId().equals(userId)) return true;
         return false;
     }
 

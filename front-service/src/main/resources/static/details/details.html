@@ -70,7 +70,7 @@
                     <td>
                         <div class="form-group row">
                             <label>Исполнители</label>
-                            <div class="form-group col-md-6">{{Task.executors[0]!=null ? Task.executors.join(', ') : 'Не назначены'}}</div>
+                            <div class="form-group col-md-6">{{renderExecutors(Task.executors)}}</div>
                         </div>
                     </td>
                 </tr>

@@ -19,7 +19,7 @@ public class TaskSpecifications {
             return criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), time);
         };
     }
-    public static Specification<Task> idEquals(Long id){
+    public static Specification<Task> ownerIdEquals(Long id){
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.equal(root.get("ownerId"), id);
     }
     public static Specification<Task> usernameEquals(String username){

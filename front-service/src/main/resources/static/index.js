@@ -137,5 +137,21 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
         }
     };
 
+    $rootScope.renderExecutors = function (executors) {
+       if(executors[0]) {
+            executorsShort=[];
+            for (var i=0; i<executors.length; i++) {
+                current = executors[i];
+                if(current.lastName) {
+                    executorsShort.push(current.lastName + (current.firstName ? ' ' + current.firstName.slice(0,1) : '') + (current.middleName ? '. ' + current.middleName.slice(0,1) : ''));
+                }
+            }
+            if(executorsShort[0]) {
+                return executorsShort.join(', ');
+            }
+       }
+       return 'Не назначены';
+    }
+
     $rootScope.loadDetailsOpen();
 });

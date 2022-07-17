@@ -3,6 +3,7 @@ package com.sanjati.auth.controllers;
 
 import com.sanjati.api.auth.UserDtoRs;
 
+import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.dto.JwtRequest;
@@ -29,6 +30,8 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     private final String PATH_AUTH = "/auth";
     private final String PATH_DATA = "/data";
+    private final String PATH_USER = "/user";
+
     private final UserConverter userConverter;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
@@ -63,11 +66,15 @@ public class AuthController {
             }
     )
     @GetMapping(PATH_DATA)
-
-    public UserDtoRs getFullData(@RequestHeader Long userId){
+    public UserDtoRs getFullUserDataById(@RequestParam Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToDto(user);
+    }
 
+    @GetMapping(PATH_USER)
+    public UserLightDto getUserLightByUserId(@RequestParam Long userId){
+        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+        return userConverter.modelToLightDto(user);
     }
 
 }

@@ -54,21 +54,37 @@ public class TaskService {
         if (task.getStatus().equals(TaskStatus.CANCELLED) || task.getStatus().equals(TaskStatus.COMPLETED)){
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Заявка отклонена или уже была выполнена.");
         }
-        authServiceIntegration.getUser(executorId);//проверяет есть ли исполнитель с указанным executorId
+        authServiceIntegration.getUserById(executorId);//проверяет есть ли исполнитель с указанным executorId
         if (task.getStatus().equals(TaskStatus.CREATED)) task.setStatus(TaskStatus.ASSIGNED);
         task.getExecutors().add(executorId);
         commentService.leaveComment(taskId,appointedId,">> назначил исполнителя >> ");
+    }
+
+    public Page<Task> findAllTasksBySpec(LocalDateTime from,
+                                         LocalDateTime to,
+                                         Integer page,
+                                         String status,
+                                         Long executorId) {
+        return findAllTasksBySpec(null, from,to,page,status, executorId);
+    }
+
+    public Page<Task> findAllTasksBySpec(Long id,
+                                         LocalDateTime from,
+                                         LocalDateTime to,
+                                         Integer page) {
+        return findAllTasksBySpec(id, from,to,page,null, null);
     }
 
     public Page<Task> findAllTasksBySpec(Long id,
                                          LocalDateTime from,
                                          LocalDateTime to,
                                          Integer page,
-                                         String status) {
+                                         String status,
+                                         Long executorId) {
         Specification<Task> spec = Specification.where(null);
 
         if(id != null) {
-            spec = spec.and(TaskSpecifications.idEquals(id));
+            spec = spec.and(TaskSpecifications.ownerIdEquals(id));
         }
 
         if (status != null) {
@@ -83,6 +99,11 @@ public class TaskService {
         if (to != null) {
             log.warn(to.toString());
             spec = spec.and(TaskSpecifications.timeLessThanOrEqualsThan(to));
+        }
+
+        if (executorId != null) {
+            log.info("reached");
+            spec = spec.and(TaskSpecifications.executorIdContainsIn(executorId));
         }
 
         return this.taskRepository.findAll(spec, PageRequest.of(page - 1, 10));

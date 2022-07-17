@@ -25,7 +25,6 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
 
     $scope.sendComment = function() {
         $scope.newComment.taskId = $route.current.params.id;
-        console.log($scope.newComment);
         $http({
             url: contextPath + 'api/v1/comments',
             method: 'POST',

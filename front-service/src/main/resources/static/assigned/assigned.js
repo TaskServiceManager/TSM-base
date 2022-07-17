@@ -3,10 +3,11 @@ angular.module('ttsystem-front').controller('assignedController', function ($sco
 
     $scope.loadTasks = function (pageIndex) {
         $http({
-                url: contextPath + 'api/v1/tasks/assigned',
+                url: contextPath + 'api/v1/tasks',
                 method: 'GET',
                 params: {
                     page: pageIndex ? pageIndex : 1,
+                    executorId: $localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null,
 //                    from: $scope.newFilter ? $scope.newFilter.from : null,
 //                    to: $scope.newFilter ? $scope.newFilter.to : null,
                 }

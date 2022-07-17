@@ -138,7 +138,7 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
     };
 
     $rootScope.renderExecutors = function (executors) {
-       if(executors[0]) {
+       if(executors && executors[0]) {
             executorsShort=[];
             for (var i=0; i<executors.length; i++) {
                 current = executors[i];

@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.Arrays;
 
 @Service
 @Slf4j
@@ -66,21 +66,6 @@ public class TaskService {
         commentService.leaveComment(taskId,appointedId,">> назначил исполнителя >> ");
     }
 
-    public Page<Task> findAllTasksBySpec(LocalDateTime from,
-                                         LocalDateTime to,
-                                         Integer page,
-                                         String status,
-                                         Long executorId) {
-        return findAllTasksBySpec(null, from,to,page,status, executorId);
-    }
-
-    public Page<Task> findAllTasksBySpec(Long id,
-                                         LocalDateTime from,
-                                         LocalDateTime to,
-                                         Integer page) {
-        return findAllTasksBySpec(id, from,to,page,null, null);
-    }
-
     public Page<Task> findAllTasksBySpec(Long id,
                                          LocalDateTime from,
                                          LocalDateTime to,
@@ -94,21 +79,18 @@ public class TaskService {
         }
 
         if (status != null) {
-            spec = spec.and(TaskSpecifications.statusEquals(status));
+            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el-> status.equals(el.getRus())).findFirst().orElse(null)));
         }
 
         if (from != null) {
             spec = spec.and(TaskSpecifications.timeGreaterOrEqualsThan(from));
-            log.warn(from.toString());
         }
 
         if (to != null) {
-            log.warn(to.toString());
             spec = spec.and(TaskSpecifications.timeLessThanOrEqualsThan(to));
         }
 
         if (executorId != null) {
-            log.info("reached");
             spec = spec.and(TaskSpecifications.executorIdContainsIn(executorId));
         }
 

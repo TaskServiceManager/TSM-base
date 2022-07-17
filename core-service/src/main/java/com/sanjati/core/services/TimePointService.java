@@ -1,5 +1,7 @@
 package com.sanjati.core.services;
 
+import com.sanjati.api.exceptions.AppError;
+import com.sanjati.api.exceptions.OperationError;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.entities.TimePoint;
@@ -27,9 +29,11 @@ public class TimePointService {
         TimePoint tp;
         if (timePontId != null) {
             tp = timePointRepository.findById(timePontId).orElseThrow(()->new ResourceNotFoundException("Отметка не существует"));
+            if (tp.getStatus().equals(TimePointStatus.FINISHED)) throw new OperationError("Временная отметка уже закрыта");
             tp.setStatus(TimePointStatus.FINISHED);
         }else {
             tp = new TimePoint();
+
             tp.setStatus(TimePointStatus.IN_PROCESS);
             tp.setExecutorId(userId);
             Task task = taskService.findById(taskId);

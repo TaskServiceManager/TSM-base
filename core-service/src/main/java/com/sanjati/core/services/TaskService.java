@@ -35,15 +35,9 @@ public class TaskService {
     private final AuthServiceIntegration authServiceIntegration;
 
 
-    public Task findById(Long id, String role, Long userId) {
+    public Task findById(Long id) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-        if (role.contains("ROLE_EXECUTOR") || role.contains("ROLE_SENIOR")){
-            return task;
-        }
-        if (!userId.equals(task.getOwnerId())){
-            //TODO добавить кастомные исключения
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к чужим заявкам");
-        }
+
         return task;
     }
 
@@ -106,7 +100,11 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-
+    public boolean checkTaskOwnerId(Long userId,Long taskId){
+        Task task = taskRepository.findById(taskId).orElseThrow(()-> new ResourceNotFoundException("Задача не найдена"));
+        if(task.getOwnerId()==userId) return true;
+        return false;
+    }
 
 
 

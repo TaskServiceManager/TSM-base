@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 
@@ -84,9 +85,12 @@ public class TaskController {
                     )
             }
     )
-    @GetMapping("/{uid}")
-    public TaskDtoRs getTaskById(@PathVariable Long uid, @RequestHeader String role, @RequestHeader Long id) {
-        return taskConverter.entityToDto(taskService.findById(uid, role, id));
+    @GetMapping("/{taskId}")
+    public TaskDtoRs getTaskById(@PathVariable Long taskId, @RequestHeader String role, @RequestHeader Long userId) {
+        if(!role.contains("EXECUTOR")){
+            if(!taskService.checkTaskOwnerId(userId,taskId)) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к чужим заявкам");
+        }
+        return taskConverter.entityToDto(taskService.findById(taskId));
     }
 
 
@@ -152,7 +156,7 @@ public class TaskController {
                     )
             }
     )
-    @PatchMapping("/take/{id}")
+    @PatchMapping("/take/{id}")// patch
     public void takeTask(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long taskId,
                                    @Parameter(description = "ID исполнителя", required = true) @RequestHeader(name = "id") Long executorId){
         taskService.assignTask(taskId, executorId,executorId);

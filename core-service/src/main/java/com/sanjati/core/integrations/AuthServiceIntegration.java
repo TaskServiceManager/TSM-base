@@ -24,7 +24,8 @@ public class AuthServiceIntegration {
                         .path(DATA_PATH)
                         .queryParam("userId", userId)
                         .build())
-                .bodyToMono(UserDto.class)
+                .retrieve()
+                .bodyToMono(UserDtoRs.class)
                 .doOnError(e -> log.info("Ошибка при получении полной информации о пользователе ", e))
                 .block();
     }

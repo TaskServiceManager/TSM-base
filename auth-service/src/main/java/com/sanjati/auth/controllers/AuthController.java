@@ -71,7 +71,7 @@ public class AuthController {
         return userConverter.modelToDto(user);
     }
 
-    @GetMapping(USER_PATH)
+    @GetMapping(PATH_USER)
     public UserLightDto getUserLightByUserId(@RequestParam Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToLightDto(user);

@@ -19,7 +19,6 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class TaskConverter {
 
-    private final CommentConverter commitsConverter;
     private final AuthServiceIntegration authServiceIntegration;
 
     public TaskDtoRs entityToDto(Task entity) {

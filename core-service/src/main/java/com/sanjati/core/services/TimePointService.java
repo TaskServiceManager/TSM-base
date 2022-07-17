@@ -25,10 +25,10 @@ public class TimePointService {
     private final TimePointRepository timePointRepository;
     private final TaskService taskService;
     @Transactional
-    public void changeStatusOrCreateTimePoint(Long taskId, Long userId, Long timePontId) {
+    public void changeStatusOrCreateTimePoint(Long taskId, Long userId, Long timePointId) {
         TimePoint tp;
-        if (timePontId != null) {
-            tp = timePointRepository.findById(timePontId).orElseThrow(()->new ResourceNotFoundException("Отметка не существует"));
+        if (timePointId != null) {
+            tp = timePointRepository.findById(timePointId).orElseThrow(()->new ResourceNotFoundException("Отметка не существует"));
             if (tp.getStatus().equals(TimePointStatus.FINISHED)){
                 throw new OperationError("Временная отметка уже закрыта");
             }

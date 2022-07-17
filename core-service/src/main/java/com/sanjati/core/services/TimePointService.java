@@ -1,5 +1,7 @@
 package com.sanjati.core.services;
 
+
+import com.sanjati.api.exceptions.OperationError;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.entities.TimePoint;
@@ -23,17 +25,31 @@ public class TimePointService {
     private final TimePointRepository timePointRepository;
     private final TaskService taskService;
     @Transactional
-    public void changeStatusOrCreateTimePoint(Long taskId, Long userId, Long timePontId) {
+    public void changeStatusOrCreateTimePoint(Long taskId, Long userId, Long timePointId) {
         TimePoint tp;
-        if (timePontId != null) {
-            tp = timePointRepository.findById(timePontId).orElseThrow(()->new ResourceNotFoundException("Отметка не существует"));
+        if (timePointId != null) {
+            tp = timePointRepository.findById(timePointId).orElseThrow(()->new ResourceNotFoundException("Отметка не существует"));
+            if (tp.getStatus().equals(TimePointStatus.FINISHED)){
+                throw new OperationError("Временная отметка уже закрыта");
+            }
             tp.setStatus(TimePointStatus.FINISHED);
         }else {
+            Specification<TimePoint> spec = Specification.where(null);
+            spec = spec.and(TimePointsSpecifications.executorIdEquals(userId));
+            spec = spec.and(TimePointsSpecifications.statusEquals(TimePointStatus.IN_PROCESS));
+
+            if(!timePointRepository.findAll(spec).isEmpty()) {
+                throw new OperationError("Нельзя открыть новую отметку пока есть незавешённые");
+            }
+
             tp = new TimePoint();
+
+
             tp.setStatus(TimePointStatus.IN_PROCESS);
             tp.setExecutorId(userId);
             Task task = taskService.findById(taskId);
             tp.setTask(task);
+            timePointRepository.save(tp);
         }
 
 

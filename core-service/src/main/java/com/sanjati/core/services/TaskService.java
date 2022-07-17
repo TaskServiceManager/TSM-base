@@ -60,7 +60,7 @@ public class TaskService {
         if (task.getStatus().equals(TaskStatus.CANCELLED) || task.getStatus().equals(TaskStatus.COMPLETED)){
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Заявка отклонена или уже была выполнена.");
         }
-        authServiceIntegration.getUser(executorId);//проверяет есть ли исполнитель с указанным executorId
+        authServiceIntegration.getUserById(executorId);//проверяет есть ли исполнитель с указанным executorId
         if (task.getStatus().equals(TaskStatus.CREATED)) task.setStatus(TaskStatus.ASSIGNED);
         task.getExecutors().add(executorId);
         commentService.leaveComment(taskId,appointedId,">> назначил исполнителя >> ");

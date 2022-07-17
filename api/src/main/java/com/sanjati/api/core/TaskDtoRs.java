@@ -1,4 +1,5 @@
 package com.sanjati.api.core;
+import com.sanjati.api.auth.UserLightDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -30,9 +31,8 @@ public class TaskDtoRs {
     @Schema(description = "ID создателя заявки", example = "2")
     private Long ownerId;
 
-
     @Schema(description = "Список назначенных исполнителей", example = "2022-07-10 16:30:19")
-    private List<Long> executors;
+    private List<UserLightDto> executors;
 
     @Schema(description = "Дата создания заявки", example = "2022-07-10 16:30:19")
     private String createdAt;
@@ -69,11 +69,11 @@ public class TaskDtoRs {
         this.updatedAt = updatedAt;
     }
 
-    public List<Long> getExecutors() {
+    public List<UserLightDto> getExecutors() {
         return executors;
     }
 
-    public void setExecutors(List<Long> executors) {
+    public void setExecutors(List<UserLightDto> executors) {
         this.executors = executors;
     }
 
@@ -138,7 +138,7 @@ public class TaskDtoRs {
     public TaskDtoRs() {
     }
 
-    public TaskDtoRs(Long id, String status, String title, String description, Long ownerId, List<Long> executors, String createdAt, String completedAt, String updatedAt) {
+    public TaskDtoRs(Long id, String status, String title, String description, Long ownerId,  List<UserLightDto> executors, String createdAt, String completedAt, String updatedAt) {
         this.id = id;
         this.status = status;
         this.title = title;

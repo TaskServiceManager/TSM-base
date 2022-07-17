@@ -1,8 +1,10 @@
 package com.sanjati.core.converters;
 
 import com.sanjati.api.core.TaskDtoRs;
+import com.sanjati.api.auth.UserLightDto;
 
 import com.sanjati.core.entities.Task;
+import com.sanjati.core.integrations.AuthServiceIntegration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,16 +19,21 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class TaskConverter {
 
-
     private final CommentConverter commitsConverter;
+    private final AuthServiceIntegration authServiceIntegration;
 
     public TaskDtoRs entityToDto(Task entity) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        List<Long> executorsList = new ArrayList<>();
+        List<UserLightDto> executorsList = new ArrayList<>();
         if(!isNull(entity.getExecutors())) {
-            executorsList = entity.getExecutors();
+            entity.getExecutors().forEach(ex -> {
+                UserLightDto userLightDto = authServiceIntegration.getUserLightById(ex);
+                if(userLightDto!=null) {
+                    executorsList.add(userLightDto);
+                }
+            });
         }
 
         return TaskDtoRs.builder()

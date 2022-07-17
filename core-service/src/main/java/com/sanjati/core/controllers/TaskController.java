@@ -60,7 +60,7 @@ public class TaskController {
             }
     )
     @GetMapping
-    public Page<TaskDtoRs> getAllCurrentUserTasksBySpec(@Parameter(description = "ID исполнителя", required = true)
+    public Page<TaskDtoRs> getAllCurrentUserTasksBySpec(@Parameter(description = "ID автора заявки", required = true)
                                                             @RequestHeader Long id,
                                                         @Parameter(description = "номер страницы", required = true)
                                                             @RequestParam Integer page,
@@ -73,7 +73,7 @@ public class TaskController {
         if (page < 1) {
             page = 1;
         }
-        return taskService.findAllTasksBySpec(id,from,to,page,null).map(taskConverter::entityToDto);
+        return taskService.findAllTasksBySpec(id,from,to,page).map(taskConverter::entityToDto);
     }
 
     @Operation(
@@ -116,7 +116,7 @@ public class TaskController {
         if (page < 1) {
             page = 1;
         }
-        return taskService.findAllTasksBySpec(id,from,to,page,status).map(taskConverter::entityToDto);
+        return taskService.findAllTasksBySpec(from,to,page,status, id).map(taskConverter::entityToDto);
     }
     @Operation(
             summary = "Запрос на получение полного списка всех заявок для дальнейших операций над ними",

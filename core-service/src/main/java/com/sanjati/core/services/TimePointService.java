@@ -1,6 +1,6 @@
 package com.sanjati.core.services;
 
-import com.sanjati.api.exceptions.AppError;
+
 import com.sanjati.api.exceptions.OperationError;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Task;
@@ -38,6 +38,7 @@ public class TimePointService {
             tp.setExecutorId(userId);
             Task task = taskService.findById(taskId);
             tp.setTask(task);
+            timePointRepository.save(tp);
         }
 
 

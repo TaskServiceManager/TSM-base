@@ -87,13 +87,19 @@
                 <table style="width:100%; border-color:white;">
                     <tr ng-repeat="comment in Comments">
                         <td style="width:15%; text-align:right; padding-right:5px">
-                            <span ng-show="!isAuthorTaskOwner(comment.author.id)">{{renderExecutors([comment.author])}}</span>
+                            <div ng-show="!isAuthorTaskOwner(comment.author.id)">
+                                <span style="font-size: x-small">{{'[' + comment.createdAt + ']'}}</span>
+                                <span>{{renderExecutors([comment.author])}}</span>
+                            </div>
                         </td>
                         <td style="width:70%">
                             <div class="form-group col-md-6 comment">{{comment.description}}</div>
                         </td>
                         <td style="width:15%; padding-left:5px">
-                            <span ng-show="isAuthorTaskOwner(comment.author.id)">{{renderExecutors([comment.author])}}</span>
+                            <div ng-show="isAuthorTaskOwner(comment.author.id)">
+                                <span style="font-size: x-small">{{'[' + comment.createdAt + ']'}}</span>
+                                <span>{{renderExecutors([comment.author])}}</span>
+                            </div>
                         </td>
                     </tr>
                 </table>

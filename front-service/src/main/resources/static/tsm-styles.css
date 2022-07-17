@@ -2,6 +2,18 @@ h4, hr {
   color: #198754;
 }
 
+ng-view {
+  margin-top:5%;
+  position:fixed;
+  width:70%;
+  overflow: scroll;
+  height: 90%;
+}
+
+ng-view::-webkit-scrollbar {
+  display: none;
+}
+
 .login-form {
   border-radius: 25px;
   border-color: #198754;

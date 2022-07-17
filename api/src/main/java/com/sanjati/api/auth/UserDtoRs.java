@@ -2,6 +2,7 @@ package com.sanjati.api.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Полная информация о пользователе")
 public class UserDtoRs {
     @Schema(description = "ID пользователя", example = "3")
     private Long id;
@@ -12,7 +13,7 @@ public class UserDtoRs {
     private String firstName;
     @Schema(description = "Фамилия пользователя", example = "Дмитриев")
     private String lastName;
-    @Schema(description = "Отчяечство пользователя", example = "Дмитриевич")
+    @Schema(description = "Отчество пользователя", example = "Дмитриевич")
     private String middleName;
     @Schema(description = "E-mail пользователя", example = "ddd@mail.ru")
     private String email;

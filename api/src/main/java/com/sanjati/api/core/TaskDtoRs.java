@@ -15,10 +15,6 @@ public class TaskDtoRs {
     @Schema(description = "Показывает в каком состоянии находится заявка", example = "CANCELLED")
     private String status;
 
-   // удалил процессы выполнения
-
-//    @Schema(description = "Комментарии сотрудников по выполнению")
-//    private List<CommentDto> comments;// тут насколько я знаю если поместить в лист что-то кроме стринга могут быть проблемы с мапингом объекта
 //    @Schema(description = "Временные отметки сотрудников")
 //    private List<TimePointDto> timePoints;// тут насколько я знаю если поместить в лист что-то кроме стринга могут быть проблемы с мапингом объекта
 
@@ -43,14 +39,6 @@ public class TaskDtoRs {
     @Schema(description = "Дата последнего обновления", example = "2022-07-10 16:30:19")
     private String updatedAt;
 
-//    public List<CommentDto> getComments() {
-//        return comments;
-//    }
-//
-//    public void setComments(List<CommentDto> comments) {
-//        this.comments = comments;
-//    }
-//
 //    public List<TimePointDto> getTimePoints() {
 //        return timePoints;
 //    }

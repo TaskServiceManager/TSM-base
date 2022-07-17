@@ -27,10 +27,6 @@ public class Task {
     @OneToMany(mappedBy = "task")
     private List<TimePoint> timePoints;
 
-    @OneToMany(mappedBy = "taskId")
-    private List<Comment> comments;
-
-
     @ElementCollection // 1
     @CollectionTable(name = "tasks_executors", joinColumns = @JoinColumn(name = "task_id")) // 2
     @Column(name = "executor_id") // 3

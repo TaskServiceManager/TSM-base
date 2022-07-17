@@ -20,7 +20,7 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
     }
 
     $scope.isAuthorTaskOwner = function (authorId) {
-        return authorId === $scope.Task.ownerId;
+        return authorId === $scope.Task.owner.id;
     }
 
     $scope.sendComment = function() {

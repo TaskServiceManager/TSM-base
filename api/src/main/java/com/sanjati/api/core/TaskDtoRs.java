@@ -24,8 +24,8 @@ public class TaskDtoRs {
     @Schema(description = "Описание заявки", example = "Необходимо то-то и то-то...")
     private String description;
 
-    @Schema(description = "ID создателя заявки", example = "2")
-    private Long ownerId;
+    @Schema(description = "Создатель заявки")
+    private UserLightDto owner;
 
     @Schema(description = "Список назначенных исполнителей", example = "2022-07-10 16:30:19")
     private List<UserLightDto> executors;
@@ -113,28 +113,26 @@ public class TaskDtoRs {
         this.description = description;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public UserLightDto getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(UserLightDto owner) {
+        this.owner = owner;
     }
 
-
-
-    public TaskDtoRs() {
-    }
-
-    public TaskDtoRs(Long id, String status, String title, String description, Long ownerId,  List<UserLightDto> executors, String createdAt, String completedAt, String updatedAt) {
+    public TaskDtoRs(Long id, String status, String title, String description, UserLightDto owner, List<UserLightDto> executors, String createdAt, String completedAt, String updatedAt) {
         this.id = id;
         this.status = status;
         this.title = title;
         this.description = description;
-        this.ownerId = ownerId;
+        this.owner = owner;
         this.executors = executors;
         this.createdAt = createdAt;
         this.completedAt = completedAt;
         this.updatedAt = updatedAt;
+    }
+
+    public TaskDtoRs() {
     }
 }

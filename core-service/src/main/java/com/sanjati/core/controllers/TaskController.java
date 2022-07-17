@@ -86,7 +86,7 @@ public class TaskController {
             }
     )
     @GetMapping("/{taskId}")
-    public TaskDtoRs getTaskById(@PathVariable Long taskId, @RequestHeader String role, @RequestHeader Long userId) {
+    public TaskDtoRs getTaskById(@PathVariable Long taskId, @RequestHeader String role, @RequestHeader(name = "id") Long userId) {
         if(!role.contains("EXECUTOR")){
             if(!taskService.checkTaskOwnerId(userId,taskId)) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к чужим заявкам");
         }

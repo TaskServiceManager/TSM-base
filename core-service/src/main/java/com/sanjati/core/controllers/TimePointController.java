@@ -32,12 +32,20 @@ public class TimePointController {
                     )
             }
     )
-    @GetMapping
+    @PostMapping
     public void createTimePointOrChangeStatus(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id,
                            @Parameter(description = "ID задачи", required = true)@RequestParam Long taskId,
                            @Parameter(description = "ID временной отметки если надо её закрыть", required = false)@RequestParam Long timePontId) {
         timePointService.changeStatusOrCreateTimePoint(taskId,id,timePontId);
     }
+    @Operation(
+            summary = "Запрос на получение страницы с временными отметками",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
     @GetMapping("/report")
     public Page<TimePointDtoRs> getAllTimePoints(@Parameter(description = "ID исполнителя", required = true)
                                                      @RequestHeader Long id,

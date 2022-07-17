@@ -1,7 +1,7 @@
 package com.sanjati.auth.controllers;
 
 
-import com.sanjati.api.auth.UserDto;
+import com.sanjati.api.auth.UserDtoRs;
 
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
@@ -15,7 +15,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 
@@ -29,9 +28,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
-    private static final String AUTH_PATH = "/auth";
-    private static final String DATA_PATH = "/data";
-    private static final String USER_PATH = "/user";
+    private final String PATH_AUTH = "/auth";
+    private final String PATH_DATA = "/data";
+    private final String PATH_USER = "/user";
 
     private final UserConverter userConverter;
     private final UserService userService;
@@ -46,7 +45,7 @@ public class AuthController {
                     )
             }
     )
-    @PostMapping(AUTH_PATH)
+    @PostMapping(PATH_AUTH)
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
@@ -58,8 +57,16 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-    @GetMapping(DATA_PATH)
-    public UserDto getFullUserDataById(@RequestParam Long userId){
+    @Operation(
+            summary = "Чтение данных пользователя",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping(PATH_DATA)
+    public UserDtoRs getFullUserDataById(@RequestParam Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToDto(user);
     }

@@ -1,7 +1,7 @@
 package com.sanjati.core.converters;
 
+import com.sanjati.api.core.TaskDtoRs;
 import com.sanjati.api.auth.UserLightDto;
-import com.sanjati.api.core.TaskDto;
 
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.integrations.AuthServiceIntegration;
@@ -22,7 +22,7 @@ public class TaskConverter {
     private final CommentConverter commitsConverter;
     private final AuthServiceIntegration authServiceIntegration;
 
-    public TaskDto entityToDto(Task entity) {
+    public TaskDtoRs entityToDto(Task entity) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -36,7 +36,7 @@ public class TaskConverter {
             });
         }
 
-        return TaskDto.builder()
+        return TaskDtoRs.builder()
                 .id(entity.getId())
                 .status(entity.getStatus().getRus())
                 .title(entity.getTitle())

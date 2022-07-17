@@ -1,24 +1,38 @@
 package com.sanjati.api.auth;
 
-public class UserDto {
+import io.swagger.v3.oas.annotations.media.Schema;
+
+public class UserDtoRs {
+    @Schema(description = "ID пользователя", example = "3")
     private Long id;
+    @Schema(description = "Короткое имя пользователя", example = "userHi")
     private String username;
 
+    @Schema(description = "Имя пользователя", example = "Дмитрий")
     private String firstName;
+    @Schema(description = "Фамилия пользователя", example = "Дмитриев")
     private String lastName;
+    @Schema(description = "Отчяечство пользователя", example = "Дмитриевич")
     private String middleName;
+    @Schema(description = "E-mail пользователя", example = "ddd@mail.ru")
     private String email;
+    @Schema(description = "Место работы пользователя", example = "фирма 'Работяги'")
     private String company;
+    @Schema(description = "Рабочая e-mail пользователя", example = "ddd@worlWorrers.ru")
     private String companyEmail;
+    @Schema(description = "Должность пользователя на работе", example = "главный инженер")
     private String workPosition;
+    @Schema(description = "Телефон пользователя", example = "+7(978) 123-45-67")
     private String phone;
+    @Schema(description = "Номер офиса на работе у пользователя", example = "33")
     private String office;
+    @Schema(description = "Номер помещения на работе у пользователя", example = "3")
     private String building;
 
-    public UserDto(Long id, String username, String firstName,
-                   String lastName, String middleName, String email,
-                   String company, String companyEmail, String workPosition,
-                   String phone, String office, String building) {
+    public UserDtoRs(Long id, String username, String firstName,
+                     String lastName, String middleName, String email,
+                     String company, String companyEmail, String workPosition,
+                     String phone, String office, String building) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -129,6 +143,6 @@ public class UserDto {
         this.building = building;
     }
 
-    public UserDto() {
+    public UserDtoRs() {
     }
 }

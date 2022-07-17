@@ -5,6 +5,7 @@ public enum TaskStatus {
     CANCELLED("Отменена"),
     ASSIGNED("Назначена"),
     ACCEPTED("В работе"),
+    APPROVED("Утверждается"),
     DELAYED("Отложена"),
     COMPLETED("Выполнена");
 

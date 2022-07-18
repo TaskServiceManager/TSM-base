@@ -1,6 +1,6 @@
 package com.sanjati.core.controllers;
 
-import com.sanjati.api.core.TimePointDtoRs;
+import com.sanjati.api.core.TimePointDto;
 import com.sanjati.core.converters.TimePointConverter;
 import com.sanjati.core.services.TimePointService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,16 +47,16 @@ public class TimePointController {
             }
     )
     @GetMapping("/report")
-    public Page<TimePointDtoRs> getAllTimePoints(@Parameter(description = "ID исполнителя", required = true)
+    public Page<TimePointDto> getAllTimePoints(@Parameter(description = "ID исполнителя", required = true)
                                                      @RequestHeader Long id,
-                                                 @Parameter(description = "ID задачи", required = false)
+                                               @Parameter(description = "ID задачи", required = false)
                                                  @RequestParam(required = false) Long taskId,
-                                                 @Parameter(description = "номер страницы", required = true)
+                                               @Parameter(description = "номер страницы", required = true)
                                                      @RequestParam Integer page,
-                                                 @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
+                                               @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                      @RequestParam(required = false) LocalDateTime from,
-                                                 @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'.", required = false)
+                                               @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'.", required = false)
                                                      @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                      @RequestParam(required = false) LocalDateTime to){
         return timePointService.getAllTimePointsBySpec(id,taskId,page,from,to).map(timePointConverter::entityToDto);

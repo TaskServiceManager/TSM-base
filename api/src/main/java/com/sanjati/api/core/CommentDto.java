@@ -3,7 +3,7 @@ package com.sanjati.api.core;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Модель комментария")
-public class CommentDtoRs {
+public class CommentDto {
     @Schema(description = "ID комментария", example = "3")
     private Long id;
     @Schema(description = "ID задачи", example = "3")
@@ -35,12 +35,12 @@ public class CommentDtoRs {
         this.description = description;
     }
 
-    public CommentDtoRs(Long id, Long taskId, String description) {
+    public CommentDto(Long id, Long taskId, String description) {
         this.id = id;
         this.taskId = taskId;
         this.description = description;
     }
 
-    public CommentDtoRs() {
+    public CommentDto() {
     }
 }

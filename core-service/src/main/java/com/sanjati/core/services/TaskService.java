@@ -1,7 +1,6 @@
 package com.sanjati.core.services;
 
 
-
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 
@@ -43,59 +42,63 @@ public class TaskService {
     }
 
     @Transactional
-    public void changeStatus(Long id, String status){
-        Task task = taskRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
+    public void changeStatus(Long id, String status) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         TaskStatus newStatus = TaskStatus.fromRusValue(status);
-        switch (newStatus){
-            case CREATED:{
-                if (task.getStatus().equals(TaskStatus.CANCELLED)){
+        switch (newStatus) {
+            case CREATED: {
+                if (task.getStatus().equals(TaskStatus.CANCELLED)) {
                     task.setStatus(newStatus);
                     break;
-                   }
+                }
                 throw new ChangeTaskStatusException("Изменить статус на 'Создана' можно только из статуса 'Отменена'");
             }
-            case CANCELLED:{
-                if (task.getStatus().equals(TaskStatus.COMPLETED)) throw new ChangeTaskStatusException("Нельзя отменить выполненную заявку");
-                task.setStatus(newStatus);
-                break;
+            case CANCELLED: {
+                if (task.getStatus().equals(TaskStatus.CREATED)) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Отменить заявку можно только со статусом 'Создана'");
+
             }
-            case ASSIGNED:{
-                if (task.getStatus().equals(TaskStatus.CREATED)){
+            case ASSIGNED: {
+                if (task.getStatus().equals(TaskStatus.CREATED)) {
                     task.setStatus(newStatus);
                     break;
                 }
                 throw new ChangeTaskStatusException("Назначить заявку можно только из статуса 'Создана'");
             }
-            case ACCEPTED:{
+            case ACCEPTED: {
                 if (task.getStatus().equals(TaskStatus.ASSIGNED) ||
-                        task.getStatus().equals(TaskStatus.DELAYED)){
+                        task.getStatus().equals(TaskStatus.DELAYED) ||
+                        task.getStatus().equals(TaskStatus.APPROVED)) {
                     task.setStatus(newStatus);
                     break;
                 }
-                throw new ChangeTaskStatusException("Изменить статус на 'В работе' можно только при статусе 'Назначена' или 'Отложена'");
+                throw new ChangeTaskStatusException("Изменить статус на 'В работе' можно только при статусе 'Назначена', 'Отложена' или 'Утверждается'");
             }
-            case APPROVED:{
-                if (task.getStatus().equals(TaskStatus.ACCEPTED)){
+            case APPROVED: {
+                if (task.getStatus().equals(TaskStatus.ACCEPTED)) {
                     task.setStatus(newStatus);
                     break;
                 }
                 throw new ChangeTaskStatusException("Утвердить заявку можно только из статуса 'В работе'");
             }
-            case DELAYED:{
-                if (task.getStatus().equals(TaskStatus.ACCEPTED)){
+            case DELAYED: {
+                if (task.getStatus().equals(TaskStatus.ACCEPTED)) {
                     task.setStatus(newStatus);
                     break;
                 }
                 throw new ChangeTaskStatusException("Отложить заявку можно только из статуса 'В работе'");
             }
-            case COMPLETED:{
-                if (task.getStatus().equals(TaskStatus.APPROVED)){
+            case COMPLETED: {
+                if (task.getStatus().equals(TaskStatus.APPROVED)) {
                     task.setStatus(newStatus);
                     break;
                 }
                 throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");
             }
-            default:{
+            default: {
                 throw new ChangeTaskStatusException("Некорректный статус заявки");
             }
         }
@@ -104,8 +107,8 @@ public class TaskService {
 
     @Transactional
     public void assignTask(Long taskId, Long assignerId, Long executorId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
-        if (task.getStatus().equals(TaskStatus.CANCELLED) || task.getStatus().equals(TaskStatus.COMPLETED)){
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        if (task.getStatus().equals(TaskStatus.CANCELLED) || task.getStatus().equals(TaskStatus.COMPLETED)) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Заявка отклонена или уже была выполнена.");
         }
         //id того, на кого будет назначаться заявка
@@ -113,7 +116,7 @@ public class TaskService {
         authServiceIntegration.getUserById(actualId);//проверяет есть ли исполнитель с указанным id
         if (task.getStatus().equals(TaskStatus.CREATED)) task.setStatus(TaskStatus.ASSIGNED);
         task.getExecutors().add(actualId);
-        commentService.leaveComment(taskId,actualId,">> назначил исполнителя >> ");
+        commentService.leaveComment(taskId, actualId, ">> назначил исполнителя >> ");
     }
 
     public Page<Task> findAllTasksBySpec(Long id,
@@ -124,12 +127,12 @@ public class TaskService {
                                          Long executorId) {
         Specification<Task> spec = Specification.where(null);
 
-        if(id != null) {
+        if (id != null) {
             spec = spec.and(TaskSpecifications.ownerIdEquals(id));
         }
 
         if (status != null) {
-            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el-> status.equals(el.getRus())).findFirst().orElse(null)));
+            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el -> status.equals(el.getRus())).findFirst().orElse(null)));
         }
 
         if (from != null) {
@@ -159,12 +162,11 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-    public boolean checkTaskOwnerId(Long userId,Long taskId){
-        Task task = taskRepository.findById(taskId).orElseThrow(()-> new ResourceNotFoundException("Задача не найдена"));
-        if(task.getOwnerId().equals(userId)) return true;
+    public boolean checkTaskOwnerId(Long userId, Long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Задача не найдена"));
+        if (task.getOwnerId().equals(userId)) return true;
         return false;
     }
-
 
 
 }

@@ -57,9 +57,10 @@ public class TimePointService {
     public Page<TimePoint> getAllTimePointsBySpec(Long userId,Long taskId, Integer page, LocalDateTime from, LocalDateTime to){
         Specification<TimePoint> spec = Specification.where(null);
 
-        if(taskId !=null){// ищем либо всё по исполнителю, либо всё по таске
+        if(taskId !=null){
             spec = spec.and(TimePointsSpecifications.taskIdEquals(taskId));
-        }else {
+        }
+        if(userId !=null){
             spec = spec.and(TimePointsSpecifications.executorIdEquals(userId));
         }
 
@@ -67,6 +68,7 @@ public class TimePointService {
             spec = spec.and(TimePointsSpecifications.timeGreaterOrEqualsThan(from));
 
         }
+
         if(to != null) {
             spec = spec.and(TimePointsSpecifications.timeLessOrEqualsThan(to));
 

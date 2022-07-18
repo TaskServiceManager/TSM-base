@@ -24,6 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -44,17 +45,18 @@ public class TaskService {
     @Transactional
     public void changeStatus(Long id, String status) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-        TaskStatus newStatus = TaskStatus.fromRusValue(status);
+        TaskStatus newStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(status)).findFirst().
+                orElseThrow(()-> new ChangeTaskStatusException("Указанный статус заявки не найден"));
         switch (newStatus) {
             case CREATED: {
-                if (task.getStatus().equals(TaskStatus.CANCELLED)) {
+                if (TaskStatus.CANCELLED.equals(task.getStatus())) {
                     task.setStatus(newStatus);
                     break;
                 }
                 throw new ChangeTaskStatusException("Изменить статус на 'Создана' можно только из статуса 'Отменена'");
             }
             case CANCELLED: {
-                if (task.getStatus().equals(TaskStatus.CREATED)) {
+                if (TaskStatus.CREATED.equals(task.getStatus())) {
                     task.setStatus(newStatus);
                     break;
                 }
@@ -62,44 +64,41 @@ public class TaskService {
 
             }
             case ASSIGNED: {
-                if (task.getStatus().equals(TaskStatus.CREATED)) {
+                if (TaskStatus.CREATED.equals(task.getStatus())) {
                     task.setStatus(newStatus);
                     break;
                 }
                 throw new ChangeTaskStatusException("Назначить заявку можно только из статуса 'Создана'");
             }
             case ACCEPTED: {
-                if (task.getStatus().equals(TaskStatus.ASSIGNED) ||
-                        task.getStatus().equals(TaskStatus.DELAYED) ||
-                        task.getStatus().equals(TaskStatus.APPROVED)) {
+                if (TaskStatus.ASSIGNED.equals(task.getStatus()) ||
+                        TaskStatus.DELAYED.equals(task.getStatus()) ||
+                        TaskStatus.APPROVED.equals(task.getStatus())) {
                     task.setStatus(newStatus);
                     break;
                 }
                 throw new ChangeTaskStatusException("Изменить статус на 'В работе' можно только при статусе 'Назначена', 'Отложена' или 'Утверждается'");
             }
             case APPROVED: {
-                if (task.getStatus().equals(TaskStatus.ACCEPTED)) {
+                if (TaskStatus.ACCEPTED.equals(task.getStatus())) {
                     task.setStatus(newStatus);
                     break;
                 }
                 throw new ChangeTaskStatusException("Утвердить заявку можно только из статуса 'В работе'");
             }
             case DELAYED: {
-                if (task.getStatus().equals(TaskStatus.ACCEPTED)) {
+                if (TaskStatus.ACCEPTED.equals(task.getStatus())) {
                     task.setStatus(newStatus);
                     break;
                 }
                 throw new ChangeTaskStatusException("Отложить заявку можно только из статуса 'В работе'");
             }
             case COMPLETED: {
-                if (task.getStatus().equals(TaskStatus.APPROVED)) {
+                if (TaskStatus.APPROVED.equals(task.getStatus())) {
                     task.setStatus(newStatus);
                     break;
                 }
                 throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");
-            }
-            default: {
-                throw new ChangeTaskStatusException("Некорректный статус заявки");
             }
         }
 
@@ -113,7 +112,7 @@ public class TaskService {
         }
         //id того, на кого будет назначаться заявка
         Long actualId = (executorId == null) ? assignerId : executorId;
-        authServiceIntegration.getUserById(actualId);//проверяет есть ли исполнитель с указанным id
+        authServiceIntegration.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
         if (task.getStatus().equals(TaskStatus.CREATED)) task.setStatus(TaskStatus.ASSIGNED);
         task.getExecutors().add(actualId);
         commentService.leaveComment(taskId, actualId, ">> назначил исполнителя >> ");

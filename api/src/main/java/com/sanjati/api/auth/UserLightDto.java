@@ -1,13 +1,20 @@
 package com.sanjati.api.auth;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
 @Builder
+@Schema(description = "Короткая информация о пользователе")
 public class UserLightDto {
+    @Schema(description = "ID пользователя", example = "3")
     private Long id;
+    @Schema(description = "Имя пользователя", example = "Дмитрий")
     private String firstName;
+    @Schema(description = "Фамилия пользователя", example = "Дмитриев")
     private String lastName;
+    @Schema(description = "Отчество пользователя", example = "Дмитриевич")
     private String middleName;
+    @Schema(description = "E-mail пользователя", example = "ddd@mail.ru")
     private String email;
 
     public UserLightDto() {

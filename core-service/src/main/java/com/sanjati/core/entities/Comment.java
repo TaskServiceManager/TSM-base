@@ -20,7 +20,7 @@ public class Comment {
     @Column(name = "id")
     private Long id;
 
-    @JoinColumn(name = "task_id", referencedColumnName = "id")
+    @Column(name = "task_id")
     private Long taskId;
 
     @Column(name = "author_id")

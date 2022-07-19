@@ -41,9 +41,8 @@ public class TaskController {
     )
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createTask(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id ,
-
-                           @RequestBody TaskDtoRq taskCreateDto) {
+    public void createTask(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id,
+                           @Parameter(description = "Тело запроса", required = true)@RequestBody TaskDtoRq taskCreateDto) {
         taskService.createTask(id,taskCreateDto);
     }
 

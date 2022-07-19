@@ -24,7 +24,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Objects;
 
 @Service
 @Slf4j
@@ -126,12 +125,12 @@ public class TaskService {
                                          Long executorId) {
         Specification<Task> spec = Specification.where(null);
 
-        if (id != null) {
+        if(id != null) {
             spec = spec.and(TaskSpecifications.ownerIdEquals(id));
         }
 
         if (status != null) {
-            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el -> status.equals(el.getRus())).findFirst().orElse(null)));
+            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el-> status.equals(el.getRus())).findFirst().orElse(null)));
         }
 
         if (from != null) {

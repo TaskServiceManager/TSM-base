@@ -13,7 +13,6 @@ public enum TaskStatus {
     TaskStatus(String rus) {
         this.rus = rus;
     }
-
     public String getRus() {
         return rus;
     }

@@ -1,7 +1,7 @@
 package com.sanjati.core.integrations;
 
 
-import com.sanjati.api.auth.UserDtoRs;
+import com.sanjati.api.auth.UserDto;
 
 
 
@@ -21,14 +21,14 @@ public class AuthServiceIntegration {
     private final String DATA_PATH = "api/v1/data";
     private final String USER_PATH = "api/v1/user";
 
-    public UserDtoRs getUserById(Long userId) {
+    public UserDto getUserById(Long userId) {
         return authWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path(DATA_PATH)
                         .queryParam("userId", userId)
                         .build())
                 .retrieve()
-                .bodyToMono(UserDtoRs.class)
+                .bodyToMono(UserDto.class)
                 .doOnError(e -> log.info("Ошибка при получении полной информации о пользователе ", e))
                 .block();
     }

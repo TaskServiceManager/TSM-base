@@ -1,13 +1,13 @@
 package com.sanjati.core.services;
 
 
-
-import com.sanjati.api.core.CreationTaskDtoRq;
+import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.enums.TaskStatus;
 
+import com.sanjati.core.exceptions.ChangeTaskStatusException;
 import com.sanjati.core.integrations.AuthServiceIntegration;
 import com.sanjati.core.repositories.TaskRepository;
 import com.sanjati.core.repositories.specifications.TaskSpecifications;
@@ -42,22 +42,79 @@ public class TaskService {
     }
 
     @Transactional
-    public void changeStatus(Long id, String status){
-        Task task = taskRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
-        task.setStatus(TaskStatus.valueOf(status));
+    public void changeStatus(Long id, String status) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        TaskStatus newStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(status)).findFirst().
+                orElseThrow(()-> new ChangeTaskStatusException("Указанный статус заявки не найден"));
+        switch (newStatus) {
+            case CREATED: {
+                if (TaskStatus.CANCELLED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Изменить статус на 'Создана' можно только из статуса 'Отменена'");
+            }
+            case CANCELLED: {
+                if (TaskStatus.CREATED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Отменить заявку можно только со статусом 'Создана'");
+
+            }
+            case ASSIGNED: {
+                if (TaskStatus.CREATED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Назначить заявку можно только из статуса 'Создана'");
+            }
+            case ACCEPTED: {
+                if (TaskStatus.ASSIGNED.equals(task.getStatus()) ||
+                        TaskStatus.DELAYED.equals(task.getStatus()) ||
+                        TaskStatus.APPROVED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Изменить статус на 'В работе' можно только при статусе 'Назначена', 'Отложена' или 'Утверждается'");
+            }
+            case APPROVED: {
+                if (TaskStatus.ACCEPTED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Утвердить заявку можно только из статуса 'В работе'");
+            }
+            case DELAYED: {
+                if (TaskStatus.ACCEPTED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Отложить заявку можно только из статуса 'В работе'");
+            }
+            case COMPLETED: {
+                if (TaskStatus.APPROVED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");
+            }
+        }
 
     }
 
     @Transactional
-    public void assignTask(Long taskId, Long executorId, Long appointedId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
-        if (task.getStatus().equals(TaskStatus.CANCELLED) || task.getStatus().equals(TaskStatus.COMPLETED)){
+    public void assignTask(Long taskId, Long assignerId, Long executorId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        if (task.getStatus().equals(TaskStatus.CANCELLED) || task.getStatus().equals(TaskStatus.COMPLETED)) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Заявка отклонена или уже была выполнена.");
         }
-        authServiceIntegration.getUserById(executorId);//проверяет есть ли исполнитель с указанным executorId
+        //id того, на кого будет назначаться заявка
+        Long actualId = (executorId == null) ? assignerId : executorId;
+        authServiceIntegration.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
         if (task.getStatus().equals(TaskStatus.CREATED)) task.setStatus(TaskStatus.ASSIGNED);
-        task.getExecutors().add(executorId);
-        commentService.leaveComment(taskId,appointedId,">> назначил исполнителя >> ");
+        task.getExecutors().add(actualId);
+        commentService.leaveComment(taskId, actualId, ">> назначил исполнителя >> ");
     }
 
     public Page<Task> findAllTasksBySpec(Long id,
@@ -92,7 +149,8 @@ public class TaskService {
     }
 
 
-    public void createTask(Long ownerId, CreationTaskDtoRq taskCreateDto) {
+    public void createTask(Long ownerId, TaskDtoRq taskCreateDto) {
+        //TODO написать создание заявки
         Task task = new Task();
         task.setOwnerId(ownerId);
 
@@ -102,12 +160,11 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-    public boolean checkTaskOwnerId(Long userId,Long taskId){
-        Task task = taskRepository.findById(taskId).orElseThrow(()-> new ResourceNotFoundException("Задача не найдена"));
-        if(task.getOwnerId().equals(userId)) return true;
+    public boolean checkTaskOwnerId(Long userId, Long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Задача не найдена"));
+        if (task.getOwnerId().equals(userId)) return true;
         return false;
     }
-
 
 
 }

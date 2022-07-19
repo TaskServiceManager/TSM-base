@@ -2,7 +2,7 @@ package com.sanjati.api.core;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-public class TimePointDtoRs {
+public class TimePointDto {
     @Schema(description = "ID временной отметки", example = "3")
     private Long id;
     @Schema(description = "ID задачи", example = "3")
@@ -44,13 +44,13 @@ public class TimePointDtoRs {
         this.status = status;
     }
 
-    public TimePointDtoRs(Long id, Long taskId, Long executorId, String status) {
+    public TimePointDto(Long id, Long taskId, Long executorId, String status) {
         this.id = id;
         this.taskId = taskId;
         this.executorId = executorId;
         this.status = status;
     }
 
-    public TimePointDtoRs() {
+    public TimePointDto() {
     }
 }

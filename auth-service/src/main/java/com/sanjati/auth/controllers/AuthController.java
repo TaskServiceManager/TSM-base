@@ -1,7 +1,7 @@
 package com.sanjati.auth.controllers;
 
 
-import com.sanjati.api.auth.UserDtoRs;
+import com.sanjati.api.auth.UserDto;
 
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
@@ -66,7 +66,7 @@ public class AuthController {
             }
     )
     @GetMapping(PATH_DATA)
-    public UserDtoRs getFullUserDataById(@RequestParam Long userId){
+    public UserDto getFullUserDataById(@RequestParam Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToDto(user);
     }

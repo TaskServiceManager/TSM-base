@@ -1,6 +1,6 @@
 package com.sanjati.core.converters;
 
-import com.sanjati.api.core.TaskDtoRs;
+import com.sanjati.api.core.TaskDto;
 import com.sanjati.api.auth.UserLightDto;
 
 import com.sanjati.core.entities.Task;
@@ -21,7 +21,7 @@ public class TaskConverter {
 
     private final AuthServiceIntegration authServiceIntegration;
 
-    public TaskDtoRs entityToDto(Task entity) {
+    public TaskDto entityToDto(Task entity) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
@@ -35,7 +35,7 @@ public class TaskConverter {
             });
         }
 
-        return TaskDtoRs.builder()
+        return TaskDto.builder()
                 .id(entity.getId())
                 .status(entity.getStatus().getRus())
                 .title(entity.getTitle())

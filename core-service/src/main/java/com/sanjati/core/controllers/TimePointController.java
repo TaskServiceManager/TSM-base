@@ -1,6 +1,6 @@
 package com.sanjati.core.controllers;
 
-import com.sanjati.api.core.TimePointDtoRs;
+import com.sanjati.api.core.TimePointDto;
 import com.sanjati.core.converters.TimePointConverter;
 import com.sanjati.core.services.TimePointService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +47,7 @@ public class TimePointController {
             }
     )
     @GetMapping("/report")
-    public Page<TimePointDtoRs> getAllTimePoints(@Parameter(description = "ID исполнителя", required = true)
+    public Page<TimePointDto> getAllTimePoints(@Parameter(description = "ID исполнителя", required = true)
                                                      @RequestHeader Long id,
                                                  @Parameter(description = "номер страницы", required = true)
                                                      @RequestParam Integer page,
@@ -70,7 +70,7 @@ public class TimePointController {
             }
     )
     @GetMapping("/report/{taskId}")
-    public Page<TimePointDtoRs> getAllTimePointsByTaskId(@Parameter(description = "ID пользователя", required = true)
+    public Page<TimePointDto> getAllTimePointsByTaskId(@Parameter(description = "ID пользователя", required = true)
                                                             @RequestHeader Long id,
                                                          @Parameter(description = "номер страницы", required = true)
                                                             @RequestParam Integer page,

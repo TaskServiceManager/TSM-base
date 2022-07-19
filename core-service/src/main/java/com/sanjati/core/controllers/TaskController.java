@@ -1,7 +1,7 @@
 package com.sanjati.core.controllers;
 
-import com.sanjati.api.core.CreationTaskDtoRq;
-import com.sanjati.api.core.TaskDtoRs;
+import com.sanjati.api.core.TaskDtoRq;
+import com.sanjati.api.core.TaskDto;
 import com.sanjati.core.converters.TaskConverter;
 import com.sanjati.core.services.TaskService;
 
@@ -42,7 +42,7 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createTask(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id,
-                           @Parameter(description = "Тело запроса", required = true)@RequestBody CreationTaskDtoRq taskCreateDto) {
+                           @Parameter(description = "Тело запроса", required = true)@RequestBody TaskDtoRq taskCreateDto) {
         taskService.createTask(id,taskCreateDto);
     }
 
@@ -56,19 +56,19 @@ public class TaskController {
             }
     )
     @GetMapping
-    public Page<TaskDtoRs> getAllTasksBySpec(@Parameter(description = "ID автора", required = false)
+    public Page<TaskDto> getAllTasksBySpec(@Parameter(description = "ID автора", required = false)
                                                 @RequestParam(required = false) Long ownerId,
-                                            @Parameter(description = "номер страницы", required = true)
+                                           @Parameter(description = "номер страницы", required = true)
                                                 @RequestParam Integer page,
-                                            @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
+                                           @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                 @RequestParam(required = false) LocalDateTime from,
-                                            @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'." , required = false)
+                                           @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'." , required = false)
                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                 @RequestParam(required = false) LocalDateTime to,
-                                            @Parameter(description = "Статус заявок", required = false, example = "Создана")
+                                           @Parameter(description = "Статус заявок", required = false, example = "Создана")
                                                 @RequestParam(required = false) String status,
-                                            @Parameter(description = "ID исполнителя", required = false)
+                                           @Parameter(description = "ID исполнителя", required = false)
                                                 @RequestParam(required = false) Long executorId) {
         if (page < 1) {
             page = 1;
@@ -85,7 +85,7 @@ public class TaskController {
             }
     )
     @GetMapping("/{taskId}")
-    public TaskDtoRs getTaskById(@PathVariable Long taskId, @RequestHeader String role, @RequestHeader(name = "id") Long userId) {
+    public TaskDto getTaskById(@PathVariable Long taskId, @RequestHeader String role, @RequestHeader(name = "id") Long userId) {
         if(!role.contains("EXECUTOR")){
             if(!taskService.checkTaskOwnerId(userId,taskId)) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к чужим заявкам");
         }
@@ -93,32 +93,40 @@ public class TaskController {
     }
 
     @Operation(
-            summary = "Запрос исполнителя на взятие заявки в работу по ее ID",
+            summary = "Запрос на изменение статуса заявки по ее ID",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
                     )
             }
     )
-    @PatchMapping("/take/{id}")// patch
-    public void takeTask(@Parameter(description = "ID заявки", required = true) @PathVariable(name = "id") Long taskId,
-                                   @Parameter(description = "ID исполнителя", required = true) @RequestHeader(name = "id") Long executorId){
-        taskService.assignTask(taskId, executorId,executorId);
+    @PatchMapping("/{taskId}")
+    public void changeTaskStatus(@Parameter(description = "ID заявки", required = true)
+                                     @PathVariable Long taskId,
+                                 @Parameter(description = "Новый статус заявки", required = true)
+                                     @RequestParam String status,
+                                 @Parameter(description = "ID исполнителя", required = true)
+                                     @RequestHeader(name = "id") Long executorId){
+        taskService.changeStatus(taskId, status);
     }
+
     @Operation(
-            summary = "Запрос на назначение заявки исполнителю от менеджера",
+            summary = "Запрос на назначение заявки.",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
                     )
             }
     )
-    @PatchMapping("/set")
-    public void assignTask(@Parameter(description = "ID менеджера", required = true) @RequestHeader(name = "id") Long managerId,
-                          @Parameter(description = "ID исполнителя", required = true)@RequestParam(required = true) Long executorId,
-                          @Parameter(description = "ID задачи", required = true)@RequestParam(required = true) Long taskId){
-
-        taskService.assignTask(taskId, executorId,managerId);
+    @GetMapping("/assign/{taskId}")
+    public void assignTask(@Parameter(description = "ID задачи", required = true)
+                               @PathVariable Long taskId,
+                           @Parameter(description = "ID назначающего", required = true)
+                               @RequestHeader(name = "id") Long assignerId,
+                           @Parameter(description = "ID исполнителя")
+                               @RequestParam(required = false) Long executorId
+                           ){
+        taskService.assignTask(taskId, assignerId, executorId);
     }
 
 }

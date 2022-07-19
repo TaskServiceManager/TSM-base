@@ -3,7 +3,7 @@ package com.sanjati.api.auth;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Полная информация о пользователе")
-public class UserDtoRs {
+public class UserDto {
     @Schema(description = "ID пользователя", example = "3")
     private Long id;
     @Schema(description = "Короткое имя пользователя", example = "userHi")
@@ -30,7 +30,7 @@ public class UserDtoRs {
     @Schema(description = "Номер помещения на работе у пользователя", example = "3")
     private String building;
 
-    public UserDtoRs(Long id, String username, String firstName,
+    public UserDto(Long id, String username, String firstName,
                      String lastName, String middleName, String email,
                      String company, String companyEmail, String workPosition,
                      String phone, String office, String building) {
@@ -144,6 +144,6 @@ public class UserDtoRs {
         this.building = building;
     }
 
-    public UserDtoRs() {
+    public UserDto() {
     }
 }

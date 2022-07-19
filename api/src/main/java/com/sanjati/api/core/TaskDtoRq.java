@@ -3,7 +3,7 @@ package com.sanjati.api.core;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Schema(description = "Тело запроса для создания заявки")
-public class CreationTaskDtoRq {
+public class TaskDtoRq {
     @Schema(description = "Имя задачи")
     private String title;
     @Schema(description = "Описание задачи")
@@ -25,11 +25,11 @@ public class CreationTaskDtoRq {
         this.description = description;
     }
 
-    public CreationTaskDtoRq(String title, String description) {
+    public TaskDtoRq(String title, String description) {
         this.title = title;
         this.description = description;
     }
 
-    public CreationTaskDtoRq() {
+    public TaskDtoRq() {
     }
 }

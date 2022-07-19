@@ -93,7 +93,6 @@ public class TaskService {
 
 
     public void createTask(Long ownerId, CreationTaskDtoRq taskCreateDto) {
-        //TODO написать создание заявки
         Task task = new Task();
         task.setOwnerId(ownerId);
 

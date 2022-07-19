@@ -40,7 +40,7 @@ public class TaskConverter {
                 .status(entity.getStatus().getRus())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
-                .ownerId(entity.getOwnerId())
+                .owner(entity.getOwnerId()!=null ? authServiceIntegration.getUserLightById(entity.getOwnerId()) : null)
                 .executors(executorsList)
                 .createdAt(entity.getCreatedAt()!=null ? entity.getCreatedAt().format(formatter) : null)
                 .completedAt(entity.getCompletedAt()!=null ? entity.getCompletedAt().format(formatter) : null)

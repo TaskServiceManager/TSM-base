@@ -18,7 +18,7 @@
             </td>
             <td>{{task.status}}</td>
             <td>{{task.createdAt!=null ? task.createdAt : '-' }}</td>
-            <td>{{task.ownerName!=null ? task.ownerName : '-' }}</td>
+            <td>{{renderExecutors([task.owner])}}</td>
         </tr>
         </tbody>
     </table>

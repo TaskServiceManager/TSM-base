@@ -26,16 +26,5 @@ angular.module('ttsystem-front').controller('tasksController', function ($scope,
        return description;
     }
 
-//    $scope.open = function (taskId) {
-//        $scope.showModal = true;
-//        $scope.currentItem = $scope.MyTasks.find(o => o.id === taskId);
-//        $('#item-modal').show();
-//    };
-//
-//    $scope.cancel = function () {
-//        $scope.showModal = false;
-//        $('#item-modal').hide();
-//    };
-
     $scope.loadTasks();
 });

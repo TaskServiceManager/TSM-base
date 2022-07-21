@@ -61,6 +61,8 @@
 
 angular.module('ttsystem-front').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage, $filter, $route) {
 
+    const contextCorePath = 'http://localhost:5555/core/';
+
     $rootScope.isUserLoggedIn = function () {
         if ($localStorage.ttsystemUser) {
             return true;
@@ -135,6 +137,47 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
         if($route.current.params.id==taskId) {
             $location.path($rootScope.preDetailsView);
         }
+    };
+
+    $rootScope.renderExecutors = function (executors) {
+       if(executors && executors[0]) {
+            executorsShort=[];
+            for (var i=0; i<executors.length; i++) {
+                current = executors[i];
+                if(current.lastName) {
+                    executorsShort.push(current.lastName + (current.firstName ? ' ' + current.firstName.slice(0,1) : '') + (current.middleName ? '. ' + current.middleName.slice(0,1) : ''));
+                }
+            }
+            if(executorsShort[0]) {
+                return executorsShort.join(', ');
+            }
+       }
+       return 'Не назначены';
+    }
+
+    $rootScope.showModalForCreateTask = function () {
+        $scope.showModal = true;
+        $('#item-modal').show();
+    };
+
+    $rootScope.closeModal = function () {
+        $scope.showModal = false;
+        $rootScope.newTask = null;
+        $('#item-modal').hide();
+    };
+
+    $rootScope.createTask = function () {
+        $http({
+            url: contextCorePath + 'api/v1/tasks',
+            method: 'POST',
+            data: $rootScope.newTask
+        }).then(function successCallback(response) {
+        }, function errorCallback(response) {
+            alert('Что-то пошло не так - попробуйте позже..','danger');
+              console.log('error');
+              console.log(response);
+        });
+        $rootScope.closeModal();
     };
 
     $rootScope.loadDetailsOpen();

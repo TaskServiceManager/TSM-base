@@ -1,13 +1,14 @@
 package com.sanjati.core.services;
 
 
-
-import com.sanjati.api.core.CreationTaskDto;
+import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
-import com.sanjati.core.entities.Comment;
-import com.sanjati.core.entities.Executor;
+
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.enums.TaskStatus;
+
+import com.sanjati.core.exceptions.ChangeTaskStatusException;
+import com.sanjati.core.integrations.AuthServiceIntegration;
 import com.sanjati.core.repositories.TaskRepository;
 import com.sanjati.core.repositories.specifications.TaskSpecifications;
 
@@ -16,12 +17,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.Arrays;
 
 @Service
 @Slf4j
@@ -29,104 +31,139 @@ import java.util.Optional;
 public class TaskService {
 
     private final TaskRepository taskRepository;
-    private final ExecutorService executorService;
     private final CommentService commentService;
+    private final AuthServiceIntegration authServiceIntegration;
 
 
-    public List<Task> findTaskByUsername(String username) {
-        Specification<Task> spec = Specification.where(null);
-        spec = spec.and(TaskSpecifications.usernameEquals(username));
-        return taskRepository.findAll(spec);
-    }
+    public Task findById(Long id) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
 
-    public Optional<Task> findById(Long id) {
-        return taskRepository.findById(id);
+        return task;
     }
 
     @Transactional
-    public void changeStatus(Long id, String status){
-        Task task = taskRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
-        task.setStatus(TaskStatus.valueOf(status));
+    public void changeStatus(Long id, String status) {
+        Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        TaskStatus newStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(status)).findFirst().
+                orElseThrow(()-> new ChangeTaskStatusException("Указанный статус заявки не найден"));
+        switch (newStatus) {
+            case CREATED: {
+                if (TaskStatus.CANCELLED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Изменить статус на 'Создана' можно только из статуса 'Отменена'");
+            }
+            case CANCELLED: {
+                if (TaskStatus.CREATED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Отменить заявку можно только со статусом 'Создана'");
 
-    }
-
-    @Transactional
-    public void takeTask(Long taskId, Long executorId,Long managerId) {
-        Task task = findById(taskId).orElseThrow(()-> new ResourceNotFoundException("Task not found"));
-        if (task.getStatus().equals(TaskStatus.CREATED))task.setStatus(TaskStatus.ASSIGNED);
-        Executor executor = executorService.findExecutorByExecutorId(executorId);
-        Executor manager;
-        task.getExecutors().add(executor);
-        if(executorId != managerId)
-        {
-            manager = executorService.findExecutorByExecutorId(managerId);
-        }else {
-            manager = executor;
+            }
+            case ASSIGNED: {
+                if (TaskStatus.CREATED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Назначить заявку можно только из статуса 'Создана'");
+            }
+            case ACCEPTED: {
+                if (TaskStatus.ASSIGNED.equals(task.getStatus()) ||
+                        TaskStatus.DELAYED.equals(task.getStatus()) ||
+                        TaskStatus.APPROVED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Изменить статус на 'В работе' можно только при статусе 'Назначена', 'Отложена' или 'Утверждается'");
+            }
+            case APPROVED: {
+                if (TaskStatus.ACCEPTED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Утвердить заявку можно только из статуса 'В работе'");
+            }
+            case DELAYED: {
+                if (TaskStatus.ACCEPTED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Отложить заявку можно только из статуса 'В работе'");
+            }
+            case COMPLETED: {
+                if (TaskStatus.APPROVED.equals(task.getStatus())) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");
+            }
         }
-        commentService.leaveComment(manager,executor,">> назначил исполнителя >> ",task);
-        taskRepository.save(task);
 
     }
 
-    public Page<Task> findTasksByUserId(Long id, String from, String to, Integer page) {
-        Specification<Task> spec = Specification.where(null);
-        spec = spec.and(TaskSpecifications.idEquals(id));
+    @Transactional
+    public void assignTask(Long taskId, Long assignerId, Long executorId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        if (task.getStatus().equals(TaskStatus.CANCELLED) || task.getStatus().equals(TaskStatus.COMPLETED)) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Заявка отклонена или уже была выполнена.");
+        }
+        //id того, на кого будет назначаться заявка
+        Long actualId = (executorId == null) ? assignerId : executorId;
+        authServiceIntegration.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
+        if (task.getStatus().equals(TaskStatus.CREATED)) task.setStatus(TaskStatus.ASSIGNED);
+        task.getExecutors().add(actualId);
+        commentService.leaveComment(taskId, actualId, ">> назначил исполнителя >> ");
+    }
 
-        LocalDateTime newDateFormat;
+    public Page<Task> findAllTasksBySpec(Long id,
+                                         LocalDateTime from,
+                                         LocalDateTime to,
+                                         Integer page,
+                                         String status,
+                                         Long executorId) {
+        Specification<Task> spec = Specification.where(null);
+
+        if(id != null) {
+            spec = spec.and(TaskSpecifications.ownerIdEquals(id));
+        }
+
+        if (status != null) {
+            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el-> status.equals(el.getRus())).findFirst().orElse(null)));
+        }
+
         if (from != null) {
-            newDateFormat = LocalDateTime.parse(from.substring(0, 22));
-            spec = spec.and(TaskSpecifications.timeGreaterOrEqualsThan(newDateFormat));
-            log.warn(from);
+            spec = spec.and(TaskSpecifications.timeGreaterOrEqualsThan(from));
         }
 
         if (to != null) {
-            newDateFormat = LocalDateTime.parse(to.substring(0, 22));
-            log.warn(to);
-            spec = spec.and(TaskSpecifications.timeLessThanOrEqualsThan(newDateFormat));
+            spec = spec.and(TaskSpecifications.timeLessThanOrEqualsThan(to));
+        }
+
+        if (executorId != null) {
+            spec = spec.and(TaskSpecifications.executorIdContainsIn(executorId));
         }
 
         return this.taskRepository.findAll(spec, PageRequest.of(page - 1, 10));
     }
 
 
-    public void createTask(Long ownerId,String ownerName ,CreationTaskDto taskCreateDto) {
+    public void createTask(Long ownerId, TaskDtoRq taskCreateDto) {
         //TODO написать создание заявки
         Task task = new Task();
         task.setOwnerId(ownerId);
-        task.setOwnerName(ownerName);
+
         task.setTitle(taskCreateDto.getTitle());
         task.setDescription(taskCreateDto.getDescription());
         task.setStatus(TaskStatus.CREATED);
         taskRepository.save(task);
     }
 
-    public Page<Task> getAllAssignedTasks(Long id, String from, String to, Integer page,String status) {//тут будут фильтры
-        Executor executor = executorService.findExecutorByExecutorId(id);
-        Specification<Task> spec = Specification.where(null);
-        spec = spec.and(TaskSpecifications.executorsContains(executor));
-        LocalDateTime newDateFormat;
-        if (from != null) {
-            newDateFormat = LocalDateTime.parse(from.substring(0, 22));
-            spec = spec.and(TaskSpecifications.timeGreaterOrEqualsThan(newDateFormat));
-            log.warn(from);
-        }
-
-        if (to != null) {
-            newDateFormat = LocalDateTime.parse(to.substring(0, 22));
-            log.warn(to);
-            spec = spec.and(TaskSpecifications.timeLessThanOrEqualsThan(newDateFormat));
-        }
-        if (status != null) {
-
-            spec = spec.and(TaskSpecifications.statusEquals(status));
-        }
-
-        return taskRepository.findAll(spec, PageRequest.of(page - 1, 10));
-    }
-
-    public Page<Task> getIncomingTasks(Integer page) {
-        //заглушка
-        return Page.empty();
+    public boolean checkTaskOwnerId(Long userId, Long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Задача не найдена"));
+        if (task.getOwnerId().equals(userId)) return true;
+        return false;
     }
 
 

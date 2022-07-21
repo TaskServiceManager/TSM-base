@@ -1,4 +1,5 @@
 package com.sanjati.api.core;
+import com.sanjati.api.auth.UserLightDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
@@ -14,10 +15,6 @@ public class TaskDto {
     @Schema(description = "Показывает в каком состоянии находится заявка", example = "CANCELLED")
     private String status;
 
-   // удалил процессы выполнения
-
-//    @Schema(description = "Комментарии сотрудников по выполнению")
-//    private List<CommentDto> comments;// тут насколько я знаю если поместить в лист что-то кроме стринга могут быть проблемы с мапингом объекта
 //    @Schema(description = "Временные отметки сотрудников")
 //    private List<TimePointDto> timePoints;// тут насколько я знаю если поместить в лист что-то кроме стринга могут быть проблемы с мапингом объекта
 
@@ -27,14 +24,11 @@ public class TaskDto {
     @Schema(description = "Описание заявки", example = "Необходимо то-то и то-то...")
     private String description;
 
-    @Schema(description = "ID создателя заявки", example = "2")
-    private Long ownerId;
-
-    @Schema(description = "Краткое имя создателя заявки", example = "Иванов И.И.")
-    private String ownerName;
+    @Schema(description = "Создатель заявки")
+    private UserLightDto owner;
 
     @Schema(description = "Список назначенных исполнителей", example = "2022-07-10 16:30:19")
-    private List<String> executors;
+    private List<UserLightDto> executors;
 
     @Schema(description = "Дата создания заявки", example = "2022-07-10 16:30:19")
     private String createdAt;
@@ -45,14 +39,6 @@ public class TaskDto {
     @Schema(description = "Дата последнего обновления", example = "2022-07-10 16:30:19")
     private String updatedAt;
 
-//    public List<CommentDto> getComments() {
-//        return comments;
-//    }
-//
-//    public void setComments(List<CommentDto> comments) {
-//        this.comments = comments;
-//    }
-//
 //    public List<TimePointDto> getTimePoints() {
 //        return timePoints;
 //    }
@@ -71,11 +57,11 @@ public class TaskDto {
         this.updatedAt = updatedAt;
     }
 
-    public List<String> getExecutors() {
+    public List<UserLightDto> getExecutors() {
         return executors;
     }
 
-    public void setExecutors(List<String> executors) {
+    public void setExecutors(List<UserLightDto> executors) {
         this.executors = executors;
     }
 
@@ -127,32 +113,20 @@ public class TaskDto {
         this.description = description;
     }
 
-    public Long getOwnerId() {
-        return ownerId;
+    public UserLightDto getOwner() {
+        return owner;
     }
 
-    public void setOwnerId(Long ownerId) {
-        this.ownerId = ownerId;
+    public void setOwner(UserLightDto owner) {
+        this.owner = owner;
     }
 
-    public String getOwnerName() {
-        return ownerName;
-    }
-
-    public void setOwnerName(String ownerName) {
-        this.ownerName = ownerName;
-    }
-
-    public TaskDto() {
-    }
-
-    public TaskDto(Long id, String status, String title, String description, Long ownerId, String ownerName, List<String> executors, String createdAt, String completedAt, String updatedAt) {
+    public TaskDto(Long id, String status, String title, String description, UserLightDto owner,  List<UserLightDto> executors, String createdAt, String completedAt, String updatedAt) {
         this.id = id;
         this.status = status;
         this.title = title;
         this.description = description;
-        this.ownerId = ownerId;
-        this.ownerName = ownerName;
+        this.owner = owner;
         this.executors = executors;
         this.createdAt = createdAt;
         this.completedAt = completedAt;

@@ -1,12 +1,13 @@
-angular.module('ttsystem-front').controller('incomingController', function ($scope, $http, $location) {
+angular.module('ttsystem-front').controller('incomingController', function ($scope, $http, $location, $localStorage) {
     const contextPath = 'http://localhost:5555/core/';
 
     $scope.loadTasks = function (pageIndex) {
         $http({
-                url: contextPath + 'api/v1/tasks/incoming',
+                url: contextPath + 'api/v1/tasks',
                 method: 'GET',
                 params: {
                     page: pageIndex ? pageIndex : 1,
+                    status: 'Создана'
 //                    from: $scope.newFilter ? $scope.newFilter.from : null,
 //                    to: $scope.newFilter ? $scope.newFilter.to : null,
                 }

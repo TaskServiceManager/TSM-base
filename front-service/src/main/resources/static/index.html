@@ -60,6 +60,10 @@
 <!--                    <form class="form-inline my-2 my-lg-0" ng-show="isUserLoggedIn()" ng-submit="goToSignUp()">-->
 <!--                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Зарегистрироваться</button>-->
 <!--                    </form>-->
+                    <form class="form-inline my-2 my-lg-0" ng-submit="showModalForCreateTask()" ng-show="isUserLoggedIn()" id="createTask">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Создать заявку</button>
+                    </form>
+                    <div id="delimiter">|</div>
                     <form class="form-inline my-2 my-lg-0" ng-submit="logout()" ng-show="isUserLoggedIn()" id="logout">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Выйти</button>
                     </form>
@@ -70,7 +74,7 @@
 
 
     </div>
-    <ng-view style="margin-top:5%; position:fixed; width:70%"></ng-view>
+    <ng-view style="margin-top:4%; position:fixed; width:70%; overflow: scroll"></ng-view>
 
     <script src="index.js"></script>
     <script src="login/login.js"></script>
@@ -82,6 +86,30 @@
     <!--    <script src="form/form.js"></script>-->
 <!--<script src="statistics/statistics.js"></script>-->
 
+</div>
+
+<!--Modal-->
+<div id="item-modal" class="modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-ng-click="closeModal()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                Новая заявка
+            </div>
+            <div class="modal-body">
+                <form novalidate ng-submit="createTask()">
+                    <input class="form-control" maxlength="100" id="theme" type="text" placeholder="Тема" ng-model="newTask.title" required>
+                    <span style="font-size: x-small; float:right">{{(newTask.title ? newTask.title.length : 0) +'/100'}}</span>
+                    <p></p>
+                    <textarea class="form-control" maxlength="2000" id="taskDescription" placeholder="Описание" rows="6" ng-model="newTask.description" required></textarea>
+                    <span style="font-size: x-small; float:right">{{(newTask.description ? newTask.description.length : 0) +'/2000'}}</span>
+                    <p></p>
+                    <button class="btn btn-outline-success" id="createNewTask" type="submit">Создать</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>

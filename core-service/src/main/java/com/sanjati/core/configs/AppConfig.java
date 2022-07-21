@@ -26,7 +26,7 @@ public class AppConfig {
     private final AuthServiceIntegrationProperties authServiceIntegrationProperties;
 
     @Bean
-    public WebClient cartServiceWebClient() {
+    public WebClient authWebClient() {
         TcpClient tcpClient = TcpClient
                 .create()
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, authServiceIntegrationProperties.getConnectTimeout())

@@ -1,15 +1,17 @@
 package com.sanjati.core.converters;
 
 import com.sanjati.api.core.TaskDto;
-import com.sanjati.core.entities.Executor;
+import com.sanjati.api.auth.UserLightDto;
+
 import com.sanjati.core.entities.Task;
+import com.sanjati.core.integrations.AuthServiceIntegration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 import static java.util.Objects.isNull;
 
@@ -17,16 +19,20 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class TaskConverter {
 
-
-    private final CommentConverter commitsConverter;
+    private final AuthServiceIntegration authServiceIntegration;
 
     public TaskDto entityToDto(Task entity) {
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        List<String> executorsList = new ArrayList<>();
+        List<UserLightDto> executorsList = new ArrayList<>();
         if(!isNull(entity.getExecutors())) {
-            executorsList = entity.getExecutors().stream().map(Executor::getName).collect(Collectors.toList());
+            entity.getExecutors().forEach(ex -> {
+                UserLightDto userLightDto = authServiceIntegration.getUserLightById(ex);
+                if(userLightDto!=null) {
+                    executorsList.add(userLightDto);
+                }
+            });
         }
 
         return TaskDto.builder()
@@ -34,8 +40,7 @@ public class TaskConverter {
                 .status(entity.getStatus().getRus())
                 .title(entity.getTitle())
                 .description(entity.getDescription())
-                .ownerId(entity.getOwnerId())
-                .ownerName(entity.getOwnerName())
+                .owner(entity.getOwnerId()!=null ? authServiceIntegration.getUserLightById(entity.getOwnerId()) : null)
                 .executors(executorsList)
                 .createdAt(entity.getCreatedAt()!=null ? entity.getCreatedAt().format(formatter) : null)
                 .completedAt(entity.getCompletedAt()!=null ? entity.getCompletedAt().format(formatter) : null)

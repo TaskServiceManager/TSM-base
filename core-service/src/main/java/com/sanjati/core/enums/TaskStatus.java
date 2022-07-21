@@ -5,6 +5,7 @@ public enum TaskStatus {
     CANCELLED("Отменена"),
     ASSIGNED("Назначена"),
     ACCEPTED("В работе"),
+    APPROVED("Утверждается"),
     DELAYED("Отложена"),
     COMPLETED("Выполнена");
 
@@ -12,7 +13,6 @@ public enum TaskStatus {
     TaskStatus(String rus) {
         this.rus = rus;
     }
-
     public String getRus() {
         return rus;
     }

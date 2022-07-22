@@ -31,6 +31,8 @@ public class Task {
     @CollectionTable(name = "tasks_executors", joinColumns = @JoinColumn(name = "task_id")) // 2
     @Column(name = "executor_id") // 3
     private List<Long> executors= new ArrayList<>();
+    @Column(name = "chief_id")
+    private Long chiefId;
 
     @Column(name = "title")
     private String title;

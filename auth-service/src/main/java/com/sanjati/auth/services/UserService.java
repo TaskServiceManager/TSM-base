@@ -4,8 +4,6 @@ package com.sanjati.auth.services;
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
 import com.sanjati.auth.repositories.UserRepository;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,26 +22,18 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
 
-    @Operation(
-            summary = "Поиск имени пользователя",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
+
+    /*
+     *   Поиск имени пользователя
+     * */
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    @Operation(
-            summary = "Загрузка пользователя по имени",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
+
+    /*
+     *   Загрузка пользователя по имени
+     * */
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -51,27 +41,18 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
-    @Operation(
-            summary = "Загрузка списка ролей",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
+
+    /*
+     *   Загрузка списка ролей
+     * */
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
 
-    @Operation(
-            summary = "Поиск пользователя по ID",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
+    /*
+     *   Поиск пользователя по ID
+     * */
     public Optional<User> findByUserId(Long userId) {
         return userRepository.findById(userId);
     }

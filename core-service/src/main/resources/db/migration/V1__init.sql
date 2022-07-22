@@ -4,6 +4,7 @@ create table tasks
         title                       varchar(100) not null,
         description                 varchar(2000) not null,
         owner_id                    bigint not null,
+        chief_id                    bigint,
         status                      varchar(25) not null,
 
 

@@ -7,11 +7,9 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
-
-
+    @Query("select  count (t)  from Task t where t.id = :taskId and t.ownerId = :id" )
+    public Integer checkCountByOwnerIdAndTaskId(Long taskId, Long id);
 
 }

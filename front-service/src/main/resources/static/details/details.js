@@ -24,14 +24,14 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
     }
 
     $scope.sendComment = function() {
-        $scope.newComment.taskId = $route.current.params.id;
+        $scope.newComment.taskId = $scope.Task.id;
         $http({
             url: contextPath + 'api/v1/comments',
             method: 'POST',
             data: $scope.newComment
         }).then(function successCallback(response) {
             $scope.newComment = null;
-            $scope.loadComments($route.current.params.id)
+            $scope.loadComments($scope.Task.id)
         }, function errorCallback(response) {
             alert('Что-то пошло не так - попробуйте позже..','danger');
               console.log('error');
@@ -39,6 +39,23 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
               $scope.newComment = null;
         });
     }
+
+    $scope.assignTaskToMe = function () {
+       $http({
+           url: contextPath + 'api/v1/tasks/assign/'+$scope.Task.id,
+           method: 'GET'
+       }).then(function successCallback(response) {
+           $scope.loadTaskWithComments();
+       }, function errorCallback(response) {
+           alert('Что-то пошло не так - попробуйте позже..','danger');
+           console.log('error');
+           console.log(response);
+       });
+   }
+
+   $scope.isTaskNotAssigned = function () {
+       return $scope.Task && $scope.Task.executors && $scope.Task.executors.length==0 || false;
+   }
 
     $scope.loadTaskWithComments();
 });

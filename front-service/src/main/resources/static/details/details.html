@@ -1,5 +1,10 @@
 <div>
-    <h4>Детализация</h4>
+    <div style="display: flex">
+        <h4>Детализация</h4>
+        <form style="margin-left:1%" class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="assignTaskToMe()">
+            <button class="btn btn-outline-success my-2 my-sm-0" ng-show="isTaskNotAssigned()" type="submit">Назначить на себя</button>
+        </form>
+    </div>
     <br>
     <form id="details">
         <div class="table table-hover">

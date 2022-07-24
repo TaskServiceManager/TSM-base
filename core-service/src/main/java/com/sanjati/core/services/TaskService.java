@@ -1,6 +1,7 @@
 package com.sanjati.core.services;
 
 
+import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 
@@ -108,10 +109,10 @@ public class TaskService {
         }
         //id того, на кого будет назначаться заявка
         Long actualId = (executorId == null) ? assignerId : executorId;
-        authServiceIntegration.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
+        UserLightDto executor = authServiceIntegration.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
         if (task.getStatus() == TaskStatus.CREATED) task.setStatus(TaskStatus.ASSIGNED);
         task.getExecutors().add(actualId);
-        commentService.leaveComment(taskId, actualId, ">> назначил исполнителя >> ");
+        commentService.leaveComment(taskId, assignerId, executor.getShortNameFormatted() + " назначен в качестве исполнителя");
     }
 
     public Page<Task> findAllTasksBySpec(Long id,

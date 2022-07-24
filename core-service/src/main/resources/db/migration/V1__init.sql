@@ -55,17 +55,17 @@ values ( 'всё сломалось =(','плохо, плохо, плохо ни
        ('Не работает', 'Не могу включить компутер умираю уже капец блин почините Не могу включить компутер умираю уже капец блин почините Не могу включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините включить компутер умираю уже капец блин почините', 2,  'ACCEPTED'),
        ( 'всё сломалось =(','плохо, плохо, плохо ничего не работает ', 2, 'CREATED'),
        ( 'всё сломалось =(','плохо, плохо, плохо ничего не работает ', 2, 'CREATED'),
-      ( 'Сломался стул','consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 2, 'CREATED'),
-      ( 'Нужно вкрутить лампочку','quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor', 2, 'CREATED'),
+      ( 'Сломался стул','consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 1, 'CREATED'),
+      ( 'Нужно вкрутить лампочку','quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor', 1, 'CREATED'),
       ( 'Помогите','aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur', 2, 'CREATED'),
-      ( 'ВЫНЕСЛИ ДВЕРЬ','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 2, 'CREATED'),
+      ( 'ВЫНЕСЛИ ДВЕРЬ','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 1, 'CREATED'),
       ( 'Испачкана стена','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 2, 'CREATED'),
-      ( 'Сходить на склад','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 2, 'CREATED'),
+      ( 'Сходить на склад','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 3, 'CREATED'),
       ( 'Сломался стул 2','consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 2, 'CREATED'),
         ( 'Нужно вкрутить лампочку 2','quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor', 2, 'CREATED'),
         ( 'Помогите 2','aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur', 2, 'CREATED'),
         ( 'ВЫНЕСЛИ ДВЕРЬ 2','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 2, 'CREATED'),
-        ( 'Испачкана стена 2','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 2, 'CREATED'),
+        ( 'Испачкана стена 2','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 3, 'CREATED'),
         ( 'Сходить на склад 2','Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 2, 'CREATED');
 
 

@@ -1,4 +1,4 @@
-angular.module('ttsystem-front').controller('detailsController', function ($scope, $http, $location, $route) {
+angular.module('ttsystem-front').controller('detailsController', function ($scope, $http, $location, $route, $localStorage) {
     const contextPath = 'http://localhost:5555/core/';
 
     $scope.loadTaskWithComments = function () {
@@ -21,6 +21,10 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
 
     $scope.isAuthorTaskOwner = function (authorId) {
         return authorId === $scope.Task.owner.id;
+    }
+
+    $scope.isCurrentUserTaskOwner = function () {
+        return ($localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null) == $scope.Task.owner.id;
     }
 
     $scope.sendComment = function() {

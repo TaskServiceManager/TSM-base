@@ -156,3 +156,7 @@ nav a:hover{
   font-size: x-large;
   margin: 0 5px 0 5px;
 }
+
+#executors td {
+  padding-left: calc(var(--bs-gutter-x) * .5);
+}

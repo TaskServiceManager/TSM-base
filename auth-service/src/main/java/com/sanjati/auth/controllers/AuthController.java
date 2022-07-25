@@ -2,7 +2,6 @@ package com.sanjati.auth.controllers;
 
 
 import com.sanjati.api.auth.UserDto;
-
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
@@ -14,14 +13,14 @@ import com.sanjati.auth.utils.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -72,6 +71,11 @@ public class AuthController {
     public UserLightDto getUserLightByUserId(@RequestParam Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToLightDto(user);
+    }
+
+    @GetMapping("/users")
+    public List<UserLightDto> getAllUsers(@RequestParam(required = false) String role){
+        return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
     }
 
 }

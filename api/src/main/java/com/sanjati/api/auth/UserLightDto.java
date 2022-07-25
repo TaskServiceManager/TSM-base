@@ -17,15 +17,20 @@ public class UserLightDto {
     @Schema(description = "E-mail пользователя", example = "ddd@mail.ru")
     private String email;
 
+    @Schema(description = "Для пользователя - количество оставленных активных задач. " +
+            "Для исполнителя - количество выполняемых активных задач.", example = "3")
+    private Integer amountActiveTasks;
+
     public UserLightDto() {
     }
 
-    public UserLightDto(Long id, String firstName, String lastName, String middleName, String email) {
+    public UserLightDto(Long id, String firstName, String lastName, String middleName, String email, Integer amountActiveTasks) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.email = email;
+        this.amountActiveTasks = amountActiveTasks;
     }
 
     public Long getId() {
@@ -66,5 +71,13 @@ public class UserLightDto {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Integer getAmountActiveTasks() {
+        return amountActiveTasks;
+    }
+
+    public void setAmountActiveTasks(Integer amountActiveTasks) {
+        this.amountActiveTasks = amountActiveTasks;
     }
 }

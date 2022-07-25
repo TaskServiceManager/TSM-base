@@ -2,6 +2,7 @@ package com.sanjati.core.services;
 
 
 import com.sanjati.api.auth.UserLightDto;
+import com.sanjati.api.core.AssignDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 
@@ -15,6 +16,7 @@ import com.sanjati.core.repositories.specifications.TaskSpecifications;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,6 +27,10 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -103,16 +109,47 @@ public class TaskService {
 
     @Transactional
     public void assignTask(Long taskId, Long assignerId, Long executorId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-        if (task.getStatus() == TaskStatus.CANCELLED || task.getStatus() == TaskStatus.COMPLETED) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Заявка отклонена или уже была выполнена.");
-        }
+        Task task = getTaskAvailableForChanges(taskId);
         //id того, на кого будет назначаться заявка
         Long actualId = (executorId == null) ? assignerId : executorId;
         UserLightDto executor = authServiceIntegration.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
         if (task.getStatus() == TaskStatus.CREATED) task.setStatus(TaskStatus.ASSIGNED);
         task.getExecutors().add(actualId);
         commentService.leaveComment(taskId, assignerId, executor.getShortNameFormatted() + " назначен в качестве исполнителя");
+    }
+
+    @Transactional
+    public void assignTaskBatch(Long taskId, Long assignerId, AssignDtoRq assignDtoRq) {
+        Task task = getTaskAvailableForChanges(taskId);
+        Set<Long> taskExecutors = task.getExecutors();
+        if (assignDtoRq.getExecutorIds()==null || assignDtoRq.getChiefId()==null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Не выбраны хотя бы один исполнитель и ответственный по заявке");
+        }
+        List<UserLightDto> executors = assignDtoRq.getExecutorIds().stream()
+                .map(authServiceIntegration::getUserLightById)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+        executors.forEach(ex -> taskExecutors.add(ex.getId()));
+        task.setChiefId(assignDtoRq.getChiefId());
+        if (task.getStatus() == TaskStatus.CREATED) task.setStatus(TaskStatus.ASSIGNED);
+
+        StringBuilder sb = new StringBuilder();
+        for (UserLightDto executor : executors) {
+            if(sb.length() > 0) {
+                sb.append(", ").append(executor.getShortNameFormatted());
+            } else {
+                sb.append(executor.getShortNameFormatted());
+            }
+        }
+        commentService.leaveComment(taskId, assignerId, sb + (executors.size()>1 ? " назначены в качестве исполнителей" : " назначен в качестве исполнителя"));
+    }
+
+    private Task getTaskAvailableForChanges(Long taskId) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        if (task.getStatus() == TaskStatus.CANCELLED || task.getStatus() == TaskStatus.COMPLETED) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Заявка отклонена или уже была выполнена.");
+        }
+        return task;
     }
 
     public Page<Task> findAllTasksBySpec(Long id,

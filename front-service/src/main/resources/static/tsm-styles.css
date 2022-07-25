@@ -160,3 +160,15 @@ nav a:hover{
 #executors td {
   padding-left: calc(var(--bs-gutter-x) * .5);
 }
+
+#assigned:checked {
+  accent-color: #d3f3de;
+}
+
+#chief:checked {
+  accent-color: #198754;
+}
+
+#chief {
+  float: right;
+}

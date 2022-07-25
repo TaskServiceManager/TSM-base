@@ -45,7 +45,7 @@ public class TimePointService {
 //                taskService.changeStatus(taskId, TaskStatus.ACCEPTED.name());
 //            }
             if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
-                taskService.changeStatus(taskId, TaskStatus.ACCEPTED);
+                taskService.changeStatus(taskId, TaskStatus.ACCEPTED.name());
             }
             if(timePointRepository.isCountMoreThanZeroByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
                 throw new OperationError("Нельзя открыть новую отметку пока есть незавешённые");

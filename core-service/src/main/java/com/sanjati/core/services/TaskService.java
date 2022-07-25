@@ -40,7 +40,7 @@ public class TaskService {
     }
 
     @Transactional
-    public void changeStatus(Long id, TaskStatus status) {
+    public void changeStatus(Long id, String status) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         TaskStatus newStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(status)).findFirst().
                 orElseThrow(()-> new ResourceNotFoundException("Указанный статус заявки не найден"));

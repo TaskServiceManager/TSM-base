@@ -28,9 +28,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
-    private final String PATH_AUTH = "/auth";
-    private final String PATH_DATA = "/data";
-    private final String PATH_USER = "/user";
 
     private final UserConverter userConverter;
     private final UserService userService;
@@ -45,7 +42,7 @@ public class AuthController {
                     )
             }
     )
-    @PostMapping(PATH_AUTH)
+    @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
@@ -65,13 +62,13 @@ public class AuthController {
                     )
             }
     )
-    @GetMapping(PATH_DATA)
+    @GetMapping("/data")
     public UserDto getFullUserDataById(@RequestParam Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToDto(user);
     }
 
-    @GetMapping(PATH_USER)
+    @GetMapping("/user")
     public UserLightDto getUserLightByUserId(@RequestParam Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToLightDto(user);

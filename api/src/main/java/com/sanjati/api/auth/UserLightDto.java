@@ -80,4 +80,8 @@ public class UserLightDto {
     public void setAmountActiveTasks(Integer amountActiveTasks) {
         this.amountActiveTasks = amountActiveTasks;
     }
+
+    public String getShortNameFormatted() {
+        return getLastName() + " " + getFirstName().charAt(0) + "." + (getMiddleName()!=null ? " " + getMiddleName().charAt(0) + "." : "");
+    }
 }

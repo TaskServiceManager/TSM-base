@@ -10,7 +10,7 @@
             <td>Автор</td>
         </tr>
         <tbody>
-        <tr ng-repeat="task in IncomingTasks">
+        <tr ng-repeat="task in IncomingTasks" data-ng-click="goToDetails(task.id)">
             <td>{{task.id}}</td>
             <td>{{task.title}}</td>
             <td width="40%" data-ng-click="open(task.id)">

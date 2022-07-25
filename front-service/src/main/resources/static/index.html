@@ -83,17 +83,16 @@
     <script src="assigned/assigned.js"></script>
     <script src="incoming/incoming.js"></script>
     <script src="details/details.js"></script>
-    <!--    <script src="form/form.js"></script>-->
 <!--<script src="statistics/statistics.js"></script>-->
 
 </div>
 
-<!--Modal-->
+<!--Modal for new task-->
 <div id="item-modal" class="modal">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" data-ng-click="closeModal()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                <button type="button" class="close" data-dismiss="modal" data-ng-click="closeModalForCreateTask()" aria-label="Close"><span aria-hidden="true">&times;</span>
                 </button>
                 Новая заявка
             </div>
@@ -107,6 +106,26 @@
                     <p></p>
                     <button class="btn btn-outline-success" id="createNewTask" type="submit">Создать</button>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal for executor details-->
+<div id="item-modal-sm" class="modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-ng-click="closeModalForExecutorDetails()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                Сотрудник
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span>{{renderFullUserName(ExecutorDetails)}}</span>
+                    <br>
+                    <span>{{ExecutorDetails.email}}</span>
+                </div>
             </div>
         </div>
     </div>

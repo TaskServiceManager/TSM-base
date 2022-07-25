@@ -1,11 +1,11 @@
 package com.sanjati.auth.services;
 
 
+import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
+import com.sanjati.auth.repositories.RoleRepository;
 import com.sanjati.auth.repositories.UserRepository;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
 
     /*
@@ -59,4 +61,14 @@ public class UserService implements UserDetailsService {
     public Optional<User> findByUserId(Long userId) {
         return userRepository.findById(userId);
     }
+
+    //если будет много парамов, то потом надо переделать на спеку
+    public List<User> getAllUsers(String roleName){
+        if (roleName != null){
+            Role role = roleRepository.findByName(roleName).orElseThrow(() -> new ResourceNotFoundException("Указанная роль не найдена."));
+            return userRepository.findAllByRoles(role);
+        }
+        return userRepository.findAll();
+    }
+
 }

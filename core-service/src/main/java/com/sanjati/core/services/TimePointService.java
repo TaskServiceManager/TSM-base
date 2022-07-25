@@ -32,7 +32,7 @@ public class TimePointService {
         TimePoint tp;
         if (timePointId != null) {
             tp = timePointRepository.findById(timePointId).orElseThrow(()->new ResourceNotFoundException("Отметка не существует"));
-            if (tp.getStatus().equals(TimePointStatus.FINISHED)){
+            if (tp.getStatus() == TimePointStatus.FINISHED){
                 throw new OperationError("Временная отметка уже закрыта");
             }
             tp.setStatus(TimePointStatus.FINISHED);
@@ -40,11 +40,14 @@ public class TimePointService {
 
         if(timePointId==null){
 
-            if(timePointRepository.checkCountTimePoints(taskId)==0){
-
-                taskService.changeStatus(taskId, TaskStatus.ACCEPTED.name());
+//            if(!timePointRepository.isCountMoreThanZeroByTaskId(taskId)){
+//
+//                taskService.changeStatus(taskId, TaskStatus.ACCEPTED.name());
+//            }
+            if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
+                taskService.changeStatus(taskId, TaskStatus.ACCEPTED);
             }
-            if(timePointRepository.checkByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)>0) {
+            if(timePointRepository.isCountMoreThanZeroByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
                 throw new OperationError("Нельзя открыть новую отметку пока есть незавешённые");
             }
 

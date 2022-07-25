@@ -4,6 +4,7 @@ create table users
     username                            varchar(36) unique,
     password                            varchar(80) not null,
 
+
     first_name                          varchar(80) not null,
     last_name                           varchar(80) not null,
     middle_name                         varchar(80) not null,

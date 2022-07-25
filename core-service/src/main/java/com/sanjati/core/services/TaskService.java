@@ -42,7 +42,7 @@ public class TaskService {
     }
 
     @Transactional
-    public void changeStatus(Long id, String status) {
+    public void changeStatus(Long id, TaskStatus status) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         TaskStatus newStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(status)).findFirst().
                 orElseThrow(()-> new ChangeTaskStatusException("Указанный статус заявки не найден"));
@@ -162,8 +162,11 @@ public class TaskService {
 
     public boolean checkTaskOwnerId(Long userId, Long taskId) {
 
-        if (taskRepository.checkCountByOwnerIdAndTaskId(taskId,userId)>0) return true;
+        if (taskRepository.isCountMoreThanZeroByOwnerIdAndTaskId(taskId,userId)) return true;
         return false;
+    }
+    public TaskStatus getStatusByTaskId(Long taskId){
+       return taskRepository.findStatusByTaskId(taskId);
     }
 
 

@@ -2,16 +2,21 @@ package com.sanjati.core.services;
 
 
 import com.sanjati.api.core.TaskDtoRq;
+import com.sanjati.api.exceptions.OperationError;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 
 import com.sanjati.core.entities.Task;
+import com.sanjati.core.entities.TimePoint;
 import com.sanjati.core.enums.TaskStatus;
 
+import com.sanjati.core.enums.TimePointStatus;
 import com.sanjati.core.exceptions.ChangeTaskStatusException;
 import com.sanjati.core.integrations.AuthServiceIntegration;
 import com.sanjati.core.repositories.TaskRepository;
+import com.sanjati.core.repositories.TimePointRepository;
 import com.sanjati.core.repositories.specifications.TaskSpecifications;
 
+import com.sanjati.core.repositories.specifications.TimePointsSpecifications;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,6 +39,8 @@ public class TaskService {
     private final CommentService commentService;
     private final AuthServiceIntegration authServiceIntegration;
 
+    private final TimePointRepository timePointRepository;
+
 
     public Task findById(Long id) {
         return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
@@ -43,7 +50,7 @@ public class TaskService {
     public void changeStatus(Long id, String status) {
         Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         TaskStatus newStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(status)).findFirst().
-                orElseThrow(()-> new ResourceNotFoundException("Указанный статус заявки не найден"));
+                orElseThrow(() -> new ResourceNotFoundException("Указанный статус заявки не найден"));
         switch (newStatus) {
             case CREATED: {
                 if (TaskStatus.CANCELLED == task.getStatus()) {
@@ -122,12 +129,12 @@ public class TaskService {
                                          Long executorId) {
         Specification<Task> spec = Specification.where(null);
 
-        if(id != null) {
+        if (id != null) {
             spec = spec.and(TaskSpecifications.ownerIdEquals(id));
         }
 
         if (status != null) {
-            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el-> status.equals(el.getRus())).findFirst().orElse(null)));
+            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el -> status.equals(el.getRus())).findFirst().orElse(null)));
         }
 
         if (from != null) {
@@ -162,5 +169,24 @@ public class TaskService {
         return task.getOwnerId().equals(userId);
     }
 
+    public void closingTimePoint(Long id, Long timePointId, String status) {
+        TimePoint tp;
+        if (timePointId != null) {
+            tp = timePointRepository.findById(timePointId).orElseThrow(() -> new ResourceNotFoundException("Отметка не существует"));
+            if (tp.getStatus().equals(TimePointStatus.FINISHED)) {
+                throw new OperationError("Временная отметка уже закрыта");
+            }
+            tp.setStatus(TimePointStatus.FINISHED);
+        } else {
+            Specification<TimePoint> spec = Specification.where(null);
+            Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+            if (TaskStatus.APPROVED == task.getStatus()) {
+                task.setStatus(TimePointStatus.FINISHED);
+            }
+
+        }
+
+
+    }
 
 }

@@ -145,7 +145,7 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
             for (var i=0; i<executors.length; i++) {
                 current = executors[i];
                 if(current.lastName) {
-                    executorsShort.push(current.lastName + (current.firstName ? ' ' + current.firstName.slice(0,1) : '') + (current.middleName ? '. ' + current.middleName.slice(0,1) : ''));
+                    executorsShort.push(current.lastName + (current.firstName ? ' ' + current.firstName.slice(0,1) + (current.middleName ? '. ' + current.middleName.slice(0,1) : '') : ''));
                 }
             }
             if(executorsShort[0]) {
@@ -160,7 +160,7 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
         $('#item-modal').show();
     };
 
-    $rootScope.closeModal = function () {
+    $rootScope.closeModalForCreateTask = function () {
         $scope.showModal = false;
         $rootScope.newTask = null;
         $('#item-modal').hide();
@@ -177,8 +177,26 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
               console.log('error');
               console.log(response);
         });
-        $rootScope.closeModal();
+        $rootScope.closeModalForCreateTask();
     };
+
+    $rootScope.showModalForExecutorDetails = function (executor) {
+        $rootScope.ExecutorDetails = executor;
+        $('#item-modal-sm').show();
+    };
+
+    $rootScope.closeModalForExecutorDetails = function () {
+        $rootScope.ExecutorDetails = null;
+        $('#item-modal-sm').hide();
+    };
+
+    $rootScope.renderFullUserName = function (user) {
+        if(user && user.lastName) {
+            return user.lastName + (user.firstName ? ' ' + user.firstName + (user.middleName ? ' ' + user.middleName : '') : '');
+        }
+       return '-';
+    }
+
 
     $rootScope.loadDetailsOpen();
 });

@@ -158,8 +158,14 @@ public class TaskService {
     }
 
     public boolean checkTaskOwnerId(Long userId, Long taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Задача не найдена"));
-        return task.getOwnerId().equals(userId);
+
+
+        if (taskRepository.isCountMoreThanZeroByOwnerIdAndTaskId(taskId,userId)) return true;
+        return false;
+
+    }
+    public TaskStatus getStatusByTaskId(Long taskId){
+       return taskRepository.findStatusByTaskId(taskId);
     }
 
 

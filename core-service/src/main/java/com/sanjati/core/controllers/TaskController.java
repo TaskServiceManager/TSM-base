@@ -3,6 +3,7 @@ package com.sanjati.core.controllers;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.core.TaskDto;
 import com.sanjati.core.converters.TaskConverter;
+import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.services.TaskService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -109,7 +110,9 @@ public class TaskController {
     public void changeTaskStatus(@Parameter(description = "ID заявки", required = true)
                                      @PathVariable Long id,
                                  @Parameter(description = "Новый статус заявки", required = true)
+
                                      @PathVariable String newStatus,
+
                                  @Parameter(description = "ID исполнителя", required = true)
                                      @RequestHeader(name = "id") Long executorId){
         taskService.changeStatus(id, newStatus);

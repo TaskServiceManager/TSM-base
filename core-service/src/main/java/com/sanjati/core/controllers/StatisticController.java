@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/statistic")
+@RequestMapping("/api/v1/statistics")
 @Tag(name = "Статистика", description = "Методы работы со статистикой")
 @RequiredArgsConstructor
 public class StatisticController {
@@ -29,7 +29,7 @@ public class StatisticController {
             }
     )
     @GetMapping("/employment")
-    public List<UserLightDto> test(){
+    public List<UserLightDto> getAllExecutorsSortedByEmployment(){
         return statisticService.getAllExecutorsSortedByEmployment();
     }
 }

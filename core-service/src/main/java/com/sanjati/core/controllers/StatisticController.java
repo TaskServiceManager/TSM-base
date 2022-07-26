@@ -21,7 +21,7 @@ public class StatisticController {
     private final StatisticService statisticService;
 
     @Operation(
-            summary = "Запрос на получение исполнителей с их занятостью",
+            summary = "Запрос на получение исполнителей с их занятостью, отсортированных в порядке занятости",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"

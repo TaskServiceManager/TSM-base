@@ -16,7 +16,7 @@ public class StatisticService {
     private final TaskRepository taskRepository;
     private final AuthServiceIntegration authServiceIntegration;
 
-    public List<UserLightDto> getAllExecutorSortedByEmployment(){
+    public List<UserLightDto> getAllExecutorsSortedByEmployment(){
         Map<Long, Long> employment = taskRepository.getExecutorsIdsWithAmountActiveTasks()
                 .stream().collect(Collectors.toMap(k -> k.get(0), v -> v.get(1)));
         List<UserLightDto> executors = authServiceIntegration.getAllExecutors();

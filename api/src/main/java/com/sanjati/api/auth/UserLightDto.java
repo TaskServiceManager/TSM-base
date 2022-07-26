@@ -19,12 +19,12 @@ public class UserLightDto {
 
     @Schema(description = "Для пользователя - количество оставленных активных задач. " +
             "Для исполнителя - количество выполняемых активных задач.", example = "3")
-    private Integer amountActiveTasks;
+    private Long amountActiveTasks;
 
     public UserLightDto() {
     }
 
-    public UserLightDto(Long id, String firstName, String lastName, String middleName, String email, Integer amountActiveTasks) {
+    public UserLightDto(Long id, String firstName, String lastName, String middleName, String email, Long amountActiveTasks) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -73,11 +73,11 @@ public class UserLightDto {
         this.email = email;
     }
 
-    public Integer getAmountActiveTasks() {
+    public Long getAmountActiveTasks() {
         return amountActiveTasks;
     }
 
-    public void setAmountActiveTasks(Integer amountActiveTasks) {
+    public void setAmountActiveTasks(Long amountActiveTasks) {
         this.amountActiveTasks = amountActiveTasks;
     }
 

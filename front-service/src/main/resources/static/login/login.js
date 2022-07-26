@@ -21,7 +21,9 @@ angular.module('ttsystem-front').controller('loginController', function ($scope,
 
                     $localStorage.permissions = [{view: 'myTasks', roles: ['ROLE_USER']},
                                                 {view: 'incoming', roles: ['ROLE_MANAGER','ROLE_EXECUTOR']},
-                                                {view: 'assigned', roles: ['ROLE_EXECUTOR']}];
+                                                {view: 'assigned', roles: ['ROLE_EXECUTOR']},
+                                                {view: 'assignToMeButton', roles: ['ROLE_EXECUTOR']},
+                                                {view: 'assignButton', roles: ['ROLE_MANAGER']}];
                     $location.path('/');
                 }
             }, function errorCallback(response) {

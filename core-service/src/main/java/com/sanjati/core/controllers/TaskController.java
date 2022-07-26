@@ -1,5 +1,6 @@
 package com.sanjati.core.controllers;
 
+import com.sanjati.api.core.AssignDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.core.TaskDto;
 import com.sanjati.core.converters.TaskConverter;
@@ -135,6 +136,25 @@ public class TaskController {
                                @RequestParam(required = false) Long executorId
                            ){
         taskService.assignTask(id, assignerId, executorId);
+    }
+
+    @Operation(
+            summary = "Запрос на назначение заявки на группу пользователей",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @PostMapping("/assign/{id}")
+    public void assignTaskBatch(@Parameter(description = "ID заявки", required = true)
+                                @PathVariable Long id,
+                                @Parameter(description = "ID назначающего", required = true)
+                                @RequestHeader(name = "id") Long assignerId,
+                                @Parameter(description = "Тело запроса", required = true)
+                                @RequestBody AssignDtoRq assignDtoRq
+    ){
+        taskService.assignTaskBatch(id, assignerId, assignDtoRq);
     }
 
 }

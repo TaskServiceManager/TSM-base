@@ -1,8 +1,12 @@
-<div>
+<div class="table table-hover" ng-show="!Task" align="center">Нет доступа для просмотра заявки</div>
+<div ng-show="Task">
     <div style="display: flex">
         <h4>Детализация</h4>
         <form style="margin-left:1%" class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="assignTaskToMe()">
-            <button class="btn btn-outline-success my-2 my-sm-0" ng-show="isTaskNotAssigned()&&!isCurrentUserTaskOwner()" type="submit">Назначить на себя</button>
+            <button class="btn btn-outline-success my-2 my-sm-0" ng-show="isAllowed('assignToMeButton')&&isTaskNotAssigned()&&!isCurrentUserTaskOwner()" type="submit">Назначить на себя</button>
+        </form>
+        <form style="margin-left:1%" class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="showAssignModal()">
+            <button class="btn btn-outline-success my-2 my-sm-0" ng-show="isAllowed('assignButton')&&!isCurrentUserTaskOwner()" type="submit">Назначить исполнителей</button>
         </form>
     </div>
     <br>
@@ -127,5 +131,38 @@
             <textarea name="comment" maxlength="2000" class="form-control commentInput" placeholder="Введите комментарий" rows="5" ng-model="newComment.description"></textarea>
             <button class="btn btn-outline-success" id="commentSend" type="submit">Отправить</button>
         </form>
+    </div>
+</div>
+
+<!--Modal for assign-->
+<div id="item-modal-assign" class="modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-ng-click="closeAssignModal()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                Исполнители
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span style="font-size: small; float:left">Выберите исполнителей</span>
+                    <span style="font-size: small; float:right">Ответственный</span>
+                    <br>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" ng-repeat="executor in ExecutorsList">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input checkbox-custom" id="assigned" ng-click="addExecutorForTask(executor.id)" ng-checked="assignChief==executor.id">
+                                <label class="custom-control-label" for="assigned">{{renderFullUserName(executor)}}</label>
+                                <input type="checkbox" class="custom-control-input checkbox-custom" id="chief" ng-click="addChiefForTask(executor.id)" ng-checked="assignChief==executor.id">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <p></p>
+                <form novalidate ng-submit="assignExecutors()">
+                    <button style="float:right" class="btn btn-outline-success" id="assignExecutors" type="submit">Сохранить</button>
+                </form>
+            </div>
+        </div>
     </div>
 </div>

@@ -132,16 +132,8 @@ public class TaskService {
         executors.forEach(ex -> taskExecutors.add(ex.getId()));
         task.setChiefId(assignDtoRq.getChiefId());
         if (task.getStatus() == TaskStatus.CREATED) task.setStatus(TaskStatus.ASSIGNED);
-
-        StringBuilder sb = new StringBuilder();
-        for (UserLightDto executor : executors) {
-            if(sb.length() > 0) {
-                sb.append(", ").append(executor.getShortNameFormatted());
-            } else {
-                sb.append(executor.getShortNameFormatted());
-            }
-        }
-        commentService.leaveComment(taskId, assignerId, sb + (executors.size()>1 ? " назначены в качестве исполнителей" : " назначен в качестве исполнителя"));
+        String appointed = executors.stream().map(UserLightDto::getShortNameFormatted).collect(Collectors.joining(", "));
+        commentService.leaveComment(taskId, assignerId, appointed + (executors.size()>1 ? " назначены в качестве исполнителей" : " назначен в качестве исполнителя"));
     }
 
     private Task getTaskAvailableForChanges(Long taskId) {

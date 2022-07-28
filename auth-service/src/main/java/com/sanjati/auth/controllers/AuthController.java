@@ -2,7 +2,6 @@ package com.sanjati.auth.controllers;
 
 
 import com.sanjati.api.auth.UserDto;
-
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
@@ -12,25 +11,23 @@ import com.sanjati.auth.entities.User;
 import com.sanjati.auth.services.UserService;
 import com.sanjati.auth.utils.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
-    private final String PATH_AUTH = "/auth";
-    private final String PATH_DATA = "/data";
-    private final String PATH_USER = "/user";
 
     private final UserConverter userConverter;
     private final UserService userService;
@@ -45,7 +42,7 @@ public class AuthController {
                     )
             }
     )
-    @PostMapping(PATH_AUTH)
+    @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
@@ -65,16 +62,39 @@ public class AuthController {
                     )
             }
     )
-    @GetMapping(PATH_DATA)
+    @GetMapping("/data")
     public UserDto getFullUserDataById(@RequestParam Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToDto(user);
     }
 
-    @GetMapping(PATH_USER)
-    public UserLightDto getUserLightByUserId(@RequestParam Long userId){
+    @Operation(
+            summary = "Зарос на получение короткой информации о пользователе по ID",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping("/user")
+    public UserLightDto getUserLightByUserId(@Parameter(description = "ID пользователя", required = true)
+                                                 @RequestParam Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToLightDto(user);
+    }
+
+    @Operation(
+            summary = "Зарос на получение короткой информации о всех пользователей",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping("/users")
+    public List<UserLightDto> getAllUsers(@Parameter(description = "Роль пользователей")
+                                              @RequestParam(required = false) String role){
+        return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
     }
 
 }

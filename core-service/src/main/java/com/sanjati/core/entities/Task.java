@@ -8,9 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 
 @Entity
@@ -30,7 +28,9 @@ public class Task {
     @ElementCollection // 1
     @CollectionTable(name = "tasks_executors", joinColumns = @JoinColumn(name = "task_id")) // 2
     @Column(name = "executor_id") // 3
-    private List<Long> executors= new ArrayList<>();
+    private Set<Long> executors= new HashSet<>();
+    @Column(name = "chief_id")
+    private Long chiefId;
 
     @Column(name = "title")
     private String title;

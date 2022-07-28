@@ -4,6 +4,7 @@ create table users
     username                            varchar(36) unique,
     password                            varchar(80) not null,
 
+
     first_name                          varchar(80) not null,
     last_name                           varchar(80) not null,
     middle_name                         varchar(80) not null,
@@ -57,6 +58,7 @@ insert into users_roles (user_id, role_id)
 values (1, 1),
        (2, 2),
        (2, 1),
+       (3, 2),
        (3, 3),
        (4, 4),
        (5, 5);

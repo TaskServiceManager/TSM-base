@@ -1,8 +1,10 @@
 package com.sanjati.core.controllers;
 
+import com.sanjati.api.core.AssignDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.core.TaskDto;
 import com.sanjati.core.converters.TaskConverter;
+import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.services.TaskService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,12 +86,17 @@ public class TaskController {
                     )
             }
     )
-    @GetMapping("/{taskId}")
-    public TaskDto getTaskById(@PathVariable Long taskId, @RequestHeader String role, @RequestHeader(name = "id") Long userId) {
+    @GetMapping("/{id}")
+    public TaskDto getTaskById(@Parameter(description = "ID заявки", required = true)
+                                   @PathVariable Long id,
+                               @Parameter(description = "Роль пользователя", required = true)
+                                   @RequestHeader String role,
+                               @Parameter(description = "ID пользователя", required = true)
+                                   @RequestHeader(name = "id") Long userId) {
         if(!role.contains("EXECUTOR")){
-            if(!taskService.checkTaskOwnerId(userId,taskId)) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к чужим заявкам");
+            if(!taskService.checkTaskOwnerId(userId,id)) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к чужим заявкам");
         }
-        return taskConverter.entityToDto(taskService.findById(taskId));
+        return taskConverter.entityToDto(taskService.findById(id));
     }
 
     @Operation(
@@ -100,14 +107,16 @@ public class TaskController {
                     )
             }
     )
-    @PatchMapping("/{taskId}")
+    @PatchMapping("/{id}/status/{newStatus}")
     public void changeTaskStatus(@Parameter(description = "ID заявки", required = true)
-                                     @PathVariable Long taskId,
+                                     @PathVariable Long id,
                                  @Parameter(description = "Новый статус заявки", required = true)
-                                     @RequestParam String status,
+
+                                     @PathVariable String newStatus,
+
                                  @Parameter(description = "ID исполнителя", required = true)
                                      @RequestHeader(name = "id") Long executorId){
-        taskService.changeStatus(taskId, status);
+        taskService.changeStatus(id, newStatus);
     }
 
     @Operation(
@@ -118,15 +127,34 @@ public class TaskController {
                     )
             }
     )
-    @GetMapping("/assign/{taskId}")
-    public void assignTask(@Parameter(description = "ID задачи", required = true)
-                               @PathVariable Long taskId,
+    @GetMapping("/assign/{id}")
+    public void assignTask(@Parameter(description = "ID заявки", required = true)
+                               @PathVariable Long id,
                            @Parameter(description = "ID назначающего", required = true)
                                @RequestHeader(name = "id") Long assignerId,
                            @Parameter(description = "ID исполнителя")
                                @RequestParam(required = false) Long executorId
                            ){
-        taskService.assignTask(taskId, assignerId, executorId);
+        taskService.assignTask(id, assignerId, executorId);
+    }
+
+    @Operation(
+            summary = "Запрос на назначение заявки на группу пользователей",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @PostMapping("/assign/{id}")
+    public void assignTaskBatch(@Parameter(description = "ID заявки", required = true)
+                                @PathVariable Long id,
+                                @Parameter(description = "ID назначающего", required = true)
+                                @RequestHeader(name = "id") Long assignerId,
+                                @Parameter(description = "Тело запроса", required = true)
+                                @RequestBody AssignDtoRq assignDtoRq
+    ){
+        taskService.assignTaskBatch(id, assignerId, assignDtoRq);
     }
 
 }

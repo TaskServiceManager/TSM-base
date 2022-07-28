@@ -5,6 +5,7 @@ import com.sanjati.api.exceptions.OperationError;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.entities.TimePoint;
+import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.enums.TimePointStatus;
 import com.sanjati.core.repositories.TimePointRepository;
 import com.sanjati.core.repositories.specifications.TimePointsSpecifications;
@@ -24,21 +25,29 @@ import java.time.LocalDateTime;
 public class TimePointService {
     private final TimePointRepository timePointRepository;
     private final TaskService taskService;
+
     @Transactional
     public void changeStatusOrCreateTimePoint(Long taskId, Long userId, Long timePointId) {
+
         TimePoint tp;
         if (timePointId != null) {
             tp = timePointRepository.findById(timePointId).orElseThrow(()->new ResourceNotFoundException("Отметка не существует"));
-            if (tp.getStatus().equals(TimePointStatus.FINISHED)){
+            if (tp.getStatus() == TimePointStatus.FINISHED){
                 throw new OperationError("Временная отметка уже закрыта");
             }
             tp.setStatus(TimePointStatus.FINISHED);
-        }else {
-            Specification<TimePoint> spec = Specification.where(null);
-            spec = spec.and(TimePointsSpecifications.executorIdEquals(userId));
-            spec = spec.and(TimePointsSpecifications.statusEquals(TimePointStatus.IN_PROCESS));
+        }
 
-            if(!timePointRepository.findAll(spec).isEmpty()) {
+        if(timePointId==null){
+
+//            if(!timePointRepository.isCountMoreThanZeroByTaskId(taskId)){
+//
+//                taskService.changeStatus(taskId, TaskStatus.ACCEPTED.name());
+//            }
+            if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
+                taskService.changeStatus(taskId, TaskStatus.ACCEPTED.name());
+            }
+            if(timePointRepository.isCountMoreThanZeroByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
                 throw new OperationError("Нельзя открыть новую отметку пока есть незавешённые");
             }
 

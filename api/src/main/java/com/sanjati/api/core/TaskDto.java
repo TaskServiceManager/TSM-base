@@ -30,6 +30,9 @@ public class TaskDto {
     @Schema(description = "Список назначенных исполнителей", example = "2022-07-10 16:30:19")
     private List<UserLightDto> executors;
 
+    @Schema(description = "Назначенный отвественным, исполнитель по заявке")
+    private UserLightDto chief;
+
     @Schema(description = "Дата создания заявки", example = "2022-07-10 16:30:19")
     private String createdAt;
 
@@ -121,13 +124,22 @@ public class TaskDto {
         this.owner = owner;
     }
 
-    public TaskDto(Long id, String status, String title, String description, UserLightDto owner,  List<UserLightDto> executors, String createdAt, String completedAt, String updatedAt) {
+    public UserLightDto getChief() {
+        return chief;
+    }
+
+    public void setChief(UserLightDto chief) {
+        this.chief = chief;
+    }
+
+    public TaskDto(Long id, String status, String title, String description, UserLightDto owner, List<UserLightDto> executors, UserLightDto chief, String createdAt, String completedAt, String updatedAt) {
         this.id = id;
         this.status = status;
         this.title = title;
         this.description = description;
         this.owner = owner;
         this.executors = executors;
+        this.chief = chief;
         this.createdAt = createdAt;
         this.completedAt = completedAt;
         this.updatedAt = updatedAt;

@@ -5,7 +5,7 @@ import com.sanjati.api.auth.UserDto;
 import com.sanjati.auth.entities.User;
 import org.springframework.stereotype.Component;
 
-@Component
+    @Component
 public class UserConverter {
     public UserDto modelToDto(User user){
         return new UserDto(user.getId(),user.getUsername(),user.getFirstName(),

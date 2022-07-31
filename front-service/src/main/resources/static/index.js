@@ -210,7 +210,27 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
         }
     }
 
+    $rootScope.loadCurrentUserTimepoint = function(taskId) {
+       $http({
+            url: contextCorePath + 'api/v1/time/current',
+            method: 'GET'
+          }).then(function successCallback(response) {
+            $rootScope.Timepoint = response.data;
+          }, function errorCallback(response) {
+            alert('Не удалось загрузить текущую задачу в работе','danger');
+            console.log('error');
+            console.log(response);
+      });
+    }
+
+    $rootScope.renderRoles = function () {
+       if($localStorage.ttsystemUser && $localStorage.ttsystemUser.roles) {
+          return $localStorage.ttsystemUser.roles.join(', ');
+       }
+       return 'Не найдены';
+    }
 
     $rootScope.loadDetailsOpen();
     $rootScope.loadFullUserData();
+    $rootScope.loadCurrentUserTimepoint();
 });

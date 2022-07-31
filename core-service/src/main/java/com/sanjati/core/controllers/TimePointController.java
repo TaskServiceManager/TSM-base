@@ -1,10 +1,14 @@
 package com.sanjati.core.controllers;
 
+import com.sanjati.api.core.CommentDto;
 import com.sanjati.api.core.TimePointDto;
 import com.sanjati.core.converters.TimePointConverter;
 import com.sanjati.core.services.TimePointService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +23,12 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("/api/v1/time")
 @RequiredArgsConstructor
-@Tag(name = "Учёт времени", description = " Методы работы с отметками по времени")
+@Tag(name = "Учёт времени", description = "Методы работы с отметками по времени")
 
 public class TimePointController {
     private final TimePointService timePointService;
     private final TimePointConverter timePointConverter;
+
     @Operation(
             summary = "Запрос на изменение статуса отметки времени",
             responses = {
@@ -32,12 +37,13 @@ public class TimePointController {
                     )
             }
     )
-    @PostMapping
-    public void createTimePointOrChangeStatus(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id,
-                           @Parameter(description = "ID задачи", required = true)@RequestParam Long taskId,
-                           @Parameter(description = "ID временной отметки если надо её закрыть", required = false)@RequestParam Long timePontId) {
-        timePointService.changeStatusOrCreateTimePoint(taskId,id,timePontId);
+    @GetMapping
+    public void createTimePointOrChangeStatus(@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id,
+                           @Parameter(description = "ID задачи", required = true) @RequestParam Long taskId,
+                           @Parameter(description = "ID временной отметки если надо её закрыть", required = false) @RequestParam(required = false) Long timePointId) {
+        timePointService.changeStatusOrCreateTimePoint(taskId,id,timePointId);
     }
+
     @Operation(
             summary = "Запрос на получение страницы с своими временными отметками по ID исполнителя",
             responses = {
@@ -85,6 +91,20 @@ public class TimePointController {
                                                          @Parameter(description = "ID исполнителя", required = false)
                                                              @RequestParam(required = false) Long executorId){
         return timePointService.getAllTimePointsBySpec(executorId,taskId,page,from,to).map(timePointConverter::entityToDto);
+    }
 
+    @Operation(
+            summary = "Запрос на получение последней временной отметки пользователя",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = TimePointDto.class))
+                    )
+            }
+    )
+    @GetMapping("/current")
+    public TimePointDto getCurrentUserTimePoint(@Parameter(description = "ID пользователя", required = true)
+                                                   @RequestHeader(name = "id") Long userId){
+        return timePointConverter.entityToDto(timePointService.getLastByUserId(userId));
     }
 }

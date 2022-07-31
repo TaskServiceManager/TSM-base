@@ -16,7 +16,6 @@ import com.sanjati.core.repositories.specifications.TaskSpecifications;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,17 +36,22 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final CommentService commentService;
     private final AuthServiceIntegration authServiceIntegration;
+    private final TimePointService timePointService;
 
 
     public Task findById(Long id) {
         return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
     }
 
-    @Transactional
-    public void changeStatus(Long id, String status) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-        TaskStatus newStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(status)).findFirst().
+    public void changeStatus(Long taskId, String rusStatus) {
+        TaskStatus enumStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(rusStatus)).findFirst().
                 orElseThrow(()-> new ResourceNotFoundException("Указанный статус заявки не найден"));
+        changeStatus(taskId, enumStatus);
+    }
+
+    @Transactional
+    public void changeStatus(Long taskId, TaskStatus newStatus) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         switch (newStatus) {
             case CREATED: {
                 if (TaskStatus.CANCELLED == task.getStatus()) {
@@ -101,7 +105,6 @@ public class TaskService {
                 throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");
             }
         }
-
     }
 
     @Transactional
@@ -117,11 +120,20 @@ public class TaskService {
 
     @Transactional
     public void assignTaskBatch(Long taskId, Long assignerId, AssignDtoRq assignDtoRq) {
-        Task task = getTaskAvailableForChanges(taskId);
-        Set<Long> taskExecutors = task.getExecutors();
-        taskExecutors.clear(); //каждый раз присылают актуальный список а не обновления
         if (assignDtoRq.getExecutorIds()==null || assignDtoRq.getChiefId()==null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Не выбраны хотя бы один исполнитель и ответственный по заявке");
+        }
+        Task task = getTaskAvailableForChanges(taskId);
+        Set<Long> taskExecutors = task.getExecutors();
+        if(taskExecutors.size()>0) {
+            Set<Long> taskExecutorsCurrent = new HashSet<>(taskExecutors);
+            taskExecutorsCurrent.forEach(e -> {
+                //если удалили исполнителя, то нужно закрыть его открытый таймпоинт в этой заявке
+                if(!assignDtoRq.getExecutorIds().contains(e)) {
+                    timePointService.closeTimePointByTaskAndExecutorId(taskId, e);
+                    taskExecutors.remove(e);
+                }
+            });
         }
         List<UserLightDto> executors = assignDtoRq.getExecutorIds().stream()
                 .map(authServiceIntegration::getUserLightById)
@@ -146,7 +158,7 @@ public class TaskService {
                                          LocalDateTime from,
                                          LocalDateTime to,
                                          Integer page,
-                                         String status,
+                                         TaskStatus status,
                                          Long executorId) {
         Specification<Task> spec = Specification.where(null);
 
@@ -155,7 +167,7 @@ public class TaskService {
         }
 
         if (status != null) {
-            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el-> status.equals(el.getRus())).findFirst().orElse(null)));
+            spec = spec.and(TaskSpecifications.statusEquals(status));
         }
 
         if (from != null) {
@@ -170,7 +182,7 @@ public class TaskService {
             spec = spec.and(TaskSpecifications.executorIdContainsIn(executorId));
         }
 
-        return this.taskRepository.findAll(spec, PageRequest.of(page - 1, 10));
+        return this.taskRepository.findAll(spec, PageRequest.of(page - 1, 8));
     }
 
 

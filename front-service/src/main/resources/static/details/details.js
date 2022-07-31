@@ -1,4 +1,4 @@
-angular.module('ttsystem-front').controller('detailsController', function ($scope, $http, $location, $route, $localStorage, $filter) {
+angular.module('ttsystem-front').controller('detailsController', function ($scope, $http, $location, $route, $localStorage, $filter, $rootScope) {
     const contextPath = 'http://localhost:5555/core/';
 
     $scope.loadTaskWithComments = function () {
@@ -6,6 +6,7 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
             .then(function (response) {
                 $scope.Task = response.data;
                 $scope.loadComments($scope.Task.id);
+                $rootScope.loadCurrentUserTimepoint($scope.Task.id);
             });
     }
 
@@ -60,6 +61,11 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
    $scope.isTaskNotAssigned = function () {
        return $scope.Task && $scope.Task.executors && $scope.Task.executors.length==0 || false;
    }
+
+   $scope.isTaskAssignedToMe = function () {
+      return $scope.isAlreadyAssigned($localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null);
+   }
+
 
    $scope.showAssignModal = function () {
         $http({
@@ -124,8 +130,28 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
    }
 
    $scope.isAlreadyAssigned = function(executorId) {
-        const foundExecutor = $filter('filter')($scope.Task.executors, {'id':executorId});
-        return foundExecutor[0]!=null;
+        if($scope.Task) {
+            const foundExecutor = $filter('filter')($scope.Task.executors, {'id':executorId});
+            return foundExecutor[0]!=null;
+        }
+        return false;
+   }
+
+   $scope.changeTimepoint = function(timepointId) {
+        $http({
+             url: contextPath + 'api/v1/time',
+             method: 'GET',
+             params: {
+                taskId: $scope.Task.id,
+                timePointId: timepointId
+             }
+           }).then(function successCallback(response) {
+             $scope.loadTaskWithComments();
+           }, function errorCallback(response) {
+             alert('Что-то пошло не так - попробуйте позже..','danger');
+             console.log('error');
+             console.log(response);
+       });
    }
 
     $scope.loadTaskWithComments();

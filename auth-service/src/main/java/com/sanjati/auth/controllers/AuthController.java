@@ -62,29 +62,30 @@ public class AuthController {
                     )
             }
     )
-    @GetMapping("/data")
-    public UserDto getFullUserDataById(@RequestParam Long userId){
+    @GetMapping("/users/{id}/data")
+    public UserDto getFullUserDataById(@Parameter(description = "ID пользователя", required = true)
+                                           @PathVariable(name = "id") Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToDto(user);
     }
 
     @Operation(
-            summary = "Зарос на получение короткой информации о пользователе по ID",
+            summary = "Запрос на получение короткой информации о пользователе по ID",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
                     )
             }
     )
-    @GetMapping("/user")
+    @GetMapping("/users/{id}")
     public UserLightDto getUserLightByUserId(@Parameter(description = "ID пользователя", required = true)
-                                                 @RequestParam Long userId){
+                                                 @PathVariable(name = "id") Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToLightDto(user);
     }
 
     @Operation(
-            summary = "Зарос на получение короткой информации о всех пользователей",
+            summary = "Запрос на получение короткой информации обо всех пользователей",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"

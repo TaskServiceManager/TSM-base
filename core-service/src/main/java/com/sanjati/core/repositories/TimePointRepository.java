@@ -16,5 +16,5 @@ public interface TimePointRepository extends JpaRepository<TimePoint, Long>, Jpa
 
     boolean existsByExecutorIdAndStatus(Long executorId, TimePointStatus status);
     Optional<TimePoint> findFirstByExecutorIdOrderByStartedAtDesc(Long executorId);
-    Optional<TimePoint> findByTaskAndExecutorIdAndStatus(Task task, Long executorId, TimePointStatus status);
+    Optional<TimePoint> findByTaskIdAndExecutorIdAndStatus(Long taskId, Long executorId, TimePointStatus status);
 }

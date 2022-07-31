@@ -126,10 +126,11 @@ public class TaskService {
         Task task = getTaskAvailableForChanges(taskId);
         Set<Long> taskExecutors = task.getExecutors();
         if(taskExecutors.size()>0) {
-            taskExecutors.forEach(e -> {
+            Set<Long> taskExecutorsCurrent = new HashSet<>(taskExecutors);
+            taskExecutorsCurrent.forEach(e -> {
                 //если удалили исполнителя, то нужно закрыть его открытый таймпоинт в этой заявке
                 if(!assignDtoRq.getExecutorIds().contains(e)) {
-                    timePointService.closeTimePointByTaskAndExecutorId(task, e);
+                    timePointService.closeTimePointByTaskAndExecutorId(taskId, e);
                     taskExecutors.remove(e);
                 }
             });

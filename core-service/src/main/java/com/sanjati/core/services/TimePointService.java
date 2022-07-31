@@ -51,14 +51,14 @@ public class TimePointService {
             tp = new TimePoint();
             tp.setStatus(TimePointStatus.IN_PROCESS);
             tp.setExecutorId(userId);
-            tp.setTask(taskService.findById(taskId));
+            tp.setTaskId(taskId);
             timePointRepository.save(tp);
         }
     }
 
     @Transactional
-    public void closeTimePointByTaskAndExecutorId(Task task, Long executorId) {
-        Optional<TimePoint> timePoint = timePointRepository.findByTaskAndExecutorIdAndStatus(task, executorId, TimePointStatus.IN_PROCESS);
+    public void closeTimePointByTaskAndExecutorId(Long taskId, Long executorId) {
+        Optional<TimePoint> timePoint = timePointRepository.findByTaskIdAndExecutorIdAndStatus(taskId, executorId, TimePointStatus.IN_PROCESS);
         timePoint.ifPresent(tp -> {
             if(TimePointStatus.IN_PROCESS==tp.getStatus()) {
                 tp.setStatus(TimePointStatus.FINISHED);

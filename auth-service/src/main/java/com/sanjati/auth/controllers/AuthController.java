@@ -77,7 +77,7 @@ public class AuthController {
                     )
             }
     )
-    @GetMapping("/user/{id}")
+    @GetMapping("/users/{id}")
     public UserLightDto getUserLightByUserId(@Parameter(description = "ID пользователя", required = true)
                                                  @PathVariable(name = "id") Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));

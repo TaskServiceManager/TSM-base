@@ -62,9 +62,9 @@ public class AuthController {
                     )
             }
     )
-    @GetMapping("/data/{user_id}")
+    @GetMapping("/users/{id}/data")
     public UserDto getFullUserDataById(@Parameter(description = "ID пользователя", required = true)
-                                           @PathVariable(name = "user_id") Long userId){
+                                           @PathVariable(name = "id") Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToDto(user);
     }
@@ -77,24 +77,24 @@ public class AuthController {
                     )
             }
     )
-    @GetMapping("/user/{user_id}")
+    @GetMapping("/user/{id}")
     public UserLightDto getUserLightByUserId(@Parameter(description = "ID пользователя", required = true)
-                                                 @PathVariable(name = "user_id") Long userId){
+                                                 @PathVariable(name = "id") Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToLightDto(user);
     }
 
     @Operation(
-            summary = "Запрос на получение короткой информации о всех пользователей",
+            summary = "Запрос на получение короткой информации обо всех пользователей",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
                     )
             }
     )
-    @GetMapping("/users/{role}")
+    @GetMapping("/users")
     public List<UserLightDto> getAllUsers(@Parameter(description = "Роль пользователей")
-                                              @PathVariable(required = false, name = "role") String role){
+                                              @RequestParam(required = false) String role)) String role){
         return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
     }
 

@@ -16,7 +16,6 @@ import com.sanjati.core.repositories.specifications.TaskSpecifications;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,6 +36,7 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final CommentService commentService;
     private final AuthServiceIntegration authServiceIntegration;
+    private final TimePointService timePointService;
 
 
     public Task findById(Long id) {
@@ -44,7 +44,6 @@ public class TaskService {
     }
 
     public void changeStatus(Long taskId, String rusStatus) {
-        List<String> list = Arrays.stream(TaskStatus.values()).map(TaskStatus::getRus).collect(Collectors.toList());
         TaskStatus enumStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(rusStatus)).findFirst().
                 orElseThrow(()-> new ResourceNotFoundException("Указанный статус заявки не найден"));
         changeStatus(taskId, enumStatus);
@@ -121,11 +120,19 @@ public class TaskService {
 
     @Transactional
     public void assignTaskBatch(Long taskId, Long assignerId, AssignDtoRq assignDtoRq) {
-        Task task = getTaskAvailableForChanges(taskId);
-        Set<Long> taskExecutors = task.getExecutors();
-        taskExecutors.clear(); //каждый раз присылают актуальный список а не обновления
         if (assignDtoRq.getExecutorIds()==null || assignDtoRq.getChiefId()==null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Не выбраны хотя бы один исполнитель и ответственный по заявке");
+        }
+        Task task = getTaskAvailableForChanges(taskId);
+        Set<Long> taskExecutors = task.getExecutors();
+        if(taskExecutors.size()>0) {
+            taskExecutors.forEach(e -> {
+                //если удалили исполнителя, то нужно закрыть его открытый таймпоинт в этой заявке
+                if(!assignDtoRq.getExecutorIds().contains(e)) {
+                    timePointService.closeTimePointByTaskAndExecutorId(task, e);
+                    taskExecutors.remove(e);
+                }
+            });
         }
         List<UserLightDto> executors = assignDtoRq.getExecutorIds().stream()
                 .map(authServiceIntegration::getUserLightById)

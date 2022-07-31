@@ -9,8 +9,8 @@ import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.enums.TimePointStatus;
 import com.sanjati.core.repositories.TimePointRepository;
 import com.sanjati.core.repositories.specifications.TimePointsSpecifications;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -18,13 +18,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
 public class TimePointService {
     private final TimePointRepository timePointRepository;
     private final TaskService taskService;
+
+    public TimePointService(TimePointRepository timePointRepository, @Lazy TaskService taskService) {
+        this.timePointRepository = timePointRepository;
+        this.taskService = taskService;
+    }
 
     @Transactional
     public void changeStatusOrCreateTimePoint(Long taskId, Long userId, Long timePointId) {
@@ -49,6 +54,17 @@ public class TimePointService {
             tp.setTask(taskService.findById(taskId));
             timePointRepository.save(tp);
         }
+    }
+
+    @Transactional
+    public void closeTimePointByTaskAndExecutorId(Task task, Long executorId) {
+        Optional<TimePoint> timePoint = timePointRepository.findByTaskAndExecutorIdAndStatus(task, executorId, TimePointStatus.IN_PROCESS);
+        timePoint.ifPresent(tp -> {
+            if(TimePointStatus.IN_PROCESS==tp.getStatus()) {
+                tp.setStatus(TimePointStatus.FINISHED);
+                tp.setFinishedAt(LocalDateTime.now());
+            }
+        });
     }
 
     public Page<TimePoint> getAllTimePointsBySpec(Long userId,Long taskId, Integer page, LocalDateTime from, LocalDateTime to){

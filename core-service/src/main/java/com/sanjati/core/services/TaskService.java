@@ -26,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -122,6 +119,7 @@ public class TaskService {
     public void assignTaskBatch(Long taskId, Long assignerId, AssignDtoRq assignDtoRq) {
         Task task = getTaskAvailableForChanges(taskId);
         Set<Long> taskExecutors = task.getExecutors();
+        taskExecutors.clear(); //каждый раз присылают актуальный список а не обновления
         if (assignDtoRq.getExecutorIds()==null || assignDtoRq.getChiefId()==null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Не выбраны хотя бы один исполнитель и ответственный по заявке");
         }

@@ -62,6 +62,7 @@
 angular.module('ttsystem-front').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage, $filter, $route) {
 
     const contextCorePath = 'http://localhost:5555/core/';
+    const contextAuthPath = 'http://localhost:5555/auth/';
 
     $rootScope.isUserLoggedIn = function () {
         if ($localStorage.ttsystemUser) {
@@ -197,6 +198,19 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
        return '-';
     }
 
+    $rootScope.loadFullUserData = function() {
+        if($localStorage.ttsystemUser) {
+            $http({
+                url: contextAuthPath + 'api/v1/data',
+                method: 'GET',
+                params: {userId: $localStorage.ttsystemUser.userId}
+            }).then(function (response) {
+                $rootScope.CurrentUser = response.data;
+            });
+        }
+    }
+
 
     $rootScope.loadDetailsOpen();
+    $rootScope.loadFullUserData();
 });

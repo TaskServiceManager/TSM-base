@@ -63,7 +63,7 @@
                     <form class="form-inline my-2 my-lg-0" ng-submit="showModalForCreateTask()" ng-show="isUserLoggedIn()" id="createTask">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Создать заявку</button>
                     </form>
-                    <div id="delimiter">|</div>
+                    <div id="delimiter" ng-show="isUserLoggedIn()">|</div>
                     <form class="form-inline my-2 my-lg-0" ng-submit="logout()" ng-show="isUserLoggedIn()" id="logout">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Выйти</button>
                     </form>
@@ -128,6 +128,51 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+<!--Toggle full current user info-->
+<div id="rightNav" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight" ng-show="isUserLoggedIn()">
+    <img src="person-icon.png" alt="Person">
+</div>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasRightLabel">Текущий пользователь</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" ng-show="CurrentUser!=null">
+        <br>
+        <p><b>{{renderFullUserName(CurrentUser)}}</b></p>
+        <p>{{CurrentUser.email}}</p>
+        <p>{{CurrentUser.phone}}</p>
+        <br>
+        <table style="width:100%;">
+            <tr>
+                <td>Место работы</td>
+                <td>{{CurrentUser.company}}</td>
+            </tr>
+            <tr>
+                <td>Электронная почта</td>
+                <td>{{CurrentUser.companyEmail}}</td>
+            </tr>
+            <tr>
+                <td>Должность</td>
+                <td>{{CurrentUser.workPosition}}</td>
+            </tr>
+            <tr>
+                <td>Офис</td>
+                <td>{{CurrentUser.office}}</td>
+            </tr>
+            <tr>
+                <td>Помещение</td>
+                <td>{{CurrentUser.building}}</td>
+            </tr>
+        </table>
+
+    </div>
+    <div class="offcanvas-body" ng-show="CurrentUser==null" style="text-align: center">
+        Нет информации о текущем пользователе
     </div>
 </div>
 

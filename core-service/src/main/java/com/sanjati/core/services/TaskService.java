@@ -182,7 +182,7 @@ public class TaskService {
             spec = spec.and(TaskSpecifications.executorIdContainsIn(executorId));
         }
 
-        return this.taskRepository.findAll(spec, PageRequest.of(page - 1, 10));
+        return this.taskRepository.findAll(spec, PageRequest.of(page - 1, 8));
     }
 
 

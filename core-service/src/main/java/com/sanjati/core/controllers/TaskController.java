@@ -111,9 +111,7 @@ public class TaskController {
     public void changeTaskStatus(@Parameter(description = "ID заявки", required = true)
                                      @PathVariable Long id,
                                  @Parameter(description = "Новый статус заявки", required = true)
-
                                      @PathVariable String newStatus,
-
                                  @Parameter(description = "ID исполнителя", required = true)
                                      @RequestHeader(name = "id") Long executorId){
         taskService.changeStatus(id, newStatus);

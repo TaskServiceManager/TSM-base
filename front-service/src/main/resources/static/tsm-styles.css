@@ -188,3 +188,21 @@ nav a:hover{
   margin-left: 20%;
   margin-top: 20%;
 }
+
+#info-panel {
+  right: 80px;
+  margin-top: 5%;
+  width: 10%;
+  position: fixed;
+  border-radius: 15px;
+  border-color: #198754;
+  border-style: solid;
+  border-width: thin;
+  padding: 15px;
+  color: #198754;
+}
+
+#info-panel img {
+  width: 50px;
+  margin-left: 35%;
+}

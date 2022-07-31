@@ -43,11 +43,16 @@ public class TaskService {
         return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
     }
 
-    @Transactional
-    public void changeStatus(Long id, String status) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-        TaskStatus newStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(status)).findFirst().
+    public void changeStatus(Long taskId, String rusStatus) {
+        List<String> list = Arrays.stream(TaskStatus.values()).map(TaskStatus::getRus).collect(Collectors.toList());
+        TaskStatus enumStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(rusStatus)).findFirst().
                 orElseThrow(()-> new ResourceNotFoundException("Указанный статус заявки не найден"));
+        changeStatus(taskId, enumStatus);
+    }
+
+    @Transactional
+    public void changeStatus(Long taskId, TaskStatus newStatus) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
         switch (newStatus) {
             case CREATED: {
                 if (TaskStatus.CANCELLED == task.getStatus()) {
@@ -101,7 +106,6 @@ public class TaskService {
                 throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");
             }
         }
-
     }
 
     @Transactional

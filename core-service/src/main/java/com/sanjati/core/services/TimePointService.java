@@ -36,33 +36,21 @@ public class TimePointService {
                 throw new OperationError("Временная отметка уже закрыта");
             }
             tp.setStatus(TimePointStatus.FINISHED);
-        }
-
-        if(timePointId==null){
-
-//            if(!timePointRepository.isCountMoreThanZeroByTaskId(taskId)){
-//
-//                taskService.changeStatus(taskId, TaskStatus.ACCEPTED.name());
-//            }
-            if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
-                taskService.changeStatus(taskId, TaskStatus.ACCEPTED.name());
-            }
-            if(timePointRepository.isCountMoreThanZeroByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
+        } else {
+            if(timePointRepository.existsByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
                 throw new OperationError("Нельзя открыть новую отметку пока есть незавешённые");
             }
-
+            if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
+                taskService.changeStatus(taskId, TaskStatus.ACCEPTED);
+            }
             tp = new TimePoint();
-
-
             tp.setStatus(TimePointStatus.IN_PROCESS);
             tp.setExecutorId(userId);
-            Task task = taskService.findById(taskId);
-            tp.setTask(task);
+            tp.setTask(taskService.findById(taskId));
             timePointRepository.save(tp);
         }
-
-
     }
+
     public Page<TimePoint> getAllTimePointsBySpec(Long userId,Long taskId, Integer page, LocalDateTime from, LocalDateTime to){
         Specification<TimePoint> spec = Specification.where(null);
 
@@ -72,18 +60,17 @@ public class TimePointService {
         if(userId !=null){
             spec = spec.and(TimePointsSpecifications.executorIdEquals(userId));
         }
-
         if(from != null) {
             spec = spec.and(TimePointsSpecifications.timeGreaterOrEqualsThan(from));
-
         }
-
         if(to != null) {
             spec = spec.and(TimePointsSpecifications.timeLessOrEqualsThan(to));
-
         }
 
         return timePointRepository.findAll(spec, PageRequest.of(page - 1, 100));
+    }
 
+    public TimePoint getLastByUserId(Long userId) {
+        return timePointRepository.findFirstByExecutorIdOrderByStartedAtDesc(userId).stream().findFirst().orElse(null);
     }
 }

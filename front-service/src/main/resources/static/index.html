@@ -21,8 +21,8 @@
 </head>
 
 <body>
-
-<div ng-controller="indexController" style="margin-top:5%;margin-left:5%;position:fixed" ng-show="Details.length>0&&isUserLoggedIn()">
+<!--Open tasks tabs-->
+<div ng-controller="indexController" style="margin-top:5%;margin-left:5%;position:fixed" ng-show="Details.length>0&&isUserLoggedIn()" >
     <nav class="nav flex-column">
         <ul class="nav nav-tabs" ng-repeat="detailId in Details">
             <li class="nav-item" style="display: flex; width:100%">
@@ -32,8 +32,15 @@
         </ul>
     </nav>
 </div>
+<!--Current task info-->
+<div ng-controller="indexController" ng-show="isUserLoggedIn()&&Timepoint&&Timepoint.status=='IN_PROCESS'" id="info-panel">
+    <p style="text-align: center;">{{'Заявка #'+Timepoint.taskId + ' в работе'}}</p>
+    <p style="font-size: small">Чтобы взять новую заявку в работу, завершите работу над текущей</p>
+    <div style="text-align: center; cursor:pointer; text-decoration-line: underline;" data-ng-click="goToDetails(Timepoint.taskId)">Перейти в заявку</div>
+    <img src="warn-sign.png" alt="Warning">
+</div>
 
-<div class="container" style="margin-top:2%">
+<div class="container" style="margin-top:2%; margin-left: 13%">
     <div ng-controller="indexController" style="margin-bottom:5%; position:fixed; width:70%">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
@@ -169,7 +176,8 @@
                 <td>{{CurrentUser.building}}</td>
             </tr>
         </table>
-
+        <br><br>
+        <p>{{'Роли в системе: '+ renderRoles()}}</p>
     </div>
     <div class="offcanvas-body" ng-show="CurrentUser==null" style="text-align: center">
         Нет информации о текущем пользователе

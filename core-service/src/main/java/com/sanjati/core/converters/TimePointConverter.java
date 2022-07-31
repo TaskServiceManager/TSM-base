@@ -21,7 +21,7 @@ public class TimePointConverter {
 
         TimePointDto dto = new TimePointDto();
         dto.setId(entity.getId());
-        dto.setTaskId(entity.getId());
+        dto.setTaskId(entity.getTaskId());
         dto.setExecutorId(entity.getExecutorId());
         dto.setStatus(entity.getStatus().toString());
         dto.setStartedAt(formattedStartedAt);

@@ -1,7 +1,6 @@
 package com.sanjati.core.repositories;
 
 
-import com.sanjati.core.entities.Task;
 import com.sanjati.core.entities.TimePoint;
 import com.sanjati.core.enums.TimePointStatus;
 import org.springframework.data.jpa.repository.JpaRepository;

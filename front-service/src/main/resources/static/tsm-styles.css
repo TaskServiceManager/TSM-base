@@ -206,3 +206,13 @@ nav a:hover{
   width: 50px;
   margin-left: 35%;
 }
+
+select {
+  border-radius: 5px;
+  height: 35px;
+  border-color: lightgray;
+}
+
+select:focus-visible {
+      outline: -webkit-focus-ring-color auto 0px;!important;
+}

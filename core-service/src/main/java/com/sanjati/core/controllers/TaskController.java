@@ -68,8 +68,8 @@ public class TaskController {
                                            @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'." , required = false)
                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                 @RequestParam(required = false) LocalDateTime to,
-                                           @Parameter(description = "Статус заявок", required = false, example = "Создана")
-                                                @RequestParam(required = false) String status,
+                                           @Parameter(description = "Статус заявок", required = false, example = "ASSIGNED")
+                                                @RequestParam(required = false) TaskStatus status,
                                            @Parameter(description = "ID исполнителя", required = false)
                                                 @RequestParam(required = false) Long executorId) {
         if (page < 1) {

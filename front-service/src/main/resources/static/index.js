@@ -216,7 +216,6 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
             method: 'GET'
           }).then(function successCallback(response) {
             $rootScope.Timepoint = response.data;
-            console.log($rootScope.Timepoint);
           }, function errorCallback(response) {
             alert('Не удалось загрузить текущую задачу в работе','danger');
             console.log('error');
@@ -233,4 +232,5 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
 
     $rootScope.loadDetailsOpen();
     $rootScope.loadFullUserData();
+    $rootScope.loadCurrentUserTimepoint();
 });

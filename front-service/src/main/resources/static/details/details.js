@@ -1,4 +1,4 @@
-angular.module('ttsystem-front').controller('detailsController', function ($scope, $http, $location, $route, $localStorage, $filter) {
+angular.module('ttsystem-front').controller('detailsController', function ($scope, $http, $location, $route, $localStorage, $filter, $rootScope) {
     const contextPath = 'http://localhost:5555/core/';
 
     $scope.loadTaskWithComments = function () {
@@ -6,7 +6,7 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
             .then(function (response) {
                 $scope.Task = response.data;
                 $scope.loadComments($scope.Task.id);
-                $scope.loadCurrentUserTimepoint($scope.Task.id);
+                $rootScope.loadCurrentUserTimepoint($scope.Task.id);
             });
     }
 

@@ -158,7 +158,7 @@ public class TaskService {
                                          LocalDateTime from,
                                          LocalDateTime to,
                                          Integer page,
-                                         String status,
+                                         TaskStatus status,
                                          Long executorId) {
         Specification<Task> spec = Specification.where(null);
 
@@ -167,7 +167,7 @@ public class TaskService {
         }
 
         if (status != null) {
-            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el-> status.equals(el.getRus())).findFirst().orElse(null)));
+            spec = spec.and(TaskSpecifications.statusEquals(status));
         }
 
         if (from != null) {

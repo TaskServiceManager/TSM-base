@@ -94,7 +94,7 @@ public class AuthController {
     )
     @GetMapping("/users")
     public List<UserLightDto> getAllUsers(@Parameter(description = "Роль пользователей")
-                                              @RequestParam(required = false) String role)) String role){
+                                              @RequestParam(required = false) String role){
         return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
     }
 

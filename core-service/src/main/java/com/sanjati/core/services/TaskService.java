@@ -79,6 +79,7 @@ public class TaskService {
             }
             case APPROVED: {
                 if (TaskStatus.ACCEPTED == task.getStatus()) {
+                    timePointService.closeAllTimePointsByTask(taskId);
                     task.setStatus(newStatus);
                     break;
                 }

@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -106,15 +107,10 @@ public class AuthController {
                     )
             }
     )
-    @GetMapping("/users/{id}/data")
+    @PostMapping("/users")
     public List<UserLightDto> getLightUserDataById(@Parameter(description = "список ID пользователей", required = true)
-                                                   @PathVariable(name = "id") List<Long> usersId) {
-        List<UserLightDto> lightUsers = new List<UserLightDto>();
-        for (Long userId : usersId) {
-            User user = userService.findByUserId(userId).get();
-            lightUsers.add(userConverter.modelToLightDto(user));
-        }
-        return lightUsers;
+                                                   @RequestBody List<Long> usersId) {
+        return userService.getLightUserDataById(usersId);
     }
 
 }

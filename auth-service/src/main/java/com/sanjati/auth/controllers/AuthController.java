@@ -106,10 +106,10 @@ public class AuthController {
                     )
             }
     )
-    @GetMapping("/users/{id}/data")
+    @PostMapping("/users")
     public List<UserLightDto> getLightUserDataById(@Parameter(description = "список ID пользователей", required = true)
-                                                   @PathVariable(name = "id") List<Long> usersId) {
-        List<UserLightDto> lightUsers = new List<UserLightDto>();
+                                                   @RequestBody List<Long> usersId) {
+        List<UserLightDto> lightUsers = new ArrayList<>();
         for (Long userId : usersId) {
             User user = userService.findByUserId(userId).get();
             lightUsers.add(userConverter.modelToLightDto(user));

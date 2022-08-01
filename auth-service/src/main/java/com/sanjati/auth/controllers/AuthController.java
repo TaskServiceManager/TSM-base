@@ -64,7 +64,7 @@ public class AuthController {
     )
     @GetMapping("/users/{id}/data")
     public UserDto getFullUserDataById(@Parameter(description = "ID пользователя", required = true)
-                                           @PathVariable(name = "id") Long userId){
+                                       @PathVariable(name = "id") Long userId) {
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToDto(user);
     }
@@ -79,7 +79,7 @@ public class AuthController {
     )
     @GetMapping("/users/{id}")
     public UserLightDto getUserLightByUserId(@Parameter(description = "ID пользователя", required = true)
-                                                 @PathVariable(name = "id") Long userId){
+                                             @PathVariable(name = "id") Long userId) {
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         return userConverter.modelToLightDto(user);
     }
@@ -94,8 +94,27 @@ public class AuthController {
     )
     @GetMapping("/users")
     public List<UserLightDto> getAllUsers(@Parameter(description = "Роль пользователей")
-                                              @RequestParam(required = false) String role){
+                                          @RequestParam(required = false) String role) {
         return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
+    }
+
+    @Operation(
+            summary = "Чтение данных пользователей в коротком виде",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping("/users/{id}/data")
+    public List<UserLightDto> getLightUserDataById(@Parameter(description = "список ID пользователей", required = true)
+                                                   @PathVariable(name = "id") List<Long> usersId) {
+        List<UserLightDto> lightUsers = new List<UserLightDto>();
+        for (Long userId : usersId) {
+            User user = userService.findByUserId(userId).get();
+            lightUsers.add(userConverter.modelToLightDto(user));
+        }
+        return lightUsers;
     }
 
 }

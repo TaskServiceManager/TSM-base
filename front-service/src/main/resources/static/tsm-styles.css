@@ -172,3 +172,47 @@ nav a:hover{
 #chief {
   float: right;
 }
+
+#rightNav {
+  position: fixed;
+  background-color: #e4f7eb;
+  width: 50px;
+  height: 100%;
+  right: 0;
+  margin-top:-2%;
+  cursor: pointer;
+}
+
+#rightNav img {
+  width: 30px;
+  margin-left: 20%;
+  margin-top: 20%;
+}
+
+#info-panel {
+  right: 80px;
+  margin-top: 5%;
+  width: 10%;
+  position: fixed;
+  border-radius: 15px;
+  border-color: #198754;
+  border-style: solid;
+  border-width: thin;
+  padding: 15px;
+  color: #198754;
+}
+
+#info-panel img {
+  width: 50px;
+  margin-left: 35%;
+}
+
+select {
+  border-radius: 5px;
+  height: 35px;
+  border-color: lightgray;
+}
+
+select:focus-visible {
+      outline: -webkit-focus-ring-color auto 0px;!important;
+}

@@ -1,4 +1,4 @@
-angular.module('ttsystem-front').controller('detailsController', function ($scope, $http, $location, $route, $localStorage) {
+angular.module('ttsystem-front').controller('detailsController', function ($scope, $http, $location, $route, $localStorage, $filter, $rootScope) {
     const contextPath = 'http://localhost:5555/core/';
 
     $scope.loadTaskWithComments = function () {
@@ -6,6 +6,7 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
             .then(function (response) {
                 $scope.Task = response.data;
                 $scope.loadComments($scope.Task.id);
+                $rootScope.loadCurrentUserTimepoint($scope.Task.id);
             });
     }
 
@@ -61,6 +62,11 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
        return $scope.Task && $scope.Task.executors && $scope.Task.executors.length==0 || false;
    }
 
+   $scope.isTaskAssignedToMe = function () {
+      return $scope.isAlreadyAssigned($localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null);
+   }
+
+
    $scope.showAssignModal = function () {
         $http({
           url: 'http://localhost:5555/auth/api/v1/users', //заменить на кор
@@ -68,6 +74,7 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
           params: {role: 'ROLE_EXECUTOR'}
         }).then(function successCallback(response) {
           $scope.ExecutorsList = response.data;
+          $scope.prepareModel();
         }, function errorCallback(response) {
           alert('Что-то пошло не так - попробуйте позже..','danger');
           console.log('error');
@@ -76,44 +83,40 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
        $('#item-modal-assign').show();
    };
 
+   $scope.prepareModel = function () {
+        angular.forEach($scope.ExecutorsList, function(value, key) {
+          value.isChief = $scope.Task.chief&&$scope.Task.chief.id==value.id ? true : false;
+          value.isAssigned = $scope.isAlreadyAssigned(value.id);
+        });
+   }
+
    $scope.closeAssignModal = function () {
-       $scope.assignedExecutors = null;
-       $scope.assignChief = null;
        $('#item-modal-assign').hide();
    };
 
-   $scope.addExecutorForTask = function (executorId) {
-       executors = $scope.assignedExecutors;
-       if(executors && executors[0]) {
-          const index = executors.indexOf(executorId);
-          if(index==-1) {
-            $scope.assignedExecutors.push(executorId);
-          } else {
-            $scope.assignedExecutors.splice(index, 1);
-          }
-       } else {
-          $scope.assignedExecutors = [];
-          $scope.assignedExecutors.push(executorId);
-       }
-   }
-
-   $scope.addChiefForTask = function (executorId) {
-       $scope.assignChief = executorId;
-       if($scope.assignedExecutors.indexOf(executorId)==-1) $scope.addExecutorForTask(executorId);
+   $scope.changeChiefForTask = function (executor) {
+       const assignedChief = $filter('filter')($scope.ExecutorsList, {'isChief':true});
+       angular.forEach(assignedChief, function(value, key) {
+         value.isChief = false;
+       });
+       executor.isAssigned=true;
    }
 
    $scope.assignExecutors = function () {
-        console.log($scope.assignedExecutors);
-        console.log($scope.assignChief);
-        if(!$scope.assignedExecutors || !$scope.assignedExecutors[0] || !$scope.assignChief) {
+        const assignedExecutorsObjects = $filter('filter')($scope.ExecutorsList, {'isAssigned':true});
+        const assignedChief = $filter('filter')($scope.ExecutorsList, {'isChief':true});
+        const assignedExecutors = assignedExecutorsObjects.map(function(obj) {
+          return obj.id;
+        });
+        if(!assignedExecutors || !assignedExecutors[0] || !assignedChief || !assignedChief[0]) {
             alert('Выберите хотя бы одного исполнителя и назначьте ответственного','danger');
             return;
         }
         $http({
             url: contextPath + 'api/v1/tasks/assign/'+$scope.Task.id,
             method: 'POST',
-            data: { executorIds: $scope.assignedExecutors,
-                    chiefId: $scope.assignChief
+            data: { executorIds: assignedExecutors,
+                    chiefId: assignedChief[0].id
             }
         }).then(function successCallback(response) {
             $scope.closeAssignModal();
@@ -124,6 +127,31 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
               console.log(response);
               $scope.newComment = null;
         });
+   }
+
+   $scope.isAlreadyAssigned = function(executorId) {
+        if($scope.Task) {
+            const foundExecutor = $filter('filter')($scope.Task.executors, {'id':executorId});
+            return foundExecutor[0]!=null;
+        }
+        return false;
+   }
+
+   $scope.changeTimepoint = function(timepointId) {
+        $http({
+             url: contextPath + 'api/v1/time',
+             method: 'GET',
+             params: {
+                taskId: $scope.Task.id,
+                timePointId: timepointId
+             }
+           }).then(function successCallback(response) {
+             $scope.loadTaskWithComments();
+           }, function errorCallback(response) {
+             alert('Что-то пошло не так - попробуйте позже..','danger');
+             console.log('error');
+             console.log(response);
+       });
    }
 
     $scope.loadTaskWithComments();

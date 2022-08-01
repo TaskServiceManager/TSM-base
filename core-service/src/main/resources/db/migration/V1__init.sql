@@ -48,6 +48,13 @@ create table time_points(
 
 );
 
+create table work_days(
+    id bigserial primary key,
+    executor_id bigint not null ,
+    start timestamp not null ,
+    end timestamp not null
+);
+
 insert into tasks (title,description, owner_id,status)
 values ( 'всё сломалось =(','плохо, плохо, плохо ничего не работает ', 1,'ACCEPTED'),
        ( 'всё сломалось =(','плохо, плохо, плохо ничего не работает ', 4,'ACCEPTED'),

@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 
 @Repository
 public interface TimePointRepository extends JpaRepository<TimePoint, Long>, JpaSpecificationExecutor<TimePoint> {
@@ -18,5 +20,5 @@ public interface TimePointRepository extends JpaRepository<TimePoint, Long>, Jpa
 //   @Query("select count (tp) > 0 from TimePoint tp where tp.task.id = :taskId")
 //    public boolean isCountMoreThanZeroByTaskId(Long taskId);
 
-
+    List<TimePoint> findAllByStatus(TimePointStatus status);
 }

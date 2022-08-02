@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +41,7 @@ public class TimePointService {
                 throw new MandatoryCheckException("Временная отметка уже закрыта");
             }
             tp.setStatus(TimePointStatus.FINISHED);
+            tp.setFinishedAt(LocalDateTime.now());
         } else {
             if(timePointRepository.existsByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
                 throw new MandatoryCheckException("Нельзя открыть новую отметку пока есть незавешённые");
@@ -63,6 +65,15 @@ public class TimePointService {
                 tp.setStatus(TimePointStatus.FINISHED);
                 tp.setFinishedAt(LocalDateTime.now());
             }
+        });
+    }
+
+    @Transactional
+    public void closeAllTimePointsByTask(Long taskId) {
+        List<TimePoint> timePoints = timePointRepository.findByTaskIdAndStatus(taskId, TimePointStatus.IN_PROCESS);
+        timePoints.forEach(tp-> {
+            tp.setStatus(TimePointStatus.FINISHED);
+            tp.setFinishedAt(LocalDateTime.now());
         });
     }
 

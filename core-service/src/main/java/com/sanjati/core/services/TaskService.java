@@ -44,11 +44,6 @@ public class TaskService {
         return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + id));
     }
 
-    public void changeStatus(Long taskId, String rusStatus) {
-        TaskStatus enumStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(rusStatus)).findFirst().
-                orElseThrow(()-> new ResourceNotFoundException("Указанный статус заявки не найден STATUS : " +rusStatus));
-        changeStatus(taskId, enumStatus);
-    }
 
     @Transactional
     public void changeStatus(Long taskId, TaskStatus newStatus) {
@@ -86,6 +81,7 @@ public class TaskService {
             }
             case APPROVED: {
                 if (TaskStatus.ACCEPTED == task.getStatus()) {
+                    timePointService.closeAllTimePointsByTask(taskId);
                     task.setStatus(newStatus);
                     break;
                 }
@@ -116,6 +112,9 @@ public class TaskService {
         UserLightDto executor = authServiceIntegration.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
         if (task.getStatus() == TaskStatus.CREATED) task.setStatus(TaskStatus.ASSIGNED);
         task.getExecutors().add(actualId);
+        if(task.getExecutors().size()==1) {
+            task.setChiefId(actualId);
+        }
         commentService.leaveComment(taskId, assignerId, executor.getShortNameFormatted() + " назначен в качестве исполнителя");
     }
 

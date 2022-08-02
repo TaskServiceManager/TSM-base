@@ -103,7 +103,7 @@ public class AuthController {
 
 
     @Operation(
-            summary = "Запрос на изменение времени работы исполнителей",
+            summary = "Запрос на изменение времени работы исполнителя",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
@@ -113,9 +113,9 @@ public class AuthController {
                     )
             }
     )
-    @PostMapping("/users/worktime")
+    @PatchMapping("/users/{id}/worktime")
     public void updateWorkTime(@Parameter(description = "ID исполнителя")
-                                   @RequestHeader(name = "id") Long executorId,
+                                   @PathVariable(name = "id") Long executorId,
                                @Parameter(description = "Список ролей")
                                    @RequestHeader String role,
                                @Parameter(description = "Тело запроса с новым временем работы")

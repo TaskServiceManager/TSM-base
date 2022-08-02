@@ -7,6 +7,7 @@ import com.sanjati.api.auth.UserDto;
 
 import com.sanjati.api.auth.UserLightDto;
 
+import com.sanjati.core.exceptions.AuthServiceIntegrationException;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,9 @@ public class AuthServiceIntegration {
 
                 .retrieve()
                 .bodyToMono(UserDto.class)
-                .doOnError(e -> log.info("Ошибка при получении полной информации о пользователе ", e))
+                .doOnError(e -> {
+                    throw new AuthServiceIntegrationException("Ошибка при получении полной информации о пользователе в модуле auth-service user ID : "+userId);
+                })
                 .block();
     }
 
@@ -49,7 +52,9 @@ public class AuthServiceIntegration {
 
                 .retrieve()
                 .bodyToMono(UserLightDto.class)
-                .doOnError(e -> log.info("Ошибка при получении короткой информации о пользователе ", e))
+                .doOnError(e -> {
+                    throw new AuthServiceIntegrationException("Ошибка при получении короткой информации о пользователе в модуле auth-service user ID : "+userId);
+                })
                 .block();
     }
 
@@ -61,7 +66,9 @@ public class AuthServiceIntegration {
                         .build())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<UserLightDto>>() {})
-                .doOnError(e -> log.info("Ошибка при получении информации о всех исполнителях"))
+                .doOnError(e -> {
+                    throw new AuthServiceIntegrationException("Ошибка при получении информации о всех исполнителях ");
+                })
                 .block();
     }
 }

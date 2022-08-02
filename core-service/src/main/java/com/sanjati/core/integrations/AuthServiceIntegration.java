@@ -22,16 +22,15 @@ import java.util.List;
 @Slf4j
 public class AuthServiceIntegration {
     private final WebClient authWebClient;
-    private final String DATA_PATH = "api/v1/data";
-    private final String USER_PATH = "api/v1/user";
+    private final String DATA_PATH = "api/v1/users/{id}/data";
+    private final String USER_PATH = "api/v1/users/{id}";
     private final String ALL_USERS_PATH = "api/v1/users";
 
     public UserDto getUserById(Long userId) {
         return authWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path(DATA_PATH)
-                        .queryParam("userId", userId)
-                        .build())
+                        .build(userId))
                 .retrieve()
                 .bodyToMono(UserDto.class)
                 .doOnError(e -> {
@@ -44,8 +43,7 @@ public class AuthServiceIntegration {
         return authWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path(USER_PATH)
-                        .queryParam("userId", userId)
-                        .build())
+                        .build(userId))
                 .retrieve()
                 .bodyToMono(UserLightDto.class)
                 .doOnError(e -> {

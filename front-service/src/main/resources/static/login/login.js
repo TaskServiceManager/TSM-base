@@ -24,7 +24,8 @@ angular.module('ttsystem-front').controller('loginController', function ($scope,
                                                 {view: 'assigned', roles: ['ROLE_EXECUTOR']},
                                                 {view: 'assignToMeButton', roles: ['ROLE_EXECUTOR']},
                                                 {view: 'assignButton', roles: ['ROLE_MANAGER']},
-                                                {view: 'timepointButton', roles: ['ROLE_EXECUTOR']}];
+                                                {view: 'timepointButton', roles: ['ROLE_EXECUTOR']},
+                                                {view: 'approvedButton', roles: ['ROLE_EXECUTOR']}];
                     $location.path('/');
                 }
             }, function errorCallback(response) {

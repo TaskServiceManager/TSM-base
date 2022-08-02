@@ -4,6 +4,7 @@ package com.sanjati.core.services;
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.OperationError;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
+import com.sanjati.core.entities.Task;
 import com.sanjati.core.entities.TimePoint;
 import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.enums.TimePointStatus;
@@ -71,6 +72,15 @@ public class TimePointService {
                 tp.setStatus(TimePointStatus.FINISHED);
                 tp.setFinishedAt(LocalDateTime.now());
             }
+        });
+    }
+
+    @Transactional
+    public void closeAllTimePointsByTask(Long taskId) {
+        List<TimePoint> timePoints = timePointRepository.findByTaskIdAndStatus(taskId, TimePointStatus.IN_PROCESS);
+        timePoints.forEach(tp-> {
+            tp.setStatus(TimePointStatus.FINISHED);
+            tp.setFinishedAt(LocalDateTime.now());
         });
     }
 

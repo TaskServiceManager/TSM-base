@@ -34,6 +34,10 @@
 //                templateUrl: 'form/form.html',
 //                controller: 'formController'
 //            })
+            .when('/records', {
+                   templateUrl: 'records/records.html',
+                   controller: 'recordsController'
+            })
             .otherwise({
                 redirectTo: '/'
             });

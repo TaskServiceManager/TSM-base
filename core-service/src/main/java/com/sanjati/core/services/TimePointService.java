@@ -41,6 +41,7 @@ public class TimePointService {
                 throw new MandatoryCheckException("Временная отметка уже закрыта");
             }
             tp.setStatus(TimePointStatus.FINISHED);
+            tp.setFinishedAt(LocalDateTime.now());
         } else {
             if(timePointRepository.existsByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
                 throw new MandatoryCheckException("Нельзя открыть новую отметку пока есть незавешённые");

@@ -126,6 +126,7 @@ public class AuthController {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к смене рабочего времени");
         }
         userService.updateWorkTime(executorId, workTimeDtoRq);
+    }
 
     @Operation(
             summary = "Чтение данных пользователей в коротком виде",

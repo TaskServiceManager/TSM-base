@@ -89,6 +89,7 @@ public class UserService implements UserDetailsService {
         user.setStartWorkTime(workTimeDtoRq.getStartWorkTime());
         user.setEndWorkTime(workTimeDtoRq.getEndWorkTime());
         userRepository.save(user);
+    }
 
     /*
     * составление List<UserLightDto> по списку ID
@@ -98,7 +99,7 @@ public class UserService implements UserDetailsService {
         for (Long userId : usersId) {
             User user = findByUserId(userId).get();
             lightUsers.add(userConverter.modelToLightDto(user));
-        }
+            }
         return lightUsers;
 
     }

@@ -137,6 +137,13 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
         return false;
    }
 
+   $scope.isCurrentUserChief = function() {
+       if($scope.Task && $scope.Task.chief && $localStorage.ttsystemUser) {
+           return $scope.Task.chief.id==$localStorage.ttsystemUser.userId;
+       }
+       return false;
+   }
+
    $scope.changeTimepoint = function(timepointId) {
         $http({
              url: contextPath + 'api/v1/time',
@@ -152,6 +159,19 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
              console.log('error');
              console.log(response);
        });
+   }
+
+   $scope.changeTaskStatus = function(newStatus) {
+       $http({
+            url: contextPath + 'api/v1/tasks/'+$scope.Task.id+'/status/'+newStatus,
+            method: 'PATCH'
+          }).then(function successCallback(response) {
+            $scope.loadTaskWithComments();
+          }, function errorCallback(response) {
+            alert(response.data.message);
+            console.log('error');
+            console.log(response);
+      });
    }
 
     $scope.loadTaskWithComments();

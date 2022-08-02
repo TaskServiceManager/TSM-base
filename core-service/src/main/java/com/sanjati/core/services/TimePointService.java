@@ -19,6 +19,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -98,18 +99,31 @@ public class TimePointService {
 
     @Scheduled(fixedRateString = "${interval.closingTimePoints}")
     @Transactional
-    public void autoClosingTimePoint() {
+    public void autoClosingTimePoints() {
         List<UserLightDto> executors = authServiceIntegration.getAllExecutors();
         List<TimePoint> activeTimePoints = timePointRepository.findAllByStatus(TimePointStatus.IN_PROCESS);
-        executors.forEach(p -> System.out.println(p.getEndWorkTime()));
         for (UserLightDto exec : executors) {
             if (exec.getEndWorkTime() != null && LocalTime.now().isAfter(exec.getEndWorkTime())){
                 for (TimePoint point : activeTimePoints) {
                     if (point.getExecutorId().equals(exec.getId())){
                         point.setStatus(TimePointStatus.FINISHED);
+                        point.setFinishedAt(getActualLocalDateTime(exec.getEndWorkTime()));
                     }
                 }
             }
         }
+    }
+
+    /*
+    Время окончания работы у сотрудника может быть в 2022-08-01T23:50, а автоматическое закрытие происходить
+    в 2022-08-02T01:45. В этом случае переменная ldt получится 2022-08-02T23:50 - это не корректно.
+    Поэтому необходимо уменьшить это значение на 1 день.
+     */
+    private LocalDateTime getActualLocalDateTime(LocalTime endWorkTime){
+        LocalDateTime ldt = LocalDateTime.of(LocalDate.now(), endWorkTime);
+        if (LocalDateTime.now().isBefore(ldt)){
+            ldt = ldt.minusDays(1);
+        }
+        return ldt;
     }
 }

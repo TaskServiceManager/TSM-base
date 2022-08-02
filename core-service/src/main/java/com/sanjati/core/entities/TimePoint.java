@@ -25,6 +25,7 @@ public class TimePoint {
     @Column(name = "executor_id")
     private Long executorId;
     @Column(name = "status")
+    @Enumerated(value = EnumType.STRING)
     private TimePointStatus status;
 
     @CreationTimestamp

@@ -1,7 +1,11 @@
 package com.sanjati.auth.services;
 
 
+
+import com.sanjati.api.auth.WorkTimeDtoRq;
+
 import com.sanjati.api.auth.UserLightDto;
+
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.entities.Role;
@@ -77,6 +81,15 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+
+
+    public void updateWorkTime(Long executorId, WorkTimeDtoRq workTimeDtoRq){
+        User user = userRepository.findById(executorId).orElseThrow(
+                () -> new ResourceNotFoundException("Пользователь с указанный ID не найден"));
+        user.setStartWorkTime(workTimeDtoRq.getStartWorkTime());
+        user.setEndWorkTime(workTimeDtoRq.getEndWorkTime());
+        userRepository.save(user);
+
     /*
     * составление List<UserLightDto> по списку ID
     *  */
@@ -87,6 +100,7 @@ public class UserService implements UserDetailsService {
             lightUsers.add(userConverter.modelToLightDto(user));
         }
         return lightUsers;
+
     }
 
 }

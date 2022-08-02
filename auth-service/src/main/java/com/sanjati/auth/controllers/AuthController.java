@@ -3,6 +3,7 @@ package com.sanjati.auth.controllers;
 
 import com.sanjati.api.auth.UserDto;
 import com.sanjati.api.auth.UserLightDto;
+import com.sanjati.api.auth.WorkTimeDtoRq;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.dto.JwtRequest;
@@ -14,11 +15,13 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,6 +103,30 @@ public class AuthController {
         return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
     }
 
+
+    @Operation(
+            summary = "Запрос на изменение времени работы исполнителя",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Исполнитель не найден", responseCode = "404"
+                    )
+            }
+    )
+    @PatchMapping("/users/{id}/worktime")
+    public void updateWorkTime(@Parameter(description = "ID исполнителя")
+                                   @PathVariable(name = "id") Long executorId,
+                               @Parameter(description = "Список ролей")
+                                   @RequestHeader String role,
+                               @Parameter(description = "Тело запроса с новым временем работы")
+                                   @RequestBody WorkTimeDtoRq workTimeDtoRq){
+        if (!role.contains("ROLE_EXECUTOR")){
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к смене рабочего времени");
+        }
+        userService.updateWorkTime(executorId, workTimeDtoRq);
+
     @Operation(
             summary = "Чтение данных пользователей в коротком виде",
             responses = {
@@ -112,6 +139,7 @@ public class AuthController {
     public List<UserLightDto> getLightUserDataById(@Parameter(description = "список ID пользователей", required = true)
                                                    @RequestBody List<Long> usersId) {
         return userService.getLightUserDataById(usersId);
+
     }
 
 }

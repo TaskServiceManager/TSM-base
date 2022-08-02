@@ -2,17 +2,20 @@ package com.sanjati.auth.services;
 
 
 
+
 import com.sanjati.api.auth.WorkTimeDtoRq;
 
 import com.sanjati.api.auth.UserLightDto;
 
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
+
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
-import com.sanjati.auth.repositories.RoleRepository;
 import com.sanjati.auth.repositories.UserRepository;
+
 import io.swagger.v3.oas.annotations.Parameter;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -25,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -33,21 +35,30 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+
     private final RoleRepository roleRepository;
     private final UserConverter userConverter;
 
 
-    /*
-    *   Поиск имени пользователя
-    * */
-    public Optional<User> findByUsername(String username) {
+    @Operation(
+            summary = "Поиск имени пользователя",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-
-    /*
-    *  Загрузка пользователя по имени
-    * */
+    @Operation(
+            summary = "Загрузка пользователя по имени",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username)  {
@@ -55,13 +66,18 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
-
-    /*
-    *  Загрузка списка ролей
-    * */
+    @Operation(
+            summary = "Загрузка псписка ролей",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
+
 
 
 
@@ -103,5 +119,6 @@ public class UserService implements UserDetailsService {
         return lightUsers;
 
     }
+
 
 }

@@ -21,6 +21,8 @@ public class UserConverter {
                 .lastName(user.getLastName())
                 .middleName(user.getMiddleName())
                 .email(user.getEmail())
+                .startWorkTime(user.getStartWorkTime())
+                .endWorkTime(user.getEndWorkTime())
                 .build();
     }
 }

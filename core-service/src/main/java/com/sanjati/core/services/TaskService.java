@@ -4,6 +4,7 @@ package com.sanjati.core.services;
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.core.AssignDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
+import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 
 import com.sanjati.core.entities.Task;
@@ -19,10 +20,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -40,18 +41,18 @@ public class TaskService {
 
 
     public Task findById(Long id) {
-        return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + id));
     }
 
     public void changeStatus(Long taskId, String rusStatus) {
         TaskStatus enumStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(rusStatus)).findFirst().
-                orElseThrow(()-> new ResourceNotFoundException("Указанный статус заявки не найден"));
+                orElseThrow(()-> new ResourceNotFoundException("Указанный статус заявки не найден STATUS : " +rusStatus));
         changeStatus(taskId, enumStatus);
     }
 
     @Transactional
     public void changeStatus(Long taskId, TaskStatus newStatus) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : "+ taskId));
         switch (newStatus) {
             case CREATED: {
                 if (TaskStatus.CANCELLED == task.getStatus()) {
@@ -121,7 +122,7 @@ public class TaskService {
     @Transactional
     public void assignTaskBatch(Long taskId, Long assignerId, AssignDtoRq assignDtoRq) {
         if (assignDtoRq.getExecutorIds()==null || assignDtoRq.getChiefId()==null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Не выбраны хотя бы один исполнитель и ответственный по заявке");
+            throw new MandatoryCheckException("Не выбраны хотя бы один исполнитель и ответственный по заявке");
         }
         Task task = getTaskAvailableForChanges(taskId);
         Set<Long> taskExecutors = task.getExecutors();
@@ -147,9 +148,9 @@ public class TaskService {
     }
 
     private Task getTaskAvailableForChanges(Long taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
         if (task.getStatus() == TaskStatus.CANCELLED || task.getStatus() == TaskStatus.COMPLETED) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Заявка отклонена или уже была выполнена.");
+            throw new MandatoryCheckException( "Заявка отклонена или уже была выполнена.");
         }
         return task;
     }
@@ -187,7 +188,6 @@ public class TaskService {
 
 
     public void createTask(Long ownerId, TaskDtoRq taskCreateDto) {
-        //TODO написать создание заявки
         Task task = new Task();
         task.setOwnerId(ownerId);
 
@@ -198,11 +198,7 @@ public class TaskService {
     }
 
     public boolean checkTaskOwnerId(Long userId, Long taskId) {
-
-
-        if (taskRepository.isCountMoreThanZeroByOwnerIdAndTaskId(taskId,userId)) return true;
-        return false;
-
+        return  taskRepository.isCountMoreThanZeroByOwnerIdAndTaskId(taskId,userId);
     }
     public TaskStatus getStatusByTaskId(Long taskId){
        return taskRepository.findStatusByTaskId(taskId);

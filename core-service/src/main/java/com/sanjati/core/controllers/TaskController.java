@@ -3,6 +3,7 @@ package com.sanjati.core.controllers;
 import com.sanjati.api.core.AssignDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.core.TaskDto;
+import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.core.converters.TaskConverter;
 import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.services.TaskService;
@@ -94,7 +95,7 @@ public class TaskController {
                                @Parameter(description = "ID пользователя", required = true)
                                    @RequestHeader(name = "id") Long userId) {
         if(!role.contains("EXECUTOR")){
-            if(!taskService.checkTaskOwnerId(userId,id)) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к чужим заявкам");
+            if(!taskService.checkTaskOwnerId(userId,id)) throw new MandatoryCheckException("Нет доступа к чужим заявкам");
         }
         return taskConverter.entityToDto(taskService.findById(id));
     }

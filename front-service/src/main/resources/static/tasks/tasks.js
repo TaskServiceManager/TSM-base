@@ -8,8 +8,9 @@ angular.module('ttsystem-front').controller('tasksController', function ($scope,
                 params: {
                     ownerId: $localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null,
                     page: pageIndex ? pageIndex : 1,
-//                    from: $scope.newFilter ? $scope.newFilter.from : null,
-//                    to: $scope.newFilter ? $scope.newFilter.to : null,
+                    from: $scope.filter ? $scope.filter.from : null,
+                    to: $scope.filter ? $scope.filter.to : null,
+                    status: $scope.filter ? $scope.filter.status : null
                 }
         }).then(function (response) {
             $scope.MyTasks = response.data.content;

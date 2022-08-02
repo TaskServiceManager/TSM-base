@@ -7,9 +7,7 @@ angular.module('ttsystem-front').controller('incomingController', function ($sco
                 method: 'GET',
                 params: {
                     page: pageIndex ? pageIndex : 1,
-                    status: 'Создана'
-//                    from: $scope.newFilter ? $scope.newFilter.from : null,
-//                    to: $scope.newFilter ? $scope.newFilter.to : null,
+                    status: 'CREATED'
                 }
         }).then(function (response) {
             $scope.IncomingTasks = response.data.content;

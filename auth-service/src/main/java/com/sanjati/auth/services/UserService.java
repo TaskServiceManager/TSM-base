@@ -46,8 +46,8 @@ public class UserService implements UserDetailsService {
     * */
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(String.format("User '%s' not found", username)));
+    public UserDetails loadUserByUsername(String username)  {
+        User user = findByUsername(username).orElseThrow(() -> new ResourceNotFoundException(String.format("User '%s' not found", username)));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
@@ -71,7 +71,7 @@ public class UserService implements UserDetailsService {
     //если будет много парамов, то потом надо переделать на спеку
     public List<User> getAllUsers(String roleName){
         if (roleName != null){
-            Role role = roleRepository.findByName(roleName).orElseThrow(() -> new ResourceNotFoundException("Указанная роль не найдена."));
+            Role role = roleRepository.findByName(roleName).orElseThrow(() -> new ResourceNotFoundException(String.format("Указанная роль %s не найдена.",roleName)));
             return userRepository.findAllByRoles(role);
         }
         return userRepository.findAll();

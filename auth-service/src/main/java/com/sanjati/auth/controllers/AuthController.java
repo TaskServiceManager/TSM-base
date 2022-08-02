@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -64,6 +65,7 @@ public class AuthController {
     )
     @GetMapping("/users/{id}/data")
     public UserDto getFullUserDataById(@Parameter(description = "ID пользователя", required = true)
+
                                            @PathVariable(name = "id") Long userId){
         User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found ID : " + userId));
         return userConverter.modelToDto(user);
@@ -94,8 +96,22 @@ public class AuthController {
     )
     @GetMapping("/users")
     public List<UserLightDto> getAllUsers(@Parameter(description = "Роль пользователей")
-                                              @RequestParam(required = false) String role){
+                                          @RequestParam(required = false) String role) {
         return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
+    }
+
+    @Operation(
+            summary = "Чтение данных пользователей в коротком виде",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @PostMapping("/users")
+    public List<UserLightDto> getLightUserDataById(@Parameter(description = "список ID пользователей", required = true)
+                                                   @RequestBody List<Long> usersId) {
+        return userService.getLightUserDataById(usersId);
     }
 
 }

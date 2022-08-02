@@ -68,7 +68,7 @@ public class AuthController {
     @GetMapping("/users/{id}/data")
     public UserDto getFullUserDataById(@Parameter(description = "ID пользователя", required = true)
                                            @PathVariable(name = "id") Long userId){
-        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found ID : " + userId));
         return userConverter.modelToDto(user);
     }
 
@@ -83,7 +83,7 @@ public class AuthController {
     @GetMapping("/users/{id}")
     public UserLightDto getUserLightByUserId(@Parameter(description = "ID пользователя", required = true)
                                                  @PathVariable(name = "id") Long userId){
-        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found ID : " + userId));
         return userConverter.modelToLightDto(user);
     }
 

@@ -1,10 +1,13 @@
 package com.sanjati.core.services;
 
 
+
 import com.sanjati.api.auth.UserLightDto;
-import com.sanjati.api.exceptions.OperationError;
+
+=======
+import com.sanjati.api.exceptions.MandatoryCheckException;
+
 import com.sanjati.api.exceptions.ResourceNotFoundException;
-import com.sanjati.core.entities.Task;
 import com.sanjati.core.entities.TimePoint;
 import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.enums.TimePointStatus;
@@ -44,14 +47,15 @@ public class TimePointService {
 
         TimePoint tp;
         if (timePointId != null) {
-            tp = timePointRepository.findById(timePointId).orElseThrow(()->new ResourceNotFoundException("Отметка не существует"));
+            tp = timePointRepository.findById(timePointId).orElseThrow(()->new ResourceNotFoundException("Отметка не существует ID : " + timePointId));
             if (tp.getStatus() == TimePointStatus.FINISHED){
-                throw new OperationError("Временная отметка уже закрыта");
+                throw new MandatoryCheckException("Временная отметка уже закрыта");
             }
             tp.setStatus(TimePointStatus.FINISHED);
+            tp.setFinishedAt(LocalDateTime.now());
         } else {
             if(timePointRepository.existsByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
-                throw new OperationError("Нельзя открыть новую отметку пока есть незавешённые");
+                throw new MandatoryCheckException("Нельзя открыть новую отметку пока есть незавешённые");
             }
             if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
                 taskService.changeStatus(taskId, TaskStatus.ACCEPTED);

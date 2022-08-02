@@ -21,15 +21,16 @@ import java.util.List;
 @Slf4j
 public class AuthServiceIntegration {
     private final WebClient authWebClient;
-    private final String DATA_PATH = "api/v1/data";
-    private final String USER_PATH = "api/v1/user";
-    private final String ALL_USERS_PATH = "api/v1/users";
+//    private final String DATA_PATH = "api/v1/data";
+//    private final String USER_PATH = "api/v1/users";
+//    private final String ALL_USERS_PATH = "api/v1/users"; НЕУДОБНО (и с ошибками)
 
     public UserDto getUserById(Long userId) {
         return authWebClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(DATA_PATH)
-                        .queryParam("userId", userId)
+                        .path("api/v1/")
+                        .path(userId.toString())
+                        .path("/data")
                         .build())
                 .retrieve()
                 .bodyToMono(UserDto.class)
@@ -40,8 +41,8 @@ public class AuthServiceIntegration {
     public UserLightDto getUserLightById(Long userId) {
         return authWebClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(USER_PATH)
-                        .queryParam("userId", userId)
+                        .path("api/v1/users/")
+                        .path(userId.toString())
                         .build())
                 .retrieve()
                 .bodyToMono(UserLightDto.class)
@@ -52,7 +53,7 @@ public class AuthServiceIntegration {
     public List<UserLightDto> getAllExecutors(){
         return authWebClient.get()
                 .uri(uriBuilder -> uriBuilder
-                        .path(ALL_USERS_PATH)
+                        .path("api/v1/users")
                         .queryParam("role", "ROLE_EXECUTOR")
                         .build())
                 .retrieve()

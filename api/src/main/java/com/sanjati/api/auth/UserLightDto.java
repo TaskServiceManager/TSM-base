@@ -3,6 +3,8 @@ package com.sanjati.api.auth;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
+import java.time.LocalTime;
+
 @Builder
 @Schema(description = "Короткая информация о пользователе")
 public class UserLightDto {
@@ -21,16 +23,24 @@ public class UserLightDto {
             "Для исполнителя - количество выполняемых активных задач.", example = "3")
     private Long amountActiveTasks;
 
+    @Schema(description = "Время начала рабочего дня исполнителя", example = "09:06:00")
+    private LocalTime startWorkTime;
+    @Schema(description = "Время окончания рабочего дня исполнителя", example = "18:13:00")
+    private LocalTime endWorkTime;
+
     public UserLightDto() {
     }
 
-    public UserLightDto(Long id, String firstName, String lastName, String middleName, String email, Long amountActiveTasks) {
+    public UserLightDto(Long id, String firstName, String lastName, String middleName, String email, Long amountActiveTasks,
+                        LocalTime startWorkTime, LocalTime endWorkTime) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;
         this.email = email;
         this.amountActiveTasks = amountActiveTasks;
+        this.startWorkTime = startWorkTime;
+        this.endWorkTime = endWorkTime;
     }
 
     public Long getId() {
@@ -79,6 +89,22 @@ public class UserLightDto {
 
     public void setAmountActiveTasks(Long amountActiveTasks) {
         this.amountActiveTasks = amountActiveTasks;
+    }
+
+    public LocalTime getStartWorkTime() {
+        return startWorkTime;
+    }
+
+    public void setStartWorkTime(LocalTime startWorkTime) {
+        this.startWorkTime = startWorkTime;
+    }
+
+    public LocalTime getEndWorkTime() {
+        return endWorkTime;
+    }
+
+    public void setEndWorkTime(LocalTime endWorkTime) {
+        this.endWorkTime = endWorkTime;
     }
 
     public String getShortNameFormatted() {

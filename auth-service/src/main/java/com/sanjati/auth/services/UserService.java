@@ -1,6 +1,8 @@
 package com.sanjati.auth.services;
 
 
+import com.sanjati.api.auth.WorkTimeDtoRq;
+import com.sanjati.api.exceptions.OperationError;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
@@ -69,6 +71,15 @@ public class UserService implements UserDetailsService {
             return userRepository.findAllByRoles(role);
         }
         return userRepository.findAll();
+    }
+
+
+    public void updateWorkTime(Long executorId, WorkTimeDtoRq workTimeDtoRq){
+        User user = userRepository.findById(executorId).orElseThrow(
+                () -> new ResourceNotFoundException("Пользователь с указанный ID не найден"));
+        user.setStartWorkTime(workTimeDtoRq.getStartWorkTime());
+        user.setEndWorkTime(workTimeDtoRq.getEndWorkTime());
+        userRepository.save(user);
     }
 
 }

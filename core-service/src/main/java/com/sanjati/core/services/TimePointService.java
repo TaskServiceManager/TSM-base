@@ -1,16 +1,14 @@
 package com.sanjati.core.services;
 
 
+import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.OperationError;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
-import com.sanjati.core.configs.SchedulerConfig;
-import com.sanjati.core.entities.Task;
 import com.sanjati.core.entities.TimePoint;
-import com.sanjati.core.entities.WorkDay;
 import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.enums.TimePointStatus;
+import com.sanjati.core.integrations.AuthServiceIntegration;
 import com.sanjati.core.repositories.TimePointRepository;
-import com.sanjati.core.repositories.WorkDayRepository;
 import com.sanjati.core.repositories.specifications.TimePointsSpecifications;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
@@ -22,19 +20,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 @Service
 @Slf4j
 public class TimePointService {
     private final TimePointRepository timePointRepository;
     private final TaskService taskService;
-    private final WorkDayRepository workDayRepository;
+    private final AuthServiceIntegration authServiceIntegration;
 
-    public TimePointService(TimePointRepository timePointRepository, @Lazy TaskService taskService, WorkDayRepository workDayRepository) {
+    public TimePointService(TimePointRepository timePointRepository, @Lazy TaskService taskService,
+                            AuthServiceIntegration authServiceIntegration) {
         this.timePointRepository = timePointRepository;
         this.taskService = taskService;
-        this.workDayRepository = workDayRepository;
+        this.authServiceIntegration = authServiceIntegration;
     }
 
     @Transactional
@@ -99,12 +99,13 @@ public class TimePointService {
     @Scheduled(fixedRateString = "${interval.closingTimePoints}")
     @Transactional
     public void autoClosingTimePoint() {
-        List<WorkDay> workDayList = workDayRepository.findAllLastWorkDays();
+        List<UserLightDto> executors = authServiceIntegration.getAllExecutors();
         List<TimePoint> activeTimePoints = timePointRepository.findAllByStatus(TimePointStatus.IN_PROCESS);
-        for (WorkDay workDay : workDayList) {
-            if (LocalDateTime.now().compareTo(workDay.getEnd()) >= 0){
+        executors.forEach(p -> System.out.println(p.getEndWorkTime()));
+        for (UserLightDto exec : executors) {
+            if (exec.getEndWorkTime() != null && LocalTime.now().isAfter(exec.getEndWorkTime())){
                 for (TimePoint point : activeTimePoints) {
-                    if (point.getExecutorId().equals(workDay.getExecutorId())) {
+                    if (point.getExecutorId().equals(exec.getId())){
                         point.setStatus(TimePointStatus.FINISHED);
                     }
                 }

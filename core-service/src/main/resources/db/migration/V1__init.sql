@@ -48,13 +48,6 @@ create table time_points(
 
 );
 
-create table work_days(
-    id bigserial primary key,
-    executor_id bigint not null ,
-    start timestamp not null ,
-    end timestamp not null
-);
-
 insert into tasks (title,description, owner_id,status)
 values ( 'всё сломалось =(','плохо, плохо, плохо ничего не работает ', 1,'ACCEPTED'),
        ( 'всё сломалось =(','плохо, плохо, плохо ничего не работает ', 4,'ACCEPTED'),
@@ -92,6 +85,11 @@ values (1,3,'>> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
        (4,2,'Нет не выполнены работы по починке того, что было сломано'),
        (4,3,'Теперь точно выполнены');
 
+insert into time_points (task_id, executor_id, status)
+values (1, 2, 'FINISHED'),
+       (2, 2, 'IN_PROCESS'),
+       (3, 3, 'FINISHED'),
+       (4, 3, 'IN_PROCESS');
 
 
 

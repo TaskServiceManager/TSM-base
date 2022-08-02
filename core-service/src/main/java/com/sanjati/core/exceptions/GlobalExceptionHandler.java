@@ -25,9 +25,4 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.toString(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler
-    public ResponseEntity<AppError> catchWorkDayException(WorkDayException e){
-        log.error(e.getMessage(), e);
-        return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.toString(), e.getMessage()), HttpStatus.BAD_REQUEST);
-    }
 }

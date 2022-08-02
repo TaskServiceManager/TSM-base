@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Collection;
 
 @Entity
@@ -59,6 +60,11 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Collection<Role> roles;
+
+    @Column(name = "start_work_time")
+    private LocalTime startWorkTime;
+    @Column(name = "end_work_time")
+    private LocalTime endWorkTime;
 
     @CreationTimestamp
     @Column(name = "created_at")

@@ -94,7 +94,7 @@ public class TimePointController {
     }
 
     @Operation(
-            summary = "Запрос на получение последней временной отметки пользователя",
+            summary = "Запрос на получение временной отметки пользователя со статусом IN_PROCESS",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200",
@@ -105,6 +105,6 @@ public class TimePointController {
     @GetMapping("/current")
     public TimePointDto getCurrentUserTimePoint(@Parameter(description = "ID пользователя", required = true)
                                                    @RequestHeader(name = "id") Long userId){
-        return timePointConverter.entityToDto(timePointService.getLastByUserId(userId));
+        return timePointConverter.entityToDto(timePointService.getCurrentTimePointByUserId(userId));
     }
 }

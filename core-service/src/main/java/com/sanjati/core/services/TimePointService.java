@@ -107,8 +107,8 @@ public class TimePointService {
         return timePointRepository.findAll(spec, PageRequest.of(page - 1, 100));
     }
 
-    public TimePoint getLastByUserId(Long userId) {
-        return timePointRepository.findFirstByExecutorIdOrderByStartedAtDesc(userId).stream().findFirst().orElse(null);
+    public TimePoint getCurrentTimePointByUserId(Long userId) {
+        return timePointRepository.findFirstByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS).stream().findFirst().orElse(null);
     }
 
     @Scheduled(fixedRateString = "${interval.closingTimePoints}")

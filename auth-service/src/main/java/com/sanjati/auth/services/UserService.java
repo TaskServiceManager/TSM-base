@@ -2,7 +2,6 @@ package com.sanjati.auth.services;
 
 
 import com.sanjati.api.auth.WorkTimeDtoRq;
-import com.sanjati.api.exceptions.OperationError;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;

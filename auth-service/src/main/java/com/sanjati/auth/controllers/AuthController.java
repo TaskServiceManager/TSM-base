@@ -102,6 +102,17 @@ public class AuthController {
     }
 
 
+    @Operation(
+            summary = "Запрос на изменение времени работы исполнителей",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Исполнитель не найден", responseCode = "404"
+                    )
+            }
+    )
     @PostMapping("/users/worktime")
     public void updateWorkTime(@Parameter(description = "ID исполнителя")
                                    @RequestHeader(name = "id") Long executorId,

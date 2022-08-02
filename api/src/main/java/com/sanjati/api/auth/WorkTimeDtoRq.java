@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.time.LocalTime;
 
-@Schema(description = "Тело запроса для создания нового рабочего дня")
+@Schema(description = "Тело запроса для изменения рабочего времени исполнителя")
 public class WorkTimeDtoRq {
 
 

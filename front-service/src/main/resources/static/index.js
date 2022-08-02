@@ -205,9 +205,8 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
     $rootScope.loadFullUserData = function() {
         if($localStorage.ttsystemUser) {
             $http({
-                url: contextAuthPath + 'api/v1/data',
-                method: 'GET',
-                params: {userId: $localStorage.ttsystemUser.userId}
+                url: contextAuthPath + 'api/v1/users/'+ ($localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null) +'/data',
+                method: 'GET'
             }).then(function (response) {
                 $rootScope.CurrentUser = response.data;
             });
@@ -215,6 +214,9 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
     }
 
     $rootScope.loadCurrentUserTimepoint = function(taskId) {
+       if(!$rootScope.isUserLoggedIn()) {
+            return;
+       }
        $http({
             url: contextCorePath + 'api/v1/time/current',
             method: 'GET'

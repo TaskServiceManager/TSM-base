@@ -34,6 +34,10 @@
 //                templateUrl: 'form/form.html',
 //                controller: 'formController'
 //            })
+            .when('/records', {
+                   templateUrl: 'records/records.html',
+                   controller: 'recordsController'
+            })
             .otherwise({
                 redirectTo: '/'
             });
@@ -62,6 +66,7 @@
 angular.module('ttsystem-front').controller('indexController', function ($rootScope, $scope, $http, $location, $localStorage, $filter, $route) {
 
     const contextCorePath = 'http://localhost:5555/core/';
+    const contextAuthPath = 'http://localhost:5555/auth/';
 
     $rootScope.isUserLoggedIn = function () {
         if ($localStorage.ttsystemUser) {
@@ -197,6 +202,41 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
        return '-';
     }
 
+    $rootScope.loadFullUserData = function() {
+        if($localStorage.ttsystemUser) {
+            $http({
+                url: contextAuthPath + 'api/v1/users/'+ ($localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null) +'/data',
+                method: 'GET'
+            }).then(function (response) {
+                $rootScope.CurrentUser = response.data;
+            });
+        }
+    }
+
+    $rootScope.loadCurrentUserTimepoint = function(taskId) {
+       if(!$rootScope.isUserLoggedIn()) {
+            return;
+       }
+       $http({
+            url: contextCorePath + 'api/v1/time/current',
+            method: 'GET'
+          }).then(function successCallback(response) {
+            $rootScope.Timepoint = response.data;
+          }, function errorCallback(response) {
+            alert('Не удалось загрузить текущую задачу в работе','danger');
+            console.log('error');
+            console.log(response);
+      });
+    }
+
+    $rootScope.renderRoles = function () {
+       if($localStorage.ttsystemUser && $localStorage.ttsystemUser.roles) {
+          return $localStorage.ttsystemUser.roles.join(', ');
+       }
+       return 'Не найдены';
+    }
 
     $rootScope.loadDetailsOpen();
+    $rootScope.loadFullUserData();
+    $rootScope.loadCurrentUserTimepoint();
 });

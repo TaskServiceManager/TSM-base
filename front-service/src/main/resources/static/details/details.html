@@ -1,10 +1,168 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<div class="table table-hover" ng-show="!Task" align="center">Нет доступа для просмотра заявки</div>
+<div ng-show="Task">
+    <div style="display: flex">
+        <h4>Детализация</h4>
+        <form style="margin-left:1%" class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="assignTaskToMe()">
+            <button class="btn btn-outline-success my-2 my-sm-0" ng-show="isAllowed('assignToMeButton')&&isTaskNotAssigned()&&!isCurrentUserTaskOwner()" type="submit">Назначить на себя</button>
+        </form>
+        <form style="margin-left:1%" class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="showAssignModal()">
+            <button class="btn btn-outline-success my-2 my-sm-0" ng-show="isAllowed('assignButton')&&!isCurrentUserTaskOwner()" type="submit">Назначить исполнителей</button>
+        </form>
+    </div>
+    <br>
+    <form id="details">
+        <div class="table table-hover">
+            <table style="width:100%; border-color:white;">
+                <tr>
+                    <td>
+                        <div class="form-group row">
+                            <label>ID</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control-details form-control" value="{{Task.id}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group row">
+                            <label>Статус</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control-details form-control" value="{{Task.status}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group row">
+                            <label>Автор</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control-details form-control" value="{{renderFullUserName(Task.owner)}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group row">
+                            <label>Дата создания</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control-details form-control" value="{{Task.createdAt}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group row">
+                            <label>Тема</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control-details form-control" value="{{Task.title}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group row">
+                            <label>Дата последнего обновления</label>
+                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control-details form-control" value="{{Task.updatedAt}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td rowspan=2>
+                        <div class="form-group row">
+                            <label style="align-self: baseline">Описание</label>
+                            <div class="form-group col-md-6">{{Task.description}}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group row">
+                            <label>Дата выполнения</label>
+                            <div class="form-group col-md-6">
+                                <input type="textarea" class="form-control-details form-control" value="{{Task.completedAt}}" readonly>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="form-group row">
+                            <label>Исполнители</label>
+                            <table ng-show="Task.executors && Task.executors.length>0" style="width:60%; border-color:white;" id="executors">
+                                <tr ng-repeat="executor in Task.executors" data-ng-click="showModalForExecutorDetails(executor)" style="cursor: pointer">
+                                    <td>{{renderExecutors([executor])}}</td>
+                                </tr>
+                            </table>
+                            <div ng-hide="Task.executors && Task.executors.length>0" class="form-group col-md-6">Не назначены</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    <hr>
 
-</body>
-</html>
+    <h4>Комментарии</h4>
+    <br>
+    <div style="display:flex; width:100%">
+        <form style="width:60%;">
+            <div class="table table-hover">
+                <table style="width:100%; border-color:white;">
+                    <tr ng-repeat="comment in Comments">
+                        <td style="width:15%; text-align:right; padding-right:5px">
+                            <div ng-show="!isAuthorTaskOwner(comment.author.id)" data-ng-click="showModalForExecutorDetails(comment.author)" style="cursor: pointer">
+                                <span style="font-size: x-small">{{'[' + comment.createdAt + ']'}}</span>
+                                <span>{{renderExecutors([comment.author])}}</span>
+                            </div>
+                        </td>
+                        <td style="width:70%">
+                            <div class="form-group col-md-6 comment">{{comment.description}}</div>
+                        </td>
+                        <td style="width:15%; padding-left:5px">
+                            <div ng-show="isAuthorTaskOwner(comment.author.id)">
+                                <span style="font-size: x-small">{{'[' + comment.createdAt + ']'}}</span>
+                                <span>{{renderExecutors([comment.author])}}</span>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </form>
+        <form style="width:40%; float:right" ng-submit="sendComment()">
+            <textarea name="comment" maxlength="2000" class="form-control commentInput" placeholder="Введите комментарий" rows="5" ng-model="newComment.description"></textarea>
+            <button class="btn btn-outline-success" id="commentSend" type="submit">Отправить</button>
+        </form>
+    </div>
+</div>
+
+<!--Modal for assign-->
+<div id="item-modal-assign" class="modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-ng-click="closeAssignModal()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                Исполнители
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span style="font-size: small; float:left">Выберите исполнителей</span>
+                    <span style="font-size: small; float:right">Ответственный</span>
+                    <br>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" ng-repeat="executor in ExecutorsList">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input checkbox-custom" id="assigned" ng-click="addExecutorForTask(executor.id)" ng-checked="assignChief==executor.id">
+                                <label class="custom-control-label" for="assigned">{{renderFullUserName(executor)}}</label>
+                                <input type="checkbox" class="custom-control-input checkbox-custom" id="chief" ng-click="addChiefForTask(executor.id)" ng-checked="assignChief==executor.id">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <p></p>
+                <form novalidate ng-submit="assignExecutors()">
+                    <button style="float:right" class="btn btn-outline-success" id="assignExecutors" type="submit">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

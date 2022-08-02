@@ -8,7 +8,7 @@ utils:
 spring:
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:file:./orders;MODE=PostgreSQL
+    url: jdbc:h2:file:./tasks;MODE=PostgreSQL
     username: sa
     password:
   jpa:
@@ -23,10 +23,8 @@ spring:
         web-allow-others: false
 integrations:
   auth-service:
-    url: http://localhost:8721/data
+    url: http://localhost:5555/auth/
     connect-timeout: 2000
     read-timeout: 10000
     write-timeout: 2000
-logging:
-  level:
-    ROOT: DEBUG
+

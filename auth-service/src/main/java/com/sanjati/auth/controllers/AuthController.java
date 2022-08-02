@@ -2,7 +2,7 @@ package com.sanjati.auth.controllers;
 
 
 import com.sanjati.api.auth.UserDto;
-
+import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.dto.JwtRequest;
@@ -10,24 +10,38 @@ import com.sanjati.auth.dto.JwtResponse;
 import com.sanjati.auth.entities.User;
 import com.sanjati.auth.services.UserService;
 import com.sanjati.auth.utils.JwtTokenUtil;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
+@RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
+
+    private final UserConverter userConverter;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
 
+    @Operation(
+            summary = "Авторизация",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
     @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
 
@@ -39,11 +53,48 @@ public class AuthController {
 
         return ResponseEntity.ok(new JwtResponse(token));
     }
-    @GetMapping("/data")
-    public UserDto getFullData(@RequestHeader String username){
-        User user = userService.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found: " + username));
-        return UserConverter.modelToDto(user);
 
+    @Operation(
+            summary = "Чтение данных пользователя",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping("/data")
+    public UserDto getFullUserDataById(@RequestParam Long userId){
+        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+        return userConverter.modelToDto(user);
+    }
+
+    @Operation(
+            summary = "Зарос на получение короткой информации о пользователе по ID",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping("/user")
+    public UserLightDto getUserLightByUserId(@Parameter(description = "ID пользователя", required = true)
+                                                 @RequestParam Long userId){
+        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
+        return userConverter.modelToLightDto(user);
+    }
+
+    @Operation(
+            summary = "Зарос на получение короткой информации о всех пользователей",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
+    @GetMapping("/users")
+    public List<UserLightDto> getAllUsers(@Parameter(description = "Роль пользователей")
+                                              @RequestParam(required = false) String role){
+        return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
     }
 
 }

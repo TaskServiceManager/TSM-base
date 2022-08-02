@@ -1,0 +1,34 @@
+<div>
+    <div class="table table-hover" ng-show="!MyTasks || !MyTasks.length>0" align="center">Нет активных заявок</div>
+    <table class="table table-hover" ng-show="MyTasks.length>0">
+        <tr>
+            <td width="3%">ID</td>
+            <td width="15%">Тема</td>
+            <td width="30%">Описание</td>
+            <td width="7%">Статус</td>
+            <td width="10%">Дата создания</td>
+            <td width="10%">Исполнители</td>
+            <td width="12%">Дата выполнения</td>
+
+        </tr>
+        <tbody>
+        <tr ng-repeat="task in MyTasks" data-ng-click="goToDetails(task.id)" style="cursor: pointer">
+            <td>{{task.id}}</td>
+            <td>{{task.title}}</td>
+            <td width="40%">
+                    {{renderDescription(task.description)}}
+            </td>
+            <td>{{task.status}}</td>
+            <td>{{task.createdAt!=null ? task.createdAt : '-' }}</td>
+            <td>{{renderExecutors(task.executors)}}</td>
+            <td>{{task.completedAt!=null ? task.completedAt : '-' }}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p align="center" ng-show="MyTasks.length>0">
+        <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isFirstPage" ng-click="loadTasks(currentPage-1)"><</button>
+        <span>{{currentPage}}</span>
+        <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isLastPage" ng-click="loadTasks(currentPage+1)">></button>
+    </p>
+</div>

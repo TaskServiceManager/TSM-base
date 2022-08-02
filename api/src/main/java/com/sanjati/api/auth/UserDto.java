@@ -1,25 +1,67 @@
 package com.sanjati.api.auth;
 
-public class UserDto {
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Полная информация о пользователе")
+public class UserDto {
+    @Schema(description = "ID пользователя", example = "3")
+    private Long id;
+    @Schema(description = "Короткое имя пользователя", example = "userHi")
+    private String username;
+
+    @Schema(description = "Имя пользователя", example = "Дмитрий")
     private String firstName;
+    @Schema(description = "Фамилия пользователя", example = "Дмитриев")
     private String lastName;
-    private String patronymic;
+    @Schema(description = "Отчество пользователя", example = "Дмитриевич")
+    private String middleName;
+    @Schema(description = "E-mail пользователя", example = "ddd@mail.ru")
     private String email;
+    @Schema(description = "Место работы пользователя", example = "фирма 'Работяги'")
     private String company;
+    @Schema(description = "Рабочая e-mail пользователя", example = "ddd@worlWorrers.ru")
+    private String companyEmail;
+    @Schema(description = "Должность пользователя на работе", example = "главный инженер")
+    private String workPosition;
+    @Schema(description = "Телефон пользователя", example = "+7(978) 123-45-67")
     private String phone;
+    @Schema(description = "Номер офиса на работе у пользователя", example = "33")
     private String office;
+    @Schema(description = "Номер помещения на работе у пользователя", example = "3")
     private String building;
 
-    public UserDto(String firstName, String lastName, String patronymic, String email, String company, String phone, String office, String building) {
+    public UserDto(Long id, String username, String firstName,
+                     String lastName, String middleName, String email,
+                     String company, String companyEmail, String workPosition,
+                     String phone, String office, String building) {
+        this.id = id;
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.patronymic = patronymic;
+        this.middleName = middleName;
         this.email = email;
         this.company = company;
+        this.companyEmail = companyEmail;
+        this.workPosition = workPosition;
         this.phone = phone;
         this.office = office;
         this.building = building;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -38,12 +80,12 @@ public class UserDto {
         this.lastName = lastName;
     }
 
-    public String getPatronymic() {
-        return patronymic;
+    public String getMiddleName() {
+        return middleName;
     }
 
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
     }
 
     public String getEmail() {
@@ -60,6 +102,22 @@ public class UserDto {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public String getCompanyEmail() {
+        return companyEmail;
+    }
+
+    public void setCompanyEmail(String companyEmail) {
+        this.companyEmail = companyEmail;
+    }
+
+    public String getWorkPosition() {
+        return workPosition;
+    }
+
+    public void setWorkPosition(String workPosition) {
+        this.workPosition = workPosition;
     }
 
     public String getPhone() {

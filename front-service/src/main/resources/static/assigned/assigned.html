@@ -1,0 +1,31 @@
+<div >
+    <div class="table table-hover" ng-show="!AssignedTasks || !AssignedTasks.length>0" align="center">Нет активных заявок</div>
+    <table class="table table-hover" ng-show="AssignedTasks.length>0">
+        <tr>
+            <td>ID</td>
+            <td>Тема</td>
+            <td>Описание</td>
+            <td>Статус</td>
+            <td>Дата создания</td>
+            <td>Автор</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="task in AssignedTasks" data-ng-click="goToDetails(task.id)" style="cursor: pointer">
+            <td>{{task.id}}</td>
+            <td>{{task.title}}</td>
+            <td width="40%">
+                {{renderDescription(task.description)}}
+            </td>
+            <td>{{task.status}}</td>
+            <td>{{task.createdAt!=null ? task.createdAt : '-' }}</td>
+            <td>{{renderExecutors([task.owner])}}</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <p align="center" ng-show="AssignedTasks.length>0">
+        <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isFirstPage" ng-click="loadTasks(currentPage-1)"><</button>
+        <span>{{currentPage}}</span>
+        <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isLastPage" ng-click="loadTasks(currentPage+1)">></button>
+    </p>
+</div>

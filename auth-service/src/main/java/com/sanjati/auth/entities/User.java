@@ -1,5 +1,6 @@
 package com.sanjati.auth.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,6 +12,7 @@ import java.util.Collection;
 @Entity
 @Data
 @Table(name = "users")
+@Schema(description = "Таблица пользователей")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,8 +31,8 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "patronymic")
-    private String patronymic;
+    @Column(name = "middle_name")
+    private String middleName;
 
 
     @Column(name = "email")
@@ -38,6 +40,10 @@ public class User {
 
     @Column(name = "company")
     private String company;
+    @Column(name = "company_email")
+    private String companyEmail;
+    @Column(name = "work_position")
+    private String workPosition;
 
     @Column(name = "phone")
     private String phone;

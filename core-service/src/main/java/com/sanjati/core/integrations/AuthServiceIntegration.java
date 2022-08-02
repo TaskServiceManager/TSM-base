@@ -3,49 +3,61 @@ package com.sanjati.core.integrations;
 
 import com.sanjati.api.auth.UserDto;
 
-import com.sanjati.api.exceptions.AuthAppError;
-import com.sanjati.core.exceptions.AuthServiceIntegrationException;
+
+
+import com.sanjati.api.auth.UserLightDto;
+
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class AuthServiceIntegration {
-    private final WebClient cartServiceWebClient;
+    private final WebClient authWebClient;
+    private final String DATA_PATH = "api/v1/data";
+    private final String USER_PATH = "api/v1/user";
+    private final String ALL_USERS_PATH = "api/v1/users";
 
-    public void clearUserCart(String username) {
-        cartServiceWebClient.get()
-                .uri("/api/v1/cart/0/clear")
-                .header("username", username)
+    public UserDto getUserById(Long userId) {
+        return authWebClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(DATA_PATH)
+                        .queryParam("userId", userId)
+                        .build())
                 .retrieve()
-                .toBodilessEntity()
+                .bodyToMono(UserDto.class)
+                .doOnError(e -> log.info("Ошибка при получении полной информации о пользователе ", e))
                 .block();
     }
 
-    public UserDto getUser(String username) {
-        UserDto user = cartServiceWebClient.get()
-                .uri("/api/v1/data")
-                .header("username", username)
-                // .bodyValue(body) // for POST
+    public UserLightDto getUserLightById(Long userId) {
+        return authWebClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(USER_PATH)
+                        .queryParam("userId", userId)
+                        .build())
                 .retrieve()
-                .onStatus(
-                        httpStatus -> httpStatus.is4xxClientError(), // HttpStatus::is4xxClientError
-                        clientResponse -> clientResponse.bodyToMono(AuthAppError.class).map(
-                                body -> {
-                                    if (body.getCode().equals(AuthAppError.CartServiceErrors.USER_NOT_FOUND.name())) {
-                                        return new AuthServiceIntegrationException("Пользователь  найден");
-                                    }
-
-                                    return new AuthServiceIntegrationException("Выполнен некорректный запрос к сервису : причина неизвестна");
-                                }
-                        )
-                )
-//                .onStatus(HttpStatus::is4xxClientError, clientResponse -> Mono.error(new CartServiceIntegrationException("Выполнен некорректный запрос к сервису ")))
-//                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new CartServiceIntegrationException("Сервис сломался")))
-                .bodyToMono(UserDto.class)
+                .bodyToMono(UserLightDto.class)
+                .doOnError(e -> log.info("Ошибка при получении короткой информации о пользователе ", e))
                 .block();
-        return user;
+    }
+
+    public List<UserLightDto> getAllExecutors(){
+        return authWebClient.get()
+                .uri(uriBuilder -> uriBuilder
+                        .path(ALL_USERS_PATH)
+                        .queryParam("role", "ROLE_EXECUTOR")
+                        .build())
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<UserLightDto>>() {})
+                .doOnError(e -> log.info("Ошибка при получении информации о всех исполнителях"))
+                .block();
     }
 }

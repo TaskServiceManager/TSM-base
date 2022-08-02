@@ -3,6 +3,7 @@ package com.sanjati.core.controllers;
 import com.sanjati.api.core.AssignDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.core.TaskDto;
+import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.core.converters.TaskConverter;
 import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.services.TaskService;
@@ -68,8 +69,8 @@ public class TaskController {
                                            @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'." , required = false)
                                                 @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                                 @RequestParam(required = false) LocalDateTime to,
-                                           @Parameter(description = "Статус заявок", required = false, example = "Создана")
-                                                @RequestParam(required = false) String status,
+                                           @Parameter(description = "Статус заявок", required = false, example = "ASSIGNED")
+                                                @RequestParam(required = false) TaskStatus status,
                                            @Parameter(description = "ID исполнителя", required = false)
                                                 @RequestParam(required = false) Long executorId) {
         if (page < 1) {
@@ -94,7 +95,7 @@ public class TaskController {
                                @Parameter(description = "ID пользователя", required = true)
                                    @RequestHeader(name = "id") Long userId) {
         if(!role.contains("EXECUTOR")){
-            if(!taskService.checkTaskOwnerId(userId,id)) throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к чужим заявкам");
+            if(!taskService.checkTaskOwnerId(userId,id)) throw new MandatoryCheckException("Нет доступа к чужим заявкам");
         }
         return taskConverter.entityToDto(taskService.findById(id));
     }
@@ -111,11 +112,7 @@ public class TaskController {
     public void changeTaskStatus(@Parameter(description = "ID заявки", required = true)
                                      @PathVariable Long id,
                                  @Parameter(description = "Новый статус заявки", required = true)
-
-                                     @PathVariable String newStatus,
-
-                                 @Parameter(description = "ID исполнителя", required = true)
-                                     @RequestHeader(name = "id") Long executorId){
+                                     @PathVariable TaskStatus newStatus){
         taskService.changeStatus(id, newStatus);
     }
 

@@ -2,8 +2,10 @@ package com.sanjati.auth.controllers;
 
 
 import com.sanjati.api.auth.UserDto;
+
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.auth.WorkTimeDtoRq;
+
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.dto.JwtRequest;
@@ -12,7 +14,6 @@ import com.sanjati.auth.entities.User;
 import com.sanjati.auth.services.UserService;
 import com.sanjati.auth.utils.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,30 +24,33 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
-
+    private final String AUTH_PATH = "/auth";
+    private final String DATA_PATH = "/data";
     private final UserConverter userConverter;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
     private final AuthenticationManager authenticationManager;
 
     @Operation(
-            summary = "Авторизация",
+            summary = "Авторизация, назначение токена",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"
                     )
             }
     )
-    @PostMapping("/auth")
+    @PostMapping(AUTH_PATH)
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
@@ -58,6 +62,7 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+
     @Operation(
             summary = "Чтение данных пользователя",
             responses = {
@@ -66,6 +71,7 @@ public class AuthController {
                     )
             }
     )
+
     @GetMapping("/users/{id}/data")
     public UserDto getFullUserDataById(@Parameter(description = "ID пользователя", required = true)
 
@@ -101,6 +107,7 @@ public class AuthController {
     public List<UserLightDto> getAllUsers(@Parameter(description = "Роль пользователей")
                                           @RequestParam(required = false) String role) {
         return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
+
     }
 
 

@@ -12,10 +12,13 @@ import com.sanjati.auth.converters.UserConverter;
 
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
+import com.sanjati.auth.repositories.RoleRepository;
 import com.sanjati.auth.repositories.UserRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 

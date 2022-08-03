@@ -14,6 +14,7 @@ import com.sanjati.auth.entities.User;
 import com.sanjati.auth.services.UserService;
 import com.sanjati.auth.utils.JwtTokenUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

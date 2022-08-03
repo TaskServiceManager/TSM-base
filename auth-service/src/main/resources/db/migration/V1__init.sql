@@ -18,6 +18,9 @@ create table users
     building                            varchar(80) not null,
     office                              varchar(80) not null,
 
+    start_work_time                     time,
+    end_work_time                       time,
+
     created_at                          timestamp default current_timestamp,
     updated_at                          timestamp default current_timestamp
 );

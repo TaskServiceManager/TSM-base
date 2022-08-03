@@ -4,6 +4,7 @@ package com.sanjati.core.services;
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.core.AssignDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
+import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 
 import com.sanjati.core.entities.Task;
@@ -16,20 +17,16 @@ import com.sanjati.core.repositories.specifications.TaskSpecifications;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
+
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,17 +37,17 @@ public class TaskService {
     private final TaskRepository taskRepository;
     private final CommentService commentService;
     private final AuthServiceIntegration authServiceIntegration;
+    private final TimePointService timePointService;
 
 
     public Task findById(Long id) {
-        return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        return taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + id));
     }
 
+
     @Transactional
-    public void changeStatus(Long id, String status) {
-        Task task = taskRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
-        TaskStatus newStatus = Arrays.stream(TaskStatus.values()).filter(st -> st.getRus().equals(status)).findFirst().
-                orElseThrow(()-> new ResourceNotFoundException("Указанный статус заявки не найден"));
+    public void changeStatus(Long taskId, TaskStatus newStatus) {
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : "+ taskId));
         switch (newStatus) {
             case CREATED: {
                 if (TaskStatus.CANCELLED == task.getStatus()) {
@@ -84,6 +81,7 @@ public class TaskService {
             }
             case APPROVED: {
                 if (TaskStatus.ACCEPTED == task.getStatus()) {
+                    timePointService.closeAllTimePointsByTask(taskId);
                     task.setStatus(newStatus);
                     break;
                 }
@@ -104,7 +102,6 @@ public class TaskService {
                 throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");
             }
         }
-
     }
 
     @Transactional
@@ -115,15 +112,28 @@ public class TaskService {
         UserLightDto executor = authServiceIntegration.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
         if (task.getStatus() == TaskStatus.CREATED) task.setStatus(TaskStatus.ASSIGNED);
         task.getExecutors().add(actualId);
+        if(task.getExecutors().size()==1) {
+            task.setChiefId(actualId);
+        }
         commentService.leaveComment(taskId, assignerId, executor.getShortNameFormatted() + " назначен в качестве исполнителя");
     }
 
     @Transactional
     public void assignTaskBatch(Long taskId, Long assignerId, AssignDtoRq assignDtoRq) {
+        if (assignDtoRq.getExecutorIds()==null || assignDtoRq.getChiefId()==null) {
+            throw new MandatoryCheckException("Не выбраны хотя бы один исполнитель и ответственный по заявке");
+        }
         Task task = getTaskAvailableForChanges(taskId);
         Set<Long> taskExecutors = task.getExecutors();
-        if (assignDtoRq.getExecutorIds()==null || assignDtoRq.getChiefId()==null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Не выбраны хотя бы один исполнитель и ответственный по заявке");
+        if(taskExecutors.size()>0) {
+            Set<Long> taskExecutorsCurrent = new HashSet<>(taskExecutors);
+            taskExecutorsCurrent.forEach(e -> {
+                //если удалили исполнителя, то нужно закрыть его открытый таймпоинт в этой заявке
+                if(!assignDtoRq.getExecutorIds().contains(e)) {
+                    timePointService.closeTimePointByTaskAndExecutorId(taskId, e);
+                    taskExecutors.remove(e);
+                }
+            });
         }
         List<UserLightDto> executors = assignDtoRq.getExecutorIds().stream()
                 .map(authServiceIntegration::getUserLightById)
@@ -137,9 +147,9 @@ public class TaskService {
     }
 
     private Task getTaskAvailableForChanges(Long taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
         if (task.getStatus() == TaskStatus.CANCELLED || task.getStatus() == TaskStatus.COMPLETED) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Заявка отклонена или уже была выполнена.");
+            throw new MandatoryCheckException( "Заявка отклонена или уже была выполнена.");
         }
         return task;
     }
@@ -148,7 +158,7 @@ public class TaskService {
                                          LocalDateTime from,
                                          LocalDateTime to,
                                          Integer page,
-                                         String status,
+                                         TaskStatus status,
                                          Long executorId) {
         Specification<Task> spec = Specification.where(null);
 
@@ -157,7 +167,7 @@ public class TaskService {
         }
 
         if (status != null) {
-            spec = spec.and(TaskSpecifications.statusEquals(Arrays.stream(TaskStatus.values()).filter(el-> status.equals(el.getRus())).findFirst().orElse(null)));
+            spec = spec.and(TaskSpecifications.statusEquals(status));
         }
 
         if (from != null) {
@@ -172,12 +182,11 @@ public class TaskService {
             spec = spec.and(TaskSpecifications.executorIdContainsIn(executorId));
         }
 
-        return this.taskRepository.findAll(spec, PageRequest.of(page - 1, 10));
+        return this.taskRepository.findAll(spec, PageRequest.of(page - 1, 8));
     }
 
 
     public void createTask(Long ownerId, TaskDtoRq taskCreateDto) {
-        //TODO написать создание заявки
         Task task = new Task();
         task.setOwnerId(ownerId);
 
@@ -188,11 +197,7 @@ public class TaskService {
     }
 
     public boolean checkTaskOwnerId(Long userId, Long taskId) {
-
-
-        if (taskRepository.isCountMoreThanZeroByOwnerIdAndTaskId(taskId,userId)) return true;
-        return false;
-
+        return  taskRepository.isCountMoreThanZeroByOwnerIdAndTaskId(taskId,userId);
     }
     public TaskStatus getStatusByTaskId(Long taskId){
        return taskRepository.findStatusByTaskId(taskId);

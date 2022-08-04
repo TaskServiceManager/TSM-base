@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,9 +107,7 @@ public class AuthController {
     public List<UserLightDto> getAllUsers(@Parameter(description = "Роль пользователей")
                                           @RequestParam(required = false) String role) {
         return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
-
     }
-
 
     @Operation(
             summary = "Запрос на изменение времени работы исполнителя",
@@ -148,7 +145,6 @@ public class AuthController {
     public List<UserLightDto> getLightUserDataById(@Parameter(description = "список ID пользователей", required = true)
                                                    @RequestBody List<Long> usersId) {
         return userService.getLightUserDataById(usersId);
-
     }
 
 }

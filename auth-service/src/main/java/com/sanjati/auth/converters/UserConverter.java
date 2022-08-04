@@ -8,6 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserConverter {
     public UserDto modelToDto(User user){
+        if(user==null) {
+            return null;
+        }
         return new UserDto(user.getId(),user.getUsername(),user.getFirstName(),
                 user.getLastName(), user.getMiddleName(), user.getEmail(),
                 user.getCompany(), user.getCompanyEmail(), user.getWorkPosition(),
@@ -15,6 +18,9 @@ public class UserConverter {
     }
 
     public UserLightDto modelToLightDto(User user){
+        if(user==null) {
+            return null;
+        }
         return UserLightDto.builder()
                 .id(user.getId())
                 .firstName(user.getFirstName())

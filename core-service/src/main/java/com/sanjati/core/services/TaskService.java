@@ -6,27 +6,26 @@ import com.sanjati.api.core.AssignDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
-
 import com.sanjati.core.entities.Task;
+import com.sanjati.core.entities.TimePoint;
 import com.sanjati.core.enums.TaskStatus;
-
 import com.sanjati.core.exceptions.ChangeTaskStatusException;
 import com.sanjati.core.integrations.AuthServiceIntegration;
 import com.sanjati.core.repositories.TaskRepository;
 import com.sanjati.core.repositories.specifications.TaskSpecifications;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +46,8 @@ public class TaskService {
 
     @Transactional
     public void changeStatus(Long taskId, TaskStatus newStatus) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : "+ taskId));
+        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
+        TimePoint timePoints = timePointService.getCurrentTimePointByTaskId(taskId);
         switch (newStatus) {
             case CREATED: {
                 if (TaskStatus.CANCELLED == task.getStatus()) {
@@ -89,15 +89,23 @@ public class TaskService {
             }
             case DELAYED: {
                 if (TaskStatus.ACCEPTED == task.getStatus()) {
-                    task.setStatus(newStatus);
-                    break;
+                    if (timePoints == null) {
+                        commentService.leaveComment(taskId, task.getChiefId(), "заявка отложена");
+                        task.setStatus(newStatus);
+                        break;
+                    }
+                    throw new ChangeTaskStatusException("Отложить заявку можно только когда на ней уже нет тайм-поинтов");
                 }
                 throw new ChangeTaskStatusException("Отложить заявку можно только из статуса 'В работе'");
             }
             case COMPLETED: {
                 if (TaskStatus.APPROVED == task.getStatus()) {
-                    task.setStatus(newStatus);
-                    break;
+                    if (timePoints == null) {
+                        commentService.leaveComment(taskId, task.getChiefId(), "заявка выполнена");
+                        task.setStatus(newStatus);
+                        break;
+                    }
+                    throw new ChangeTaskStatusException("Выполнить заявку можно только на ней уже нет тайм-поинтов");
                 }
                 throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");
             }
@@ -112,7 +120,7 @@ public class TaskService {
         UserLightDto executor = authServiceIntegration.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
         if (task.getStatus() == TaskStatus.CREATED) task.setStatus(TaskStatus.ASSIGNED);
         task.getExecutors().add(actualId);
-        if(task.getExecutors().size()==1) {
+        if (task.getExecutors().size() == 1) {
             task.setChiefId(actualId);
         }
         commentService.leaveComment(taskId, assignerId, executor.getShortNameFormatted() + " назначен в качестве исполнителя");
@@ -120,16 +128,16 @@ public class TaskService {
 
     @Transactional
     public void assignTaskBatch(Long taskId, Long assignerId, AssignDtoRq assignDtoRq) {
-        if (assignDtoRq.getExecutorIds()==null || assignDtoRq.getChiefId()==null) {
+        if (assignDtoRq.getExecutorIds() == null || assignDtoRq.getChiefId() == null) {
             throw new MandatoryCheckException("Не выбраны хотя бы один исполнитель и ответственный по заявке");
         }
         Task task = getTaskAvailableForChanges(taskId);
         Set<Long> taskExecutors = task.getExecutors();
-        if(taskExecutors.size()>0) {
+        if (taskExecutors.size() > 0) {
             Set<Long> taskExecutorsCurrent = new HashSet<>(taskExecutors);
             taskExecutorsCurrent.forEach(e -> {
                 //если удалили исполнителя, то нужно закрыть его открытый таймпоинт в этой заявке
-                if(!assignDtoRq.getExecutorIds().contains(e)) {
+                if (!assignDtoRq.getExecutorIds().contains(e)) {
                     timePointService.closeTimePointByTaskAndExecutorId(taskId, e);
                     taskExecutors.remove(e);
                 }
@@ -143,13 +151,13 @@ public class TaskService {
         task.setChiefId(assignDtoRq.getChiefId());
         if (task.getStatus() == TaskStatus.CREATED) task.setStatus(TaskStatus.ASSIGNED);
         String appointed = executors.stream().map(UserLightDto::getShortNameFormatted).collect(Collectors.joining(", "));
-        commentService.leaveComment(taskId, assignerId, appointed + (executors.size()>1 ? " назначены в качестве исполнителей" : " назначен в качестве исполнителя"));
+        commentService.leaveComment(taskId, assignerId, appointed + (executors.size() > 1 ? " назначены в качестве исполнителей" : " назначен в качестве исполнителя"));
     }
 
     private Task getTaskAvailableForChanges(Long taskId) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
         if (task.getStatus() == TaskStatus.CANCELLED || task.getStatus() == TaskStatus.COMPLETED) {
-            throw new MandatoryCheckException( "Заявка отклонена или уже была выполнена.");
+            throw new MandatoryCheckException("Заявка отклонена или уже была выполнена.");
         }
         return task;
     }
@@ -162,7 +170,7 @@ public class TaskService {
                                          Long executorId) {
         Specification<Task> spec = Specification.where(null);
 
-        if(id != null) {
+        if (id != null) {
             spec = spec.and(TaskSpecifications.ownerIdEquals(id));
         }
 
@@ -197,10 +205,11 @@ public class TaskService {
     }
 
     public boolean checkTaskOwnerId(Long userId, Long taskId) {
-        return  taskRepository.isCountMoreThanZeroByOwnerIdAndTaskId(taskId,userId);
+        return taskRepository.isCountMoreThanZeroByOwnerIdAndTaskId(taskId, userId);
     }
-    public TaskStatus getStatusByTaskId(Long taskId){
-       return taskRepository.findStatusByTaskId(taskId);
+
+    public TaskStatus getStatusByTaskId(Long taskId) {
+        return taskRepository.findStatusByTaskId(taskId);
     }
 
 

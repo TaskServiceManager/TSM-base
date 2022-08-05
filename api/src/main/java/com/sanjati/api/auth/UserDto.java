@@ -16,7 +16,7 @@ public class UserDto {
     @Schema(description = "Фамилия пользователя", example = "Дмитриев")
     private String lastName;
 
-    @Schema(description = "Отчяечство пользователя", example = "Дмитриевич")
+    @Schema(description = "Отчество пользователя", example = "Дмитриевич")
     private String middleName;
 
     @Schema(description = "E-mail пользователя", example = "ddd@mail.ru")

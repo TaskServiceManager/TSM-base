@@ -2,6 +2,7 @@ package com.sanjati.api.core;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Основная модель временной отметки")
 public class TimePointDto {
     @Schema(description = "ID временной отметки", example = "3")
     private Long id;

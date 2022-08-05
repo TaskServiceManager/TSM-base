@@ -1,17 +1,12 @@
 package com.sanjati.core.services;
 
 
-
 import com.sanjati.api.auth.UserLightDto;
-
-
 import com.sanjati.api.exceptions.MandatoryCheckException;
-
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.TimePoint;
 import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.enums.TimePointStatus;
-import com.sanjati.core.integrations.AuthServiceIntegration;
 import com.sanjati.core.repositories.TimePointRepository;
 import com.sanjati.core.repositories.specifications.TimePointsSpecifications;
 import lombok.extern.slf4j.Slf4j;
@@ -28,18 +23,19 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
+
 @Service
 @Slf4j
 public class TimePointService {
     private final TimePointRepository timePointRepository;
     private final TaskService taskService;
-    private final AuthServiceIntegration authServiceIntegration;
+    private final AuthService authService;
 
     public TimePointService(TimePointRepository timePointRepository, @Lazy TaskService taskService,
-                            AuthServiceIntegration authServiceIntegration) {
+                            AuthService authService) {
         this.timePointRepository = timePointRepository;
         this.taskService = taskService;
-        this.authServiceIntegration = authServiceIntegration;
+        this.authService = authService;
     }
 
     @Transactional
@@ -55,7 +51,7 @@ public class TimePointService {
             tp.setFinishedAt(LocalDateTime.now());
         } else {
             if(timePointRepository.existsByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
-                throw new MandatoryCheckException("Нельзя открыть новую отметку пока есть незавешённые");
+                throw new MandatoryCheckException("Нельзя открыть новую отметку пока есть незавершённые");
             }
             if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
                 taskService.changeStatus(taskId, TaskStatus.ACCEPTED);
@@ -114,7 +110,7 @@ public class TimePointService {
     @Scheduled(fixedRateString = "${interval.closingTimePoints}")
     @Transactional
     public void autoClosingTimePoints() {
-        List<UserLightDto> executors = authServiceIntegration.getAllExecutors();
+        List<UserLightDto> executors = authService.getAllExecutors();
         List<TimePoint> activeTimePoints = timePointRepository.findAllByStatus(TimePointStatus.IN_PROCESS);
         for (UserLightDto exec : executors) {
             if (exec.getEndWorkTime() != null && LocalTime.now().isAfter(exec.getEndWorkTime())){
@@ -130,7 +126,7 @@ public class TimePointService {
 
     /*
     Время окончания работы у сотрудника может быть в 2022-08-01T23:50, а автоматическое закрытие происходить
-    в 2022-08-02T01:45. В этом случае переменная ldt получится 2022-08-02T23:50 - это не корректно.
+    в 2022-08-02T01:45. В этом случае переменная время закрытия таймпоинта получится 2022-08-02T23:50 - это не корректно.
     Поэтому необходимо уменьшить это значение на 1 день.
      */
     private LocalDateTime getActualLocalDateTime(LocalTime endWorkTime){

@@ -1,6 +1,7 @@
 package com.sanjati.core.controllers;
 
 import com.sanjati.api.core.AssignDtoRq;
+import com.sanjati.api.core.ParamsTaskDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.core.TaskDto;
 import com.sanjati.api.exceptions.MandatoryCheckException;
@@ -58,25 +59,13 @@ public class TaskController {
                     )
             }
     )
-    @GetMapping
-    public Page<TaskDto> getAllTasksBySpec(@Parameter(description = "ID автора", required = false)
-                                                @RequestParam(required = false) Long ownerId,
-                                           @Parameter(description = "номер страницы", required = true)
-                                                @RequestParam Integer page,
-                                           @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
-                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                @RequestParam(required = false) LocalDateTime from,
-                                           @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'." , required = false)
-                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                @RequestParam(required = false) LocalDateTime to,
-                                           @Parameter(description = "Статус заявок", required = false, example = "ASSIGNED")
-                                                @RequestParam(required = false) TaskStatus status,
-                                           @Parameter(description = "ID исполнителя", required = false)
-                                                @RequestParam(required = false) Long executorId) {
-        if (page < 1) {
-            page = 1;
+    @PostMapping("/search")
+    public Page<TaskDto> getAllTasksBySpec(@Parameter(description = "Тело запроса с параметрами поиска", required = false)
+                                                @RequestBody ParamsTaskDtoRq searchParams) {
+        if (searchParams.getPage() < 1 || searchParams.getPage() == null) {
+            searchParams.setPage(1);
         }
-        return taskService.findAllTasksBySpec(ownerId,from,to,page,status,executorId).map(taskConverter::entityToDto);
+        return taskService.findAllTasksBySpec(searchParams).map(taskConverter::entityToDto);
     }
 
     @Operation(
@@ -94,9 +83,7 @@ public class TaskController {
                                    @RequestHeader String role,
                                @Parameter(description = "ID пользователя", required = true)
                                    @RequestHeader(name = "id") Long userId) {
-        if(!role.contains("EXECUTOR")){
-            if(!taskService.checkTaskOwnerId(userId,id)) throw new MandatoryCheckException("Нет доступа к чужим заявкам");
-        }
+        taskService.checkAccessToTask(role, userId, id);
         return taskConverter.entityToDto(taskService.findById(id));
     }
 

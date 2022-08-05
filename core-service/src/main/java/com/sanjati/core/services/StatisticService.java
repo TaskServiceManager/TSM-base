@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 public class StatisticService {
 
     private final TaskRepository taskRepository;
-    private final AuthServiceIntegration authServiceIntegration;
+    private final AuthService authService;
 
     public List<UserLightDto> getAllExecutorsSortedByEmployment(){
         Map<Long, Long> employment = taskRepository.getExecutorsIdsWithAmountActiveTasks()
                 .stream().collect(Collectors.toMap(k -> k.get(0), v -> v.get(1)));
-        List<UserLightDto> executors = authServiceIntegration.getAllExecutors();
+        List<UserLightDto> executors = authService.getAllExecutors();
         for (UserLightDto e : executors) {
             if (employment.containsKey(e.getId())){
                 e.setAmountActiveTasks(employment.get(e.getId()));

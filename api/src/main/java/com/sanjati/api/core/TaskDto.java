@@ -5,7 +5,6 @@ import lombok.Builder;
 
 import java.util.List;
 
-@Builder
 @Schema(description = "Основная модель задачи")
 public class TaskDto {
 
@@ -143,5 +142,8 @@ public class TaskDto {
         this.createdAt = createdAt;
         this.completedAt = completedAt;
         this.updatedAt = updatedAt;
+    }
+
+    public TaskDto() {
     }
 }

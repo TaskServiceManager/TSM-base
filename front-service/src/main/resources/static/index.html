@@ -33,7 +33,7 @@
     </nav>
 </div>
 <!--Current task info-->
-<div ng-controller="indexController" ng-show="isUserLoggedIn()&&Timepoint&&Timepoint.status=='IN_PROCESS'" id="info-panel">
+<div ng-controller="indexController" ng-show="isUserLoggedIn()&&Timepoint&&Timepoint.status=='В процессе'" id="info-panel">
     <p style="text-align: center;">{{'Заявка #'+Timepoint.taskId + ' в работе'}}</p>
     <p style="font-size: small">Чтобы взять новую заявку в работу, завершите работу над текущей</p>
     <div style="text-align: center; cursor:pointer; text-decoration-line: underline;" data-ng-click="goToDetails(Timepoint.taskId)">Перейти в заявку</div>
@@ -183,6 +183,10 @@
         </table>
         <br><br>
         <p>{{'Роли в системе: '+ renderRoles()}}</p>
+        <br><br>
+        <form style="text-align: center" class="form-inline my-2 my-lg-0" ng-submit="goToRecords()" ng-show="isUserLoggedIn()" id="records">
+            <button style="width: 100%" class="btn btn-outline-success my-2 my-sm-0" data-bs-dismiss="offcanvas" type="submit">Статистика выполнения работ по заявкам</button>
+        </form>
     </div>
     <div class="offcanvas-body" ng-show="CurrentUser==null" style="text-align: center">
         Нет информации о текущем пользователе

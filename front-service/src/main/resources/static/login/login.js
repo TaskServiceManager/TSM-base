@@ -20,6 +20,7 @@ angular.module('ttsystem-front').controller('loginController', function ($scope,
                     $rootScope.user.password = null;
 
                     $localStorage.permissions = [{view: 'myTasks', roles: ['ROLE_USER']},
+                                                {view: 'records', roles: ['ROLE_EXECUTOR']},
                                                 {view: 'incoming', roles: ['ROLE_MANAGER','ROLE_EXECUTOR']},
                                                 {view: 'pending', roles: ['ROLE_MANAGER']},
                                                 {view: 'assigned', roles: ['ROLE_EXECUTOR']},

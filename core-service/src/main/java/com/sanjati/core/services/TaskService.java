@@ -97,6 +97,7 @@ public class TaskService {
             case COMPLETED: {
                 if (TaskStatus.APPROVED == task.getStatus()) {
                     task.setStatus(newStatus);
+                    task.setCompletedAt(LocalDateTime.now());
                     break;
                 }
                 throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");

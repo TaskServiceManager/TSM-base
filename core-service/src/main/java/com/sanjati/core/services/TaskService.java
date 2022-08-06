@@ -10,6 +10,7 @@ import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.enums.TaskStatus;
 
+import com.sanjati.core.enums.TimePointStatus;
 import com.sanjati.core.exceptions.ChangeTaskStatusException;
 import com.sanjati.core.integrations.AuthServiceIntegration;
 import com.sanjati.core.repositories.TaskRepository;
@@ -147,10 +148,10 @@ public class TaskService {
     }
 
     private Task getTaskAvailableForChanges(Long taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
-        if (task.getStatus() == TaskStatus.CANCELLED || task.getStatus() == TaskStatus.COMPLETED) {
-            throw new MandatoryCheckException( "Заявка отклонена или уже была выполнена.");
-        }
+
+
+        TaskStatus[] statuses = {TaskStatus.CREATED,TaskStatus.ASSIGNED,TaskStatus.ACCEPTED,TaskStatus.APPROVED,TaskStatus.DELAYED};
+        Task task = taskRepository.findByIdAndStatusArray(taskId,statuses).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
         return task;
     }
 

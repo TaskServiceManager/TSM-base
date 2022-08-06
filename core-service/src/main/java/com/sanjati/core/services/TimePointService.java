@@ -72,13 +72,14 @@ public class TimePointService {
 
     @Transactional
     public void closeTimePointByTaskAndExecutorId(Long taskId, Long executorId) {
-        Optional<TimePoint> timePoint = timePointRepository.findByTaskIdAndExecutorIdAndStatus(taskId, executorId, TimePointStatus.IN_PROCESS);
-        timePoint.ifPresent(tp -> {
-            if(TimePointStatus.IN_PROCESS==tp.getStatus()) {
-                tp.setStatus(TimePointStatus.FINISHED);
-                tp.setFinishedAt(LocalDateTime.now());
-            }
-        });
+        TimePoint timePoint = timePointRepository.findByTaskIdAndExecutorIdAndStatus(taskId, executorId, TimePointStatus.IN_PROCESS).orElseThrow(()-> new MandatoryCheckException("открытых отметок не найдено"));
+
+        // убрал if  так как мы и так вынули тайм поинт по статусу
+        timePoint.setStatus(TimePointStatus.FINISHED);
+        timePoint.setFinishedAt(LocalDateTime.now());
+
+
+
     }
 
     @Transactional

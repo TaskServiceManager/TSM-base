@@ -5,9 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -33,5 +33,20 @@ public class TimePoint {
     private LocalDateTime startedAt;
     @Column(name = "finished_at")
     private LocalDateTime finishedAt;
+
+    public String getDuration() {
+        if(startedAt==null || finishedAt==null) {
+            return null;
+        }
+        Duration duration = Duration.between(startedAt, finishedAt);
+        long seconds = duration.getSeconds();
+        long absSeconds = Math.abs(seconds);
+        String positive = String.format(
+                "%d:%02d:%02d",
+                absSeconds / 3600,
+                (absSeconds % 3600) / 60,
+                absSeconds % 60);
+        return seconds < 0 ? "-" + positive : positive;
+    }
 
 }

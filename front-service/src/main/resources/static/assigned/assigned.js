@@ -8,8 +8,8 @@ angular.module('ttsystem-front').controller('assignedController', function ($sco
                 params: {
                     page: pageIndex ? pageIndex : 1,
                     executorId: $localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null,
-                    from: $scope.filter ? $scope.filter.from : null,
-                    to: $scope.filter ? $scope.filter.to : null,
+                    from: $scope.filter ? $rootScope.addTimezoneOffset($scope.filter.from) : null,
+                    to: $scope.filter ? $rootScope.addTimezoneOffset($scope.filter.to) : null,
                     status: $scope.filter ? $scope.filter.status : null
                 }
         }).then(function (response) {

@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -104,7 +105,7 @@ public class TimePointService {
             spec = spec.and(TimePointsSpecifications.timeLessOrEqualsThan(to));
         }
 
-        return timePointRepository.findAll(spec, PageRequest.of(page - 1, 100));
+        return timePointRepository.findAll(spec, PageRequest.of(page - 1, 100, Sort.by(Sort.Direction.DESC, "startedAt")));
     }
 
     public TimePoint getCurrentTimePointByUserId(Long userId) {

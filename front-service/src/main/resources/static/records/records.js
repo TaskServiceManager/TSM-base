@@ -8,8 +8,8 @@ angular.module('ttsystem-front').controller('recordsController', function ($scop
                 params: {
 
                     page: pageIndex ? pageIndex : 1,
-                    from: $scope.filter ? $scope.filter.from : null,
-                    to: $scope.filter ? $scope.filter.to : null,
+                    from: $scope.filter ? $rootScope.addTimezoneOffset($scope.filter.from) : null,
+                    to: $scope.filter ? $rootScope.addTimezoneOffset($scope.filter.to) : null,
 
                 }
         }).then(function (response) {

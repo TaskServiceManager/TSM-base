@@ -129,6 +129,10 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
         $location.path('/tasks/'+taskId);
     };
 
+    $rootScope.goToRecords = function () {
+        $location.path('/records');
+    };
+
     $rootScope.loadDetailsOpen = function () {
         $rootScope.Details = $localStorage.detailsOpen;
     };
@@ -235,6 +239,17 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
        }
        return 'Не найдены';
     }
+
+    $rootScope.addTimezoneOffset = function (stringDate) {
+       if(!stringDate) {
+          return null;
+       }
+       const date = new Date(stringDate);
+       date.setTime(date.getTime() + (3*60*60*1000));
+       return date;
+    }
+
+
 
     $rootScope.loadDetailsOpen();
     $rootScope.loadFullUserData();

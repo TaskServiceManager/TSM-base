@@ -111,8 +111,8 @@ public class TimePointService {
         return timePointRepository.findFirstByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS).stream().findFirst().orElse(null);
     }
 
-    public TimePoint getCurrentTimePointByTaskId(Long taskId) {
-        return timePointRepository.findByTaskIdAndStatus(taskId,TimePointStatus.IN_PROCESS).stream().findFirst().orElse(null);
+    public boolean getCurrentTimePointByTaskId(Long taskId) {
+        return timePointRepository.existsByTaskIdAndStatus(taskId,TimePointStatus.IN_PROCESS);
     }
 
     @Scheduled(fixedRateString = "${interval.closingTimePoints}")

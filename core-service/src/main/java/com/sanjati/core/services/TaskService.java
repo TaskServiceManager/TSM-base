@@ -47,7 +47,7 @@ public class TaskService {
     @Transactional
     public void changeStatus(Long taskId, TaskStatus newStatus) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
-        TimePoint timePoints = timePointService.getCurrentTimePointByTaskId(taskId);
+        boolean timePointActive = timePointService.getCurrentTimePointByTaskId(taskId);
         switch (newStatus) {
             case CREATED: {
                 if (TaskStatus.CANCELLED == task.getStatus()) {
@@ -89,23 +89,23 @@ public class TaskService {
             }
             case DELAYED: {
                 if (TaskStatus.ACCEPTED == task.getStatus()) {
-                    if (timePoints == null) {
+                    if (!timePointActive) {
                         commentService.leaveComment(taskId, task.getChiefId(), "заявка отложена");
                         task.setStatus(newStatus);
                         break;
                     }
-                    throw new ChangeTaskStatusException("Отложить заявку можно только когда на ней уже нет тайм-поинтов");
+                    throw new ChangeTaskStatusException("Изменить статус на 'Отложена' можно, когда все исполнители завершат работу");
                 }
                 throw new ChangeTaskStatusException("Отложить заявку можно только из статуса 'В работе'");
             }
             case COMPLETED: {
                 if (TaskStatus.APPROVED == task.getStatus()) {
-                    if (timePoints == null) {
+                    if (!timePointActive) {
                         commentService.leaveComment(taskId, task.getChiefId(), "заявка выполнена");
                         task.setStatus(newStatus);
                         break;
                     }
-                    throw new ChangeTaskStatusException("Выполнить заявку можно только на ней уже нет тайм-поинтов");
+                    throw new ChangeTaskStatusException("Изменить статус на 'Выполнена' можно, когда все исполнители завершат работу");
                 }
                 throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");
             }

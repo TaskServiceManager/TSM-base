@@ -15,8 +15,14 @@ import java.util.Optional;
 public interface TimePointRepository extends JpaRepository<TimePoint, Long>, JpaSpecificationExecutor<TimePoint> {
 
     boolean existsByExecutorIdAndStatus(Long executorId, TimePointStatus status);
+
     Optional<TimePoint> findFirstByExecutorIdAndStatus(Long executorId, TimePointStatus status);
+
     Optional<TimePoint> findByTaskIdAndExecutorIdAndStatus(Long taskId, Long executorId, TimePointStatus status);
+
     List<TimePoint> findByTaskIdAndStatus(Long taskId, TimePointStatus status);
+
     List<TimePoint> findAllByStatus(TimePointStatus status);
+
+    boolean existsByTaskIdAndStatus(Long taskId, TimePointStatus status);
 }

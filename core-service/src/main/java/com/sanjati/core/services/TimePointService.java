@@ -46,38 +46,41 @@ public class TimePointService {
     @Transactional
     public void changeStatusOrCreateTimePoint(Long taskId, Long userId, Long timePointId) {
 
-        TimePoint tp;
         if (timePointId != null) {
-            tp = timePointRepository.findById(timePointId).orElseThrow(()->new ResourceNotFoundException("Отметка не существует ID : " + timePointId));
-            if (tp.getStatus() == TimePointStatus.FINISHED){
-                throw new MandatoryCheckException("Временная отметка уже закрыта");
-            }
+            TimePoint tp = timePointRepository.findByIdAndStatus(timePointId,TimePointStatus.IN_PROCESS).orElseThrow(()->new ResourceNotFoundException("Отметка не существует ID : " + timePointId));
+
             tp.setStatus(TimePointStatus.FINISHED);
             tp.setFinishedAt(LocalDateTime.now());
-        } else {
-            if(timePointRepository.existsByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
-                throw new MandatoryCheckException("Нельзя открыть новую отметку пока есть незавешённые");
-            }
-            if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
-                taskService.changeStatus(taskId, TaskStatus.ACCEPTED);
-            }
-            tp = new TimePoint();
-            tp.setStatus(TimePointStatus.IN_PROCESS);
-            tp.setExecutorId(userId);
-            tp.setTaskId(taskId);
-            timePointRepository.save(tp);
+            return;
+
         }
+
+        if(timePointRepository.existsByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
+            throw new MandatoryCheckException("Нельзя открыть новую отметку пока есть незавершённые");
+        }
+
+        if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
+            taskService.changeStatus(taskId, TaskStatus.ACCEPTED);
+        }
+
+        TimePoint tp = new TimePoint();
+        tp.setStatus(TimePointStatus.IN_PROCESS);
+        tp.setExecutorId(userId);
+        tp.setTaskId(taskId);
+        timePointRepository.save(tp);
+
     }
 
     @Transactional
     public void closeTimePointByTaskAndExecutorId(Long taskId, Long executorId) {
-        Optional<TimePoint> timePoint = timePointRepository.findByTaskIdAndExecutorIdAndStatus(taskId, executorId, TimePointStatus.IN_PROCESS);
-        timePoint.ifPresent(tp -> {
-            if(TimePointStatus.IN_PROCESS==tp.getStatus()) {
-                tp.setStatus(TimePointStatus.FINISHED);
-                tp.setFinishedAt(LocalDateTime.now());
-            }
-        });
+        TimePoint timePoint = timePointRepository.findByTaskIdAndExecutorIdAndStatus(taskId, executorId, TimePointStatus.IN_PROCESS).orElseThrow(()-> new MandatoryCheckException("открытых отметок не найдено"));
+
+        // убрал if  так как мы и так вынули тайм поинт по статусу
+        timePoint.setStatus(TimePointStatus.FINISHED);
+        timePoint.setFinishedAt(LocalDateTime.now());
+
+
+
     }
 
     @Transactional

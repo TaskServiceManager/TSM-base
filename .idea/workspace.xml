@@ -4,11 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености">
+    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/repositories/TaskRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/repositories/TaskRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/services/TaskService.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/services/TaskService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/services/TimePointService.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/services/TimePointService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -160,7 +157,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659777768646</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса">
+      <created>1659812275733</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1659812275733</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -176,6 +180,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености" />
-    <option name="LAST_COMMIT_MESSAGE" value="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености" />
+    <MESSAGE value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
+    <option name="LAST_COMMIT_MESSAGE" value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
   </component>
 </project>

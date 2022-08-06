@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Repository
@@ -18,8 +17,8 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
     public boolean isCountMoreThanZeroByOwnerIdAndTaskId(Long taskId, Long id);
     @Query("select t.status from Task t where t.id = :taskId")
     public TaskStatus findStatusByTaskId(Long taskId);
-    @Query("SELECT t FROM Task t WHERE t.id = :id AND t.status IN (:statuses)")
-    public Optional<Task> findByIdAndStatusArray(Long id, TaskStatus[] statuses);
+
+    public Optional<Task> findByIdAndStatus(Long id, TaskStatus[] statuses);
 
     @Query(value = "SELECT executor_id, count(executor_id) FROM tasks_executors" +
             " JOIN tasks ON tasks_executors.task_id = tasks.id " +

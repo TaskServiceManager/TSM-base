@@ -214,5 +214,9 @@ select {
 }
 
 select:focus-visible {
-      outline: -webkit-focus-ring-color auto 0px;!important;
+  outline: -webkit-focus-ring-color auto 0px;!important;
+}
+
+.custom-button-bar form {
+  margin-left:1%;
 }

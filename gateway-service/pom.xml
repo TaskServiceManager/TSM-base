@@ -37,6 +37,7 @@
             <version>0.9.1</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>

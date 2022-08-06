@@ -18,7 +18,7 @@ public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificat
     @Query("select t.status from Task t where t.id = :taskId")
     public TaskStatus findStatusByTaskId(Long taskId);
 
-    public Optional<Task> findByIdAndStatusIn(Long id, TaskStatus[] statuses);
+    public Optional<Task> findByIdAndStatusIn(Long id, List<TaskStatus> statuses);
 
     @Query(value = "SELECT executor_id, count(executor_id) FROM tasks_executors" +
             " JOIN tasks ON tasks_executors.task_id = tasks.id " +

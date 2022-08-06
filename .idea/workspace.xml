@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="С-0-13. замечания" />
+    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="С-0-13. замечания 2">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -169,7 +171,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659820141611</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="С-0-13. замечания 2">
+      <created>1659820984040</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1659820984040</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -187,6 +196,7 @@
     <MESSAGE value="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености" />
     <MESSAGE value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
     <MESSAGE value="С-0-13. замечания" />
-    <option name="LAST_COMMIT_MESSAGE" value="С-0-13. замечания" />
+    <MESSAGE value="С-0-13. замечания 2" />
+    <option name="LAST_COMMIT_MESSAGE" value="С-0-13. замечания 2" />
   </component>
 </project>

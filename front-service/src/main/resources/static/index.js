@@ -25,15 +25,15 @@
             .when('/assigned', {
                   templateUrl: 'assigned/assigned.html',
                   controller: 'assignedController'
-             })
-             .when('/incoming', {
-                   templateUrl: 'incoming/incoming.html',
-                   controller: 'incomingController'
-              })
-//            .when('/form', {
-//                templateUrl: 'form/form.html',
-//                controller: 'formController'
-//            })
+            })
+            .when('/incoming', {
+                  templateUrl: 'incoming/incoming.html',
+                  controller: 'incomingController'
+            })
+            .when('/pending', {
+                  templateUrl: 'pending/pending.html',
+                  controller: 'pendingController'
+            })
             .when('/records', {
                    templateUrl: 'records/records.html',
                    controller: 'recordsController'

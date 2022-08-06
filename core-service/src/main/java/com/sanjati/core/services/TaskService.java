@@ -150,7 +150,7 @@ public class TaskService {
 
 
         TaskStatus[] statuses = {TaskStatus.CREATED,TaskStatus.ASSIGNED,TaskStatus.ACCEPTED,TaskStatus.APPROVED,TaskStatus.DELAYED};
-        Task task = taskRepository.findByIdAndStatus(taskId,statuses).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
+        Task task = taskRepository.findByIdAndStatusIn(taskId,statuses).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
         return task;
     }
 

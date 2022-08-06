@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="С-0-13. замечания" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -164,7 +162,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659812275733</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="С-0-13. замечания">
+      <created>1659820141611</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1659820141611</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -181,6 +186,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености" />
     <MESSAGE value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
-    <option name="LAST_COMMIT_MESSAGE" value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
+    <MESSAGE value="С-0-13. замечания" />
+    <option name="LAST_COMMIT_MESSAGE" value="С-0-13. замечания" />
   </component>
 </project>

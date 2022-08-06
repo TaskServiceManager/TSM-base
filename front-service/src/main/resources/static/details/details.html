@@ -8,10 +8,10 @@
         <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="showAssignModal()" ng-show="isAllowed('assignButton')&&(Task.status=='Назначена'||Task.status=='В работе')">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Назначить исполнителей</button>
         </form>
-        <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="changeTimepoint()" ng-show="isAllowed('timepointButton')&&isTaskAssignedToMe()&&(!Timepoint||Timepoint.status!='IN_PROCESS')&&(Task.status=='Назначена'||Task.status=='В работе')">
+        <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="changeTimepoint()" ng-show="isAllowed('timepointButton')&&isTaskAssignedToMe()&&(!Timepoint||Timepoint.status!='В процессе')&&(Task.status=='Назначена'||Task.status=='В работе')">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">В работу</button>
         </form>
-        <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="changeTimepoint(Timepoint.id)" ng-show="isAllowed('timepointButton')&&isTaskAssignedToMe()&&Timepoint&&Timepoint.taskId==Task.id&&Timepoint.status=='IN_PROCESS'">
+        <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="changeTimepoint(Timepoint.id)" ng-show="isAllowed('timepointButton')&&isTaskAssignedToMe()&&Timepoint&&Timepoint.taskId==Task.id&&Timepoint.status=='В процессе'">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Завершить работу</button>
         </form>
         <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="changeTaskStatus('APPROVED')" ng-show="isAllowed('approvedButton')&&isCurrentUserChief()&&Task.status=='В работе'">

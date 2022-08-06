@@ -14,8 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -31,10 +35,8 @@ public class AuthServiceIntegration {
     public UserDto getUserById(Long userId) {
         return authWebClient.get()
                 .uri(uriBuilder -> uriBuilder
-
                         .path(DATA_PATH)
                         .build(userId))
-
                 .retrieve()
                 .bodyToMono(UserDto.class)
                 .doOnError(e -> {
@@ -46,10 +48,8 @@ public class AuthServiceIntegration {
     public UserLightDto getUserLightById(Long userId) {
         return authWebClient.get()
                 .uri(uriBuilder -> uriBuilder
-
                         .path(USER_PATH)
                         .build(userId))
-
                 .retrieve()
                 .bodyToMono(UserLightDto.class)
                 .doOnError(e -> {
@@ -58,16 +58,30 @@ public class AuthServiceIntegration {
                 .block();
     }
 
-    public List<UserLightDto> getAllExecutors(){
+    public List<UserLightDto> getUserLightListByIds(Set<Long> userIds) {
+        return authWebClient.post()
+                .uri(uriBuilder -> uriBuilder
+                        .path(ALL_USERS_PATH)
+                        .build())
+                .body(Mono.just(userIds), ParameterizedTypeReference.class)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<List<UserLightDto>>() {})
+                .doOnError(e -> {
+                    throw new AuthServiceIntegrationException("Ошибка при получении короткой информации о пользователях в модуле auth-service");
+                })
+                .block();
+    }
+
+    public List<UserLightDto> getAllUsersByRole(String roleName){
         return authWebClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path("api/v1/users")
-                        .queryParam("role", "ROLE_EXECUTOR")
+                        .queryParam("role", roleName)
                         .build())
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<UserLightDto>>() {})
                 .doOnError(e -> {
-                    throw new AuthServiceIntegrationException("Ошибка при получении информации о всех исполнителях ");
+                    throw new AuthServiceIntegrationException("Ошибка при получении информации о пользователях с ролью " + roleName);
                 })
                 .block();
     }

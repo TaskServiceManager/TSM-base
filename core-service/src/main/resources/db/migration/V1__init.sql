@@ -88,8 +88,8 @@ values (1,3,'>> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do 
 insert into time_points (task_id, executor_id, status)
 values (1, 2, 'FINISHED'),
        (1, 2, 'IN_PROCESS'),
-       (3, 3, 'FINISHED'),
-       (4, 3, 'IN_PROCESS');
+       (4, 3, 'FINISHED'),
+       (3, 3, 'IN_PROCESS');
 
 
 

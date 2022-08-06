@@ -114,7 +114,7 @@ public class TimePointService {
     @Scheduled(fixedRateString = "${interval.closingTimePoints}")
     @Transactional
     public void autoClosingTimePoints() {
-        List<UserLightDto> executors = authServiceIntegration.getAllExecutors();
+        List<UserLightDto> executors = authServiceIntegration.getAllUsersByRole("ROLE_EXECUTOR");
         List<TimePoint> activeTimePoints = timePointRepository.findAllByStatus(TimePointStatus.IN_PROCESS);
         for (UserLightDto exec : executors) {
             if (exec.getEndWorkTime() != null && LocalTime.now().isAfter(exec.getEndWorkTime())){

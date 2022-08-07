@@ -1,101 +1,96 @@
-<form class="row g-3 needs-validation" ng-submit="registration()" novalidate>
-    <div id="liveAlertPlaceholder">
+<form class="row g-3 needs-validation" id="registration-form" ng-submit="registration()" novalidate>
 
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom01" class="form-label">Имя</label>
-        <input type="text" class="form-control" id="validationCustom01" ng-model="dto.firstName" value="Иван" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom02" class="form-label">Фамилия</label>
-        <input type="text" class="form-control" id="validationCustom02" ng-model="dto.lastName" value="Петров" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom01" class="form-label">Отчество</label>
-        <input type="text" class="form-control" id="validationCustom03" ng-model="dto.middleName" value="Иванович" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom02" class="form-label">Логин</label>
-        <input type="text" class="form-control" id="validationCustom04" ng-model="dto.username" value="petro89" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom01" class="form-label">Пароль</label>
-        <input type="password" class="form-control" id="validationCustom05" ng-model="dto.password" value="/blkjh9()YHTY@" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom02" class="form-label">Повторить пароль</label>
-        <input type="password" class="form-control" id="validationCustom06" ng-model="validation.password" value="/blkjh9()YHTY@" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom02" class="form-label">Почта</label>
-        <input type="text" class="form-control" id="validationCustom07" ng-model="dto.email" value="petro@gmail.com" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom01" class="form-label">Компания</label>
-        <input type="text" class="form-control" id="validationCustom08" ng-model="dto.company" value="SimpleSystems.co" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom02" class="form-label">Корпоративная почта</label>
-        <input type="text" class="form-control" id="validationCustom09" ng-model="dto.companyEmail" value="SimpleSystems@co.ru" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom02" class="form-label">Должность</label>
-        <input type="text" class="form-control" id="validationCustom10" ng-model="dto.workPosition" value="Насяльника" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom01" class="form-label">Телефон</label>
-        <input type="text" class="form-control" id="validationCustom11" ng-model="dto.phone" value="1-234-567-89-00" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-    <div class="col-md-4">
-        <label for="validationCustom02" class="form-label">Кабинет</label>
-        <input type="text" class="form-control" id="validationCustom12" ng-model="dto.office" value="123" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-
-    <div class="col-md-4">
-        <label for="validationCustom02" class="form-label">Корпус</label>
-        <input type="text" class="form-control" id="validationCustom13" ng-model="dto.building" value="Бетта" required>
-        <div class="valid-feedback">
-            Все хорошо!
-        </div>
-    </div>
-
-    <div class="col-12">
-        <button class="btn btn-primary" type="submit">Отправить форму</button>
+    <h4>Заполните форму регистрации (все поля обязательные)</h4>
+    <div id="liveAlertPlaceholder"></div>
+    <table style="width:100%; border-color:white;">
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom02" class="form-label">Фамилия</label>
+                    <input type="text" class="form-control" id="validationCustom02" ng-model="dto.lastName" value="Петров" required>
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom02" class="form-label">Почта</label>
+                    <input type="text" class="form-control" id="validationCustom07" ng-model="dto.email" value="petro@gmail.com" required>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom01" class="form-label">Имя</label>
+                    <input type="text" class="form-control" id="validationCustom01" ng-model="dto.firstName" value="Иван" required>
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom01" class="form-label">Телефон</label>
+                    <input type="text" class="form-control" id="validationCustom11" ng-model="dto.phone" value="1-234-567-89-00" required>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom01" class="form-label">Отчество</label>
+                    <input type="text" class="form-control" id="validationCustom03" ng-model="dto.middleName" value="Иванович" required>
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom01" class="form-label">Компания</label>
+                    <input type="text" class="form-control" id="validationCustom08" ng-model="dto.company" value="SimpleSystems.co" required>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom02" class="form-label">Логин</label>
+                    <input type="text" class="form-control" id="validationCustom04" ng-model="dto.username" value="petro89" required>
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom02" class="form-label">Корпоративная почта</label>
+                    <input type="text" class="form-control" id="validationCustom09" ng-model="dto.companyEmail" value="SimpleSystems@co.ru" required>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom01" class="form-label">Пароль</label>
+                    <input type="password" class="form-control" id="validationCustom05" ng-model="dto.password" value="/blkjh9()YHTY@" required>
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom02" class="form-label">Должность</label>
+                    <input type="text" class="form-control" id="validationCustom10" ng-model="dto.workPosition" value="Насяльника" required>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="validationCustom02" class="form-label">Повторить пароль</label>
+                    <input type="password" class="form-control" id="validationCustom06" ng-model="validation.password" value="/blkjh9()YHTY@" required>
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4" style="margin-left: 30%;">
+                    <label style="width:10%" for="validationCustom02" class="form-label">Корпус</label>
+                    <input style="width:15%" type="text" class="form-control" id="validationCustom13" ng-model="dto.building" value="Бетта" required>
+                    <label style="width:10%" for="validationCustom02" class="form-label">Кабинет</label>
+                    <input style="width:15%" type="text" class="form-control" id="validationCustom12" ng-model="dto.office" value="123" required>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div style="margin-top: 3%;">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Отправить форму</button>
     </div>
 </form>

@@ -111,7 +111,7 @@ public class TimePointService {
         return timePointRepository.findFirstByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS).stream().findFirst().orElse(null);
     }
 
-    public boolean getCurrentTimePointByTaskId(Long taskId) {
+    public boolean checkTimePointsStatusByTaskId(Long taskId) {
         return timePointRepository.existsByTaskIdAndStatus(taskId,TimePointStatus.IN_PROCESS);
     }
 

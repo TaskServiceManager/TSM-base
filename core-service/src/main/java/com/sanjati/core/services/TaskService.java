@@ -7,7 +7,6 @@ import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Task;
-import com.sanjati.core.entities.TimePoint;
 import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.exceptions.ChangeTaskStatusException;
 import com.sanjati.core.integrations.AuthServiceIntegration;
@@ -47,7 +46,7 @@ public class TaskService {
     @Transactional
     public void changeStatus(Long taskId, TaskStatus newStatus) {
         Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
-        boolean timePointActive = timePointService.getCurrentTimePointByTaskId(taskId);
+        boolean timePointActive = timePointService.checkTimePointsStatusByTaskId(taskId);
         switch (newStatus) {
             case CREATED: {
                 if (TaskStatus.CANCELLED == task.getStatus()) {

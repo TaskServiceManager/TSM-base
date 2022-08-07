@@ -8,8 +8,10 @@ import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 
 import com.sanjati.core.entities.Task;
+import com.sanjati.core.entities.TimePoint;
 import com.sanjati.core.enums.TaskStatus;
 
+import com.sanjati.core.enums.TimePointStatus;
 import com.sanjati.core.exceptions.ChangeTaskStatusException;
 import com.sanjati.core.integrations.AuthServiceIntegration;
 import com.sanjati.core.repositories.TaskRepository;
@@ -26,6 +28,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -74,6 +78,14 @@ public class TaskService {
                 if (TaskStatus.ASSIGNED == task.getStatus() ||
                         TaskStatus.DELAYED == task.getStatus() ||
                         TaskStatus.APPROVED == task.getStatus()) {
+                    List<UserLightDto> executors = authServiceIntegration.getAllUsersByRole("ROLE_EXECUTOR");
+                    for (UserLightDto exec : executors) {
+                        if (LocalDateTime.now().isBefore(ChronoLocalDateTime.from(exec.getStartWorkTime()))
+                                ||
+                                LocalDateTime.now().isAfter(ChronoLocalDateTime.from(exec.getEndWorkTime()))) {
+                            throw new ChangeTaskStatusException("Рабочее время указано на вашем профиле. Вы не можете выполнять заявку в нерабочее время");
+                        }
+                    }
                     task.setStatus(newStatus);
                     break;
                 }

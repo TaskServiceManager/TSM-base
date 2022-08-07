@@ -2,6 +2,7 @@ package com.sanjati.api.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Основная модель пользователя")
 public class UserDto {
 
     @Schema(description = "ID пользователя", example = "3")

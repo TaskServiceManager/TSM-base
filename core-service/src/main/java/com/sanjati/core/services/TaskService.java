@@ -3,7 +3,7 @@ package com.sanjati.core.services;
 
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.core.AssignDtoRq;
-import com.sanjati.api.core.ParamsTaskDtoRq;
+import com.sanjati.api.core.SearchParamsTaskDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
@@ -12,7 +12,6 @@ import com.sanjati.core.entities.Task;
 import com.sanjati.core.enums.TaskStatus;
 
 import com.sanjati.core.exceptions.ChangeTaskStatusException;
-import com.sanjati.core.integrations.AuthServiceIntegration;
 import com.sanjati.core.repositories.TaskRepository;
 import com.sanjati.core.repositories.specifications.TaskSpecifications;
 
@@ -158,7 +157,7 @@ public class TaskService {
         return task;
     }
 
-    public Page<Task> findAllTasksBySpec(ParamsTaskDtoRq searchParams) {
+    public Page<Task> findAllTasksBySpec(SearchParamsTaskDtoRq searchParams) {
         Specification<Task> spec = Specification.where(null);
 
         if(searchParams.getOwnerId() != null) {

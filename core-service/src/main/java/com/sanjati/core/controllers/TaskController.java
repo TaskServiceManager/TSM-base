@@ -1,10 +1,9 @@
 package com.sanjati.core.controllers;
 
 import com.sanjati.api.core.AssignDtoRq;
-import com.sanjati.api.core.ParamsTaskDtoRq;
+import com.sanjati.api.core.SearchParamsTaskDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.core.TaskDto;
-import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.core.converters.TaskConverter;
 import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.services.TaskService;
@@ -18,12 +17,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.time.LocalDateTime;
 
 
 @Slf4j
@@ -61,7 +56,7 @@ public class TaskController {
     )
     @PostMapping("/search")
     public Page<TaskDto> getAllTasksBySpec(@Parameter(description = "Тело запроса с параметрами поиска", required = false)
-                                                @RequestBody ParamsTaskDtoRq searchParams) {
+                                                @RequestBody SearchParamsTaskDtoRq searchParams) {
         if (searchParams.getPage() < 1 || searchParams.getPage() == null) {
             searchParams.setPage(1);
         }

@@ -3,7 +3,7 @@ package com.sanjati.api.auth;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 
-
+@Schema(description = "Модель менеджера")
 public class ManagerDto {
 
     @Schema(description = "ID менеджера", example = "3")

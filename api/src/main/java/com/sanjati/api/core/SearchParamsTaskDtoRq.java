@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 
 @Schema(description = "Тело запроса с параметрами поиска для получения задач")
-public class ParamsTaskDtoRq {
+public class SearchParamsTaskDtoRq {
 
     @Schema(description = "ID автора заявки", example = "3")
     private Long ownerId;

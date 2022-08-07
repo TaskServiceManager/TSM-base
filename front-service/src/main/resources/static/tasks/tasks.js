@@ -3,9 +3,9 @@ angular.module('ttsystem-front').controller('tasksController', function ($scope,
 
     $scope.loadTasks = function (pageIndex) {
         $http({
-                url: contextPath + 'api/v1/tasks',
-                method: 'GET',
-                params: {
+                url: contextPath + 'api/v1/tasks/search',
+                method: 'POST',
+                data: {
                     ownerId: $localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null,
                     page: pageIndex ? pageIndex : 1,
                     from: $scope.filter ? $rootScope.addTimezoneOffset($scope.filter.from) : null,

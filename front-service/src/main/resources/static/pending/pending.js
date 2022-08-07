@@ -3,9 +3,9 @@ angular.module('ttsystem-front').controller('pendingController', function ($scop
 
     $scope.loadTasks = function (pageIndex) {
         $http({
-                url: contextPath + 'api/v1/tasks',
-                method: 'GET',
-                params: {
+                url: contextPath + 'api/v1/tasks/search',
+                method: 'POST',
+                data: {
                     page: pageIndex ? pageIndex : 1,
                     status: 'APPROVED'
                 }

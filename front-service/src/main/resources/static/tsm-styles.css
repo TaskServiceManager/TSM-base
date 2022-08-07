@@ -14,7 +14,7 @@ ng-view::-webkit-scrollbar {
   display: none;
 }
 
-#createTask button {
+#createTask button, #records button {
   background-color: #d3f3de;
   width: 150px;
 }
@@ -106,7 +106,7 @@ nav a:hover{
   border-width: thin;
 }
 
-.modal .close:hover, #createTask button:hover {
+.modal .close:hover, #createTask button:hover, #records button:hover {
   background-color: #146c43;
   border-color: #146c43;
   color: white;
@@ -214,5 +214,9 @@ select {
 }
 
 select:focus-visible {
-      outline: -webkit-focus-ring-color auto 0px;!important;
+  outline: -webkit-focus-ring-color auto 0px;!important;
+}
+
+.custom-button-bar form {
+  margin-left:1%;
 }

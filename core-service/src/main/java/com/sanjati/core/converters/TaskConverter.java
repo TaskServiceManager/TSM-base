@@ -32,12 +32,10 @@ public class TaskConverter {
 
         List<UserLightDto> executorsList = new ArrayList<>();
         if(!isNull(entity.getExecutors())) {
-            entity.getExecutors().forEach(ex -> {
-                UserLightDto userLightDto = authService.getUserLightById(ex);
-                if(userLightDto!=null) {
-                    executorsList.add(userLightDto);
-                }
-            });
+            List<UserLightDto> userLightDtos = authService.getUserLightListByIds(entity.getExecutors());
+            if(userLightDtos!=null) {
+                executorsList.addAll(userLightDtos);
+            }
         }
 
         String formattedCreatedAt = formatDate(entity.getCreatedAt());

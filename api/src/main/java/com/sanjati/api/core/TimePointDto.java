@@ -10,12 +10,14 @@ public class TimePointDto {
     private Long taskId;
     @Schema(description = "ID исполнителя выполняющего задачу", example = "3")
     private Long executorId;
-    @Schema(description = "статус", example = "IN_PROCESS")
+    @Schema(description = "Статус", example = "В процессе")
     private String status;
     @Schema(description = "Дата начала работы", example = "2022-07-10 16:30:19")
     private String startedAt;
     @Schema(description = "Дата окончания работы", example = "2022-07-10 16:30:19")
     private String finishedAt;
+    @Schema(description = "Затраченное время", example = "44:50:00")
+    private String duration;
 
     public Long getId() {
         return id;
@@ -65,13 +67,22 @@ public class TimePointDto {
         this.finishedAt = finishedAt;
     }
 
-    public TimePointDto(Long id, Long taskId, Long executorId, String status, String startedAt, String finishedAt) {
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
+
+    public TimePointDto(Long id, Long taskId, Long executorId, String status, String startedAt, String finishedAt, String duration) {
         this.id = id;
         this.taskId = taskId;
         this.executorId = executorId;
         this.status = status;
         this.startedAt = startedAt;
         this.finishedAt = finishedAt;
+        this.duration = duration;
     }
 
     public TimePointDto() {

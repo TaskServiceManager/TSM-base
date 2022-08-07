@@ -6,6 +6,7 @@ import com.sanjati.api.auth.UserDto;
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.auth.WorkTimeDtoRq;
 
+import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.dto.JwtRequest;
@@ -23,10 +24,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -108,9 +108,7 @@ public class AuthController {
     public List<UserLightDto> getAllUsers(@Parameter(description = "Роль пользователей")
                                           @RequestParam(required = false) String role) {
         return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
-
     }
-
 
     @Operation(
             summary = "Запрос на изменение времени работы исполнителя",
@@ -131,7 +129,7 @@ public class AuthController {
                                @Parameter(description = "Тело запроса с новым временем работы")
                                    @RequestBody WorkTimeDtoRq workTimeDtoRq){
         if (!role.contains("ROLE_EXECUTOR")){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к смене рабочего времени");
+            throw new MandatoryCheckException("Нет доступа к смене рабочего времени");
         }
         userService.updateWorkTime(executorId, workTimeDtoRq);
     }
@@ -148,7 +146,6 @@ public class AuthController {
     public List<UserLightDto> getLightUserDataById(@Parameter(description = "список ID пользователей", required = true)
                                                    @RequestBody List<Long> usersId) {
         return userService.getLightUserDataById(usersId);
-
     }
 
 }

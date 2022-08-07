@@ -76,15 +76,6 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
         }
     };
 
-    $rootScope.redirectCheck = function () {
-        if(!$rootScope.isUserLoggedIn()) {
-            $rootScope.wayForAuth = $location.url();
-            $location.path('/login');
-        }
-    };
-
-    $rootScope.redirectCheck();
-
     $rootScope.logout = function () {
         $rootScope.clearUser();
         $rootScope.clearRole();
@@ -131,6 +122,10 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
 
     $rootScope.goToRecords = function () {
         $location.path('/records');
+    };
+
+    $rootScope.goToLogin = function () {
+        $location.path('/login');
     };
 
     $rootScope.loadDetailsOpen = function () {
@@ -249,7 +244,31 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
        return date;
     }
 
-
+    $rootScope.updateWorktime = function () {
+       var start;
+       var end;
+       if($scope.workday.startWorkTime) {
+            start = $filter('date')(new Date($scope.workday.startWorkTime), 'HH:mm:ss');
+       } else {
+            start = $rootScope.CurrentUser.startWorkTime;
+       }
+       if($scope.workday.endWorkTime) {
+            end = $filter('date')(new Date($scope.workday.endWorkTime), 'HH:mm:ss');
+       } else {
+            end = $rootScope.CurrentUser.endWorkTime;
+       }
+       $http({
+            url: contextAuthPath + 'api/v1/users/'+ ($localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null) +'/worktime',
+            method: 'PATCH',
+            data: {startWorkTime: start, endWorkTime: end}
+          }).then(function successCallback(response) {
+            $rootScope.loadFullUserData();
+          }, function errorCallback(response) {
+            alert(response.data.message);
+            console.log('error');
+            console.log(response);
+      });
+    }
 
     $rootScope.loadDetailsOpen();
     $rootScope.loadFullUserData();

@@ -102,9 +102,11 @@ public class TaskService {
                     if (!timePointActive) {
                         commentService.leaveComment(taskId, task.getChiefId(), "заявка выполнена");
                         task.setStatus(newStatus);
-                        break;
+                      task.setCompletedAt(LocalDateTime.now());
+                      break;
                     }
                     throw new ChangeTaskStatusException("Изменить статус на 'Выполнена' можно, когда все исполнители завершат работу");
+
                 }
                 throw new ChangeTaskStatusException("Завершить можно только подтвержденную заявку");
             }
@@ -154,10 +156,10 @@ public class TaskService {
     }
 
     private Task getTaskAvailableForChanges(Long taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
-        if (task.getStatus() == TaskStatus.CANCELLED || task.getStatus() == TaskStatus.COMPLETED) {
-            throw new MandatoryCheckException("Заявка отклонена или уже была выполнена.");
-        }
+        List<TaskStatus> statuses = Arrays.asList(TaskStatus.values());
+        statuses.remove(TaskStatus.CANCELLED);
+        statuses.remove(TaskStatus.COMPLETED);
+        Task task = taskRepository.findByIdAndStatusIn(taskId,statuses).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
         return task;
     }
 

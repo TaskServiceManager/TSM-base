@@ -25,15 +25,15 @@
             .when('/assigned', {
                   templateUrl: 'assigned/assigned.html',
                   controller: 'assignedController'
-             })
-             .when('/incoming', {
-                   templateUrl: 'incoming/incoming.html',
-                   controller: 'incomingController'
-              })
-//            .when('/form', {
-//                templateUrl: 'form/form.html',
-//                controller: 'formController'
-//            })
+            })
+            .when('/incoming', {
+                  templateUrl: 'incoming/incoming.html',
+                  controller: 'incomingController'
+            })
+            .when('/pending', {
+                  templateUrl: 'pending/pending.html',
+                  controller: 'pendingController'
+            })
             .when('/records', {
                    templateUrl: 'records/records.html',
                    controller: 'recordsController'
@@ -127,6 +127,10 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
         $rootScope.loadDetailsOpen();
         $rootScope.preDetailsView = $location.url();
         $location.path('/tasks/'+taskId);
+    };
+
+    $rootScope.goToRecords = function () {
+        $location.path('/records');
     };
 
     $rootScope.loadDetailsOpen = function () {
@@ -235,6 +239,17 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
        }
        return 'Не найдены';
     }
+
+    $rootScope.addTimezoneOffset = function (stringDate) {
+       if(!stringDate) {
+          return null;
+       }
+       const date = new Date(stringDate);
+       date.setTime(date.getTime() + (3*60*60*1000));
+       return date;
+    }
+
+
 
     $rootScope.loadDetailsOpen();
     $rootScope.loadFullUserData();

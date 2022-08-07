@@ -25,4 +25,7 @@ public interface TimePointRepository extends JpaRepository<TimePoint, Long>, Jpa
     List<TimePoint> findAllByStatus(TimePointStatus status);
 
     boolean existsByTaskIdAndStatus(Long taskId, TimePointStatus status);
+
+Optional<TimePoint> findByIdAndStatus(Long id,TimePointStatus status);
+
 }

@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 
 public class TimePointsSpecifications {
     public static Specification<TimePoint> timeGreaterOrEqualsThan(LocalDateTime time) {
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("createdAt"), time);
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.greaterThanOrEqualTo(root.get("startedAt"), time);
     }
 
     public static Specification<TimePoint> timeLessOrEqualsThan(LocalDateTime time) {
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("createdAt"), time);
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("startedAt"), time);
     }
 
     public static Specification<TimePoint> executorIdEquals(Long executorId){

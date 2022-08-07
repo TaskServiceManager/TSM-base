@@ -69,9 +69,8 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
 
    $scope.showAssignModal = function () {
         $http({
-          url: 'http://localhost:5555/auth/api/v1/users', //заменить на кор
-          method: 'GET',
-          params: {role: 'ROLE_EXECUTOR'}
+          url: contextPath + 'api/v1/statistics/employment',
+          method: 'GET'
         }).then(function successCallback(response) {
           $scope.ExecutorsList = response.data;
           $scope.prepareModel();

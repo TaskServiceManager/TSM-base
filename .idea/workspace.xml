@@ -4,19 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="С-0-13. замечания 2">
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/NewUserDtoRq.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/controllers/RegistrationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/RoleRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/RegistrationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/registration/registration.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/registration/registration.js" afterDir="false" />
+    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="А-7-1 , А-7-2. Регистрация фронт и бэк">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/controllers/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/converters/UserConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/converters/UserConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/entities/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-service/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/front-service/src/main/resources/static/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-service/src/main/resources/static/login/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/login/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/front-service/src/main/resources/static/login/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/login/login.js" afterDir="false" />
     </list>
@@ -164,8 +153,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.FrontApp" />
-        <item itemvalue="Application.WebAuthServiceApplication" />
         <item itemvalue="Application.CoreApp" />
+        <item itemvalue="Application.WebAuthServiceApplication" />
         <item itemvalue="Application.GatewayApp" />
       </list>
     </recent_temporary>
@@ -207,7 +196,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659820984040</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="А-7-1 , А-7-2. Регистрация фронт и бэк">
+      <created>1659881621483</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1659881621483</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -226,6 +222,7 @@
     <MESSAGE value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
     <MESSAGE value="С-0-13. замечания" />
     <MESSAGE value="С-0-13. замечания 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="С-0-13. замечания 2" />
+    <MESSAGE value="А-7-1 , А-7-2. Регистрация фронт и бэк" />
+    <option name="LAST_COMMIT_MESSAGE" value="А-7-1 , А-7-2. Регистрация фронт и бэк" />
   </component>
 </project>

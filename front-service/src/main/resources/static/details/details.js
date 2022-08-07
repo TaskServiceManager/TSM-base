@@ -38,10 +38,10 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
             $scope.newComment = null;
             $scope.loadComments($scope.Task.id)
         }, function errorCallback(response) {
-            alert('Что-то пошло не так - попробуйте позже..','danger');
-              console.log('error');
-              console.log(response);
-              $scope.newComment = null;
+            alert(response.data.message);
+            console.log('error');
+            console.log(response);
+            $scope.newComment = null;
         });
     }
 
@@ -52,7 +52,7 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
        }).then(function successCallback(response) {
            $scope.loadTaskWithComments();
        }, function errorCallback(response) {
-           alert('Что-то пошло не так - попробуйте позже..','danger');
+           alert(response.data.message);
            console.log('error');
            console.log(response);
        });
@@ -75,7 +75,7 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
           $scope.ExecutorsList = response.data;
           $scope.prepareModel();
         }, function errorCallback(response) {
-          alert('Что-то пошло не так - попробуйте позже..','danger');
+          alert(response.data.message);
           console.log('error');
           console.log(response);
         });
@@ -121,10 +121,10 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
             $scope.closeAssignModal();
             $scope.loadTaskWithComments();
         }, function errorCallback(response) {
-            alert('Что-то пошло не так - попробуйте позже..','danger');
-              console.log('error');
-              console.log(response);
-              $scope.newComment = null;
+            alert(response.data.message);
+            console.log('error');
+            console.log(response);
+            $scope.newComment = null;
         });
    }
 
@@ -154,7 +154,7 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
            }).then(function successCallback(response) {
              $scope.loadTaskWithComments();
            }, function errorCallback(response) {
-             alert('Что-то пошло не так - попробуйте позже..','danger');
+             alert(response.data.message);
              console.log('error');
              console.log(response);
        });

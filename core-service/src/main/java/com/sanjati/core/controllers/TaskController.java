@@ -95,7 +95,7 @@ public class TaskController {
                                @Parameter(description = "ID пользователя", required = true)
                                    @RequestHeader(name = "id") Long userId) {
         if(!role.contains("EXECUTOR")){
-            if(!taskService.checkTaskOwnerId(userId,id)) throw new MandatoryCheckException("Нет доступа к чужим заявкам");
+            if(!taskService.isUserTaskOwner(id, userId)) throw new MandatoryCheckException("Нет доступа к чужим заявкам");
         }
         return taskConverter.entityToDto(taskService.findById(id));
     }

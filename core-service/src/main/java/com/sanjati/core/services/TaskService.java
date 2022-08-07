@@ -190,6 +190,9 @@ public class TaskService {
 
 
     public void createTask(Long ownerId, TaskDtoRq taskCreateDto) {
+        if(taskCreateDto.getTitle()==null || taskCreateDto.getDescription()==null) {
+            throw new MandatoryCheckException("Не заполнены тема или описание заявки");
+        }
         Task task = new Task();
         task.setOwnerId(ownerId);
 
@@ -199,8 +202,8 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-    public boolean checkTaskOwnerId(Long userId, Long taskId) {
-        return  taskRepository.isCountMoreThanZeroByOwnerIdAndTaskId(taskId,userId);
+    public boolean isUserTaskOwner(Long taskId, Long userId) {
+        return taskRepository.existsByIdAndOwnerId(taskId, userId);
     }
     public TaskStatus getStatusByTaskId(Long taskId){
        return taskRepository.findStatusByTaskId(taskId);

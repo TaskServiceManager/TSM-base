@@ -109,6 +109,7 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
     };
 
     $rootScope.goToDetails = function (taskId) {
+        $scope.searchValue = null;
         if(!$localStorage.detailsOpen) {
             $localStorage.detailsOpen=[];
         }
@@ -176,12 +177,13 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
             method: 'POST',
             data: $rootScope.newTask
         }).then(function successCallback(response) {
+            $rootScope.closeModalForCreateTask();
+            $route.reload();
         }, function errorCallback(response) {
-            alert('Что-то пошло не так - попробуйте позже..','danger');
-              console.log('error');
-              console.log(response);
+            alert(response.data.message);
+            console.log('error');
+            console.log(response);
         });
-        $rootScope.closeModalForCreateTask();
     };
 
     $rootScope.showModalForExecutorDetails = function (executor) {
@@ -222,7 +224,7 @@ angular.module('ttsystem-front').controller('indexController', function ($rootSc
           }).then(function successCallback(response) {
             $rootScope.Timepoint = response.data;
           }, function errorCallback(response) {
-            alert('Не удалось загрузить текущую задачу в работе','danger');
+            alert(response.data.message);
             console.log('error');
             console.log(response);
       });

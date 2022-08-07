@@ -36,8 +36,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
-    private final String AUTH_PATH = "/auth";
-    private final String DATA_PATH = "/data";
+
     private final UserConverter userConverter;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
@@ -51,7 +50,7 @@ public class AuthController {
                     )
             }
     )
-    @PostMapping(AUTH_PATH)
+    @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));

@@ -1,7 +1,9 @@
 angular.module('ttsystem-front').controller('loginController', function ($scope, $rootScope, $http, $localStorage, $location) {
     const contextPath = 'http://localhost:5555/auth/api/v1';
     const corePath = 'http://localhost:5555/core/api/v1';
-
+    $scope.toRegistration(){
+        $location.path('/registration');
+    }
     $rootScope.auth = function () {
         $rootScope.user=$scope.user;
         $http.post(contextPath+'/auth', $rootScope.user)

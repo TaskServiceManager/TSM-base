@@ -38,6 +38,10 @@
                    templateUrl: 'records/records.html',
                    controller: 'recordsController'
             })
+            .when('/users', {
+                               templateUrl: 'users/users.html',
+                               controller: 'usersController'
+                        })
             .otherwise({
                 redirectTo: '/'
             });

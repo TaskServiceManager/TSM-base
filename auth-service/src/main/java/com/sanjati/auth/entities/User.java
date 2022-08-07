@@ -73,4 +73,22 @@ public class User {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public User(String username, String password, String firstName, String lastName, String middleName, String email, String company, String companyEmail, String workPosition, String phone, String office, String building) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.email = email;
+        this.company = company;
+        this.companyEmail = companyEmail;
+        this.workPosition = workPosition;
+        this.phone = phone;
+        this.office = office;
+        this.building = building;
+    }
+
+    public User() {
+    }
 }

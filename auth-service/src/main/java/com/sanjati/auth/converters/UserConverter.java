@@ -1,12 +1,18 @@
 package com.sanjati.auth.converters;
 
+import com.sanjati.api.auth.NewUserDtoRq;
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.auth.UserDto;
+import com.sanjati.api.auth.UserTinyDto;
+import com.sanjati.auth.configs.SecurityConfig;
 import com.sanjati.auth.entities.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UserConverter {
+    @Autowired
+    SecurityConfig securityConfig;
     public UserDto modelToDto(User user){
         if(user==null) {
             return null;
@@ -30,5 +36,20 @@ public class UserConverter {
                 .startWorkTime(user.getStartWorkTime())
                 .endWorkTime(user.getEndWorkTime())
                 .build();
+    }
+    public User dtoToEntity(NewUserDtoRq newUserDto){
+
+        return new User(newUserDto.getUsername(), securityConfig.passwordEncoder().encode(newUserDto.getPassword()),
+                newUserDto.getFirstName(),newUserDto.getLastName(),
+                newUserDto.getMiddleName(),newUserDto.getEmail(),
+                newUserDto.getCompany(),newUserDto.getCompanyEmail(),
+                newUserDto.getWorkPosition(),newUserDto.getPhone(),
+                newUserDto.getOffice(),newUserDto.getBuilding());
+
+
+    }
+    public UserTinyDto entityToTinyDto(User entity){
+        String fio = String.format("%s %c.%c.",entity.getFirstName(),entity.getLastName().charAt(0),entity.getMiddleName().charAt(0));
+        return new UserTinyDto(entity.getId(), entity.getUsername(), fio);
     }
 }

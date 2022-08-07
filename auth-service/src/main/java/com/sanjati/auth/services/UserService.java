@@ -7,7 +7,11 @@ import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
 import com.sanjati.auth.repositories.UserRepository;
+import com.sanjati.auth.repositories.specifications.UserSpecifications;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +28,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final RoleService roleService;
 
     private final UserConverter userConverter;
 
@@ -62,6 +67,21 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllUsersByIdIn(userIds).stream()
                 .map(userConverter::modelToLightDto)
                 .collect(Collectors.toList());
+    }
+    public Page<User> findUsersBySpec(Long id, String usernamePart, Long roleId, Integer page) {
+        Specification<User> spec = Specification.where(null);
+        if(id != null){
+            spec = spec.and(UserSpecifications.userIdEquals(id));
+
+        }
+        if(usernamePart != null){
+            spec = spec.and(UserSpecifications.usernameLike(usernamePart));
+        }
+        if (roleId!= null){
+            spec = spec.and(UserSpecifications.userRoleContainsIn(roleService.findById(roleId)));
+        }
+        return userRepository.findAll(spec, PageRequest.of(page - 1, 8));
+
     }
 
 }

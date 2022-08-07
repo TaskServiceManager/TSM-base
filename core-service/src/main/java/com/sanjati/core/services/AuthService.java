@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,11 @@ public class AuthService {
         return authServiceIntegration.getUserLightById(userId);
     }
 
-    public List<UserLightDto> getAllExecutors(){
-        return authServiceIntegration.getAllExecutors();
+    public List<UserLightDto> getAllUsersByRole(String role){
+        return authServiceIntegration.getAllUsersByRole(role);
+    }
+
+    public List<UserLightDto> getUserLightListByIds(Set<Long> usersIds){
+        return authServiceIntegration.getUserLightListByIds(usersIds);
     }
 }

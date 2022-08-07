@@ -22,8 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -58,11 +58,11 @@ public class TimePointService {
         if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
             taskService.changeStatus(taskId, TaskStatus.ACCEPTED);
         }
-
         TimePoint tp = new TimePoint();
         tp.setStatus(TimePointStatus.IN_PROCESS);
         tp.setExecutorId(userId);
         tp.setTaskId(taskId);
+        tp.setFinishedAt(correctFinishedAtForTimePoint(authService.getUserLightById(userId).getEndWorkTime()));
         timePointRepository.save(tp);
 
     }
@@ -74,9 +74,6 @@ public class TimePointService {
         // убрал if  так как мы и так вынули тайм поинт по статусу
         timePoint.setStatus(TimePointStatus.FINISHED);
         timePoint.setFinishedAt(LocalDateTime.now());
-
-
-
     }
 
     @Transactional
@@ -114,30 +111,24 @@ public class TimePointService {
     @Scheduled(fixedRateString = "${interval.closingTimePoints}")
     @Transactional
     public void autoClosingTimePoints() {
-        List<UserLightDto> executors = authService.getAllUsersByRole("ROLE_EXECUTOR");
         List<TimePoint> activeTimePoints = timePointRepository.findAllByStatus(TimePointStatus.IN_PROCESS);
-        for (UserLightDto exec : executors) {
-            if (exec.getEndWorkTime() != null && LocalTime.now().isAfter(exec.getEndWorkTime())){
-                for (TimePoint point : activeTimePoints) {
-                    if (point.getExecutorId().equals(exec.getId())){
-                        point.setStatus(TimePointStatus.FINISHED);
-                        point.setFinishedAt(getActualLocalDateTime(exec.getEndWorkTime()));
-                    }
-                }
+        for (TimePoint point : activeTimePoints) {
+            if (LocalDateTime.now().isAfter(point.getFinishedAt())){
+                point.setStatus(TimePointStatus.FINISHED);
             }
         }
     }
 
     /*
-    Время окончания работы у сотрудника может быть в 2022-08-01T23:50, а автоматическое закрытие происходить
-    в 2022-08-02T01:45. В этом случае переменная время закрытия таймпоинта получится 2022-08-02T23:50 - это не корректно.
-    Поэтому необходимо уменьшить это значение на 1 день.
+    Время окончания работы у сотрудника может быть в 2022-08-02T00:34, а автоматическое закрытие происходить
+    в 2022-08-01T23:45. В этом случае переменная время закрытия таймпоинта получится 2022-08-01T00:34 - это не корректно.
+    Поэтому необходимо увеличить это значение на 1 день.
      */
-    private LocalDateTime getActualLocalDateTime(LocalTime endWorkTime){
-        LocalDateTime ldt = LocalDateTime.of(LocalDate.now(), endWorkTime);
-        if (LocalDateTime.now().isBefore(ldt)){
-            ldt = ldt.minusDays(1);
+    private LocalDateTime correctFinishedAtForTimePoint(LocalTime endWorkTime){
+        LocalDateTime finishedAtTP = LocalDateTime.of(LocalDate.now(), endWorkTime);
+        if (LocalDateTime.now().isAfter(finishedAtTP)){
+            finishedAtTP = finishedAtTP.plusDays(1);
         }
-        return ldt;
+        return finishedAtTP;
     }
 }

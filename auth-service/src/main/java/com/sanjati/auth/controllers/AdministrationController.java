@@ -3,6 +3,7 @@ package com.sanjati.auth.controllers;
 
 import com.sanjati.api.auth.NewUserDtoRq;
 import com.sanjati.api.auth.UserTinyDto;
+import com.sanjati.auth.enums.UserRole;
 import com.sanjati.auth.services.AdministrationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,7 +30,7 @@ public class AdministrationController {
                     )
             }
     )
-    @PutMapping("/edit/user/{id}")
+    @PutMapping("/users/{id}")
     public void updateWorkTime(@Parameter(description = "ID пользователя")
                                @PathVariable(name = "id") Long userId,
                                @Parameter(description = "Список ролей")
@@ -50,15 +51,15 @@ public class AdministrationController {
                     )
             }
     )
-    @PatchMapping("/change/role/user/{id}")
+    @PatchMapping("/users/{id}/role")
     public void updateRole(@Parameter(description = "ID пользователя")
                                @PathVariable(name = "id") Long userId,
                                @Parameter(description = "Список ролей")
                                @RequestHeader String role,
                                @Parameter(description = "ID новой роли")
-                               @RequestParam Integer roleId){
+                               @RequestParam String newRole){
 
-        administrationService.changeRole(roleId, userId);
+        administrationService.changeRole(newRole, userId);
 
     }
     @Operation(
@@ -71,7 +72,7 @@ public class AdministrationController {
             }
     )
 
-    @GetMapping
+    @GetMapping("/users")
     public Page<UserTinyDto> getUsersBySpec(@Parameter(description = "номер страницы", required = true)
                                            @RequestParam Integer page,
                                             @Parameter(description = "ID пользователя", required = false)

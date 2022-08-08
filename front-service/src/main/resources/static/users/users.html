@@ -59,11 +59,11 @@
                         Роль
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,1)">Пользователь</a></li>
-                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,2)">Исполнитель</a></li>
-                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,3)">Мэнеджер</a></li>
-                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,4)">Администратор</a></li>
-                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,5)">Директор</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'USER')">Пользователь</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'EXECUTOR')">Исполнитель</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'MANAGER')">Мэнеджер</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'ADMIN')">Администратор</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'SENIOR')">Директор</a></li>
                     </ul>
                 </div>
             </td>

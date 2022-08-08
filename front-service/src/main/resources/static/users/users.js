@@ -10,7 +10,7 @@ angular.module('ttsystem-front').controller('usersController', function ($scope,
 
     $scope.loadUsers = function (pageIndex) {
         $http({
-                url: contextPath + 'api/v1/admin',
+                url: contextPath + 'api/v1/admin/users',
                 method: 'GET',
                 params: {
 
@@ -43,12 +43,13 @@ angular.module('ttsystem-front').controller('usersController', function ($scope,
                                     });
     }
 
-    $scope.changeRole = function(userId,roleId){
+    $scope.changeRole = function(userId,newRole){
            $http({
-                          url: contextPath + 'api/v1/admin' + '/change/role/user/'+ userId,
+
+                          url: contextPath + 'api/v1/admin' + '/users/'+ userId + '/role/',
                           method: 'PATCH',
                           params: {
-                               roleId: roleId
+                               newRole: newRole
                          }
                   }).then(function successCallback(response) {
 

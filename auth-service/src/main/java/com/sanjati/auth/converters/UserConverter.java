@@ -48,8 +48,8 @@ public class UserConverter {
 
 
     }
-    public UserTinyDto entityToTinyDto(User entity){
-        String fio = String.format("%s %c.%c.",entity.getFirstName(),entity.getLastName().charAt(0),entity.getMiddleName().charAt(0));
+    public UserTinyDto entityToTinyDto(User entity,String fio){
+
         return new UserTinyDto(entity.getId(), entity.getUsername(), fio);
     }
 }

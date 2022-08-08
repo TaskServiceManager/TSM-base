@@ -3,7 +3,6 @@ package com.sanjati.auth.services;
 
 import com.sanjati.api.auth.NewUserDtoRq;
 import com.sanjati.api.auth.UserTinyDto;
-import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.entities.Role;
@@ -23,47 +22,47 @@ public class AdministrationService {
     private final UserService userService;
     private final UserConverter userConverter;
     @Transactional
-    public void changeRole(Integer newRole, Long userId){
-        if(newRole<0||newRole>6) throw new MandatoryCheckException("невозможно назначить несуществующие роли");
+    public void changeRole(String newRole, Long userId){
 
-        List<Long> ids = new ArrayList<>();
+
+        List<String> roles = new ArrayList<>();
         User user = userService.findByUserId(userId).orElseThrow(()->new ResourceNotFoundException("Пользователь не найден Id: "+userId));
 
         switch (newRole){
-            case 1 :
-                ids.add(1L);
-                List<Role> userRoles = roleService.findAllByIdIn(ids);
+            case "USER" :
+                roles.add("ROLE_USER");
+                List<Role> userRoles = roleService.findAllByNameIn(roles);
                 user.setRoles(userRoles);
                 break;
 
-            case 2 :
-                ids.add(1L);
-                ids.add(2L);
-                List<Role> executorRoles = roleService.findAllByIdIn(ids);
+            case "EXECUTOR":
+                roles.add("ROLE_USER");
+                roles.add("ROLE_EXECUTOR");
+                List<Role> executorRoles = roleService.findAllByNameIn(roles);
                 user.setRoles(executorRoles);
                 break;
 
-            case 3 :
-                ids.add(1L);
-                ids.add(2L);
-                ids.add(3L);
-                List<Role> managerRoles = roleService.findAllByIdIn(ids);
+            case "MANAGER":
+                roles.add("ROLE_USER");
+                roles.add("ROLE_EXECUTOR");
+                roles.add("ROLE_MANAGER");
+                List<Role> managerRoles = roleService.findAllByNameIn(roles);
                 user.setRoles(managerRoles);
                 break;
 
-            case 4 :// можно дополнительно ввести исполнителя админа
-                ids.add(1L);
-                ids.add(2L);
-                ids.add(3L);
-                ids.add(4L);
-                List<Role> adminManagerRoles = roleService.findAllByIdIn(ids);
+            case "ADMIN":// можно дополнительно ввести исполнителя админа
+                roles.add("ROLE_USER");
+                roles.add("ROLE_EXECUTOR");
+                roles.add("ROLE_MANAGER");
+                roles.add("ROLE_ADMIN");
+                List<Role> adminManagerRoles = roleService.findAllByNameIn(roles);
                 user.setRoles(adminManagerRoles);
                 break;
 
-            case 5 :
-                ids.add(1L);
-                ids.add(5L);
-                List<Role> seniorRoles = roleService.findAllByIdIn(ids);
+            case "SENIOR":
+                roles.add("ROLE_USER");
+                roles.add("ROLE_SENIOR");
+                List<Role> seniorRoles = roleService.findAllByNameIn(roles);
                 user.setRoles(seniorRoles);
                 break;
 
@@ -118,7 +117,10 @@ public class AdministrationService {
 
     public Page<UserTinyDto> findUsersBySpec(Long id, String usernamePart, Long role, Integer page) {
 
-        return userService.findUsersBySpec(id,usernamePart,role,page).map(userConverter::entityToTinyDto);
+        return userService.findUsersBySpec(id,usernamePart,role,page).map(entity->{
+            String fio = String.format("%s %c.%c.",entity.getFirstName(),entity.getLastName().charAt(0),entity.getMiddleName().charAt(0));
+            return userConverter.entityToTinyDto(entity,fio);
+        });
 
     }
 }

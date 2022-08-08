@@ -13,7 +13,7 @@ angular.module('ttsystem-front').controller('editController', function ($scope, 
             if($scope.dto.password == $scope.validation.password){
 
 
-                $http.put(contextPath+'api/v1/admin'+'/edit/user/'+userId, $scope.dto)
+                $http.put(contextPath+'api/v1/admin'+'/users/'+userId, $scope.dto)
                      .then(function successCallback(response) {
                            $scope.validation = null;
                            $scope.dto = null;

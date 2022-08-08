@@ -1,0 +1,97 @@
+<div id="liveAlertPlaceholder"></div>
+<form class="row g-3 " id="edit-form" ng-submit="update(CurrentUser.id)" novalidate>
+
+    <h4>Заполните поля которые хотите изменить (поля не обязательные)</h4>
+    <h3>Пользователь {{CurrentUser.username}} Id : {{CurrentUser.id}}</h3>
+    <table style="width:100%; border-color:white;">
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom02" class="form-label">{{CurrentUser.lastName}}</label>
+                    <input type="text" class="form-control" id="custom02" ng-model="dto.lastName" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom09" class="form-label">{{CurrentUser.email}}</label>
+                    <input type="text" class="form-control" id="custom09" ng-model="dto.email" >
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom01" class="form-label">{{CurrentUser.firstName}}</label>
+                    <input type="text" class="form-control" id="custom01" ng-model="dto.firstName" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom11" class="form-label">{{CurrentUser.phone}}</label>
+                    <input type="text" class="form-control" id="custom11" ng-model="dto.phone" >
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom22" class="form-label">{{CurrentUser.middleName}}</label>
+                    <input type="text" class="form-control" id="custom22" ng-model="dto.middleName" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom12" class="form-label">{{CurrentUser.company}}</label>
+                    <input type="text" class="form-control" id="custom12" ng-model="dto.company" >
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom21" class="form-label">{{CurrentUser.login}}</label>
+                    <input type="text" class="form-control" id="custom21" ng-model="dto.username" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom23" class="form-label">{{CurrentUser.companyEmail}}</label>
+                    <input type="text" class="form-control" id="custom23" ng-model="dto.companyEmail" >
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom14" class="form-label">Пароль</label>
+                    <input type="password" class="form-control" id="custom14" ng-model="dto.password" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom42" class="form-label">{{CurrentUser.workPosition}}</label>
+                    <input type="text" class="form-control" id="custom42" ng-model="dto.workPosition" >
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom15" class="form-label">Повторить пароль</label>
+                    <input type="password" class="form-control" id="custom15" ng-model="validation.password" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4" style="margin-left: 30%;">
+                    <label style="width:10%" for="custom07" class="form-label">{{CurrentUser.building}}</label>
+                    <input style="width:15%" type="text" class="form-control" id="custom07" ng-model="dto.building" >
+                    <label style="width:10%" for="custom08" class="form-label">{{CurrentUser.office}}</label>
+                    <input style="width:15%" type="text" class="form-control" id="custom08" ng-model="dto.office" >
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div style="margin-top: 3%;">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Редактировать</button>
+    </div>
+</form>

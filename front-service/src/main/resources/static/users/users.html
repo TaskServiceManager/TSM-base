@@ -1,0 +1,90 @@
+<div>
+    <h4>Статистика выполнения работ по заявкам</h4>
+    <br>
+    <div id="liveAlertPlaceholder"></div>
+    <form novalidate ng-submit="loadUsers()" style="display: flex">
+        <table style="width: 100%">
+            <tr>
+                <td style="width:15%">
+                    <label for="filterId">ID пользователя:</label>
+                </td>
+                <td style="width:10%">
+                    <input type="text" class="form-control" id="filterId" placeholder="" ng-model="filter.id">
+                </td>
+                <td style="width:4%; padding-left: 1%">
+                    <label for="filterUsernamePart">Логин пользователя или его часть:</label>
+                </td>
+                <td style="width:10%">
+                    <input type="text" class="form-control" id="filterUsernamePart" placeholder="" ng-model="filter.usernamePart">
+                </td>
+                <td style="width:4%; padding-left: 1%">
+                    <label for="filterRole">Роль пользователя (id):</label>
+                </td>
+                <td style="width:10%">
+                    <input type="text" class="form-control" id="filterRole" placeholder="" ng-model="filter.roleId">
+                </td>
+
+                <td style="padding-left: 1%">
+                    <button class="btn btn-outline-success btn-sm" type="submit">Применить</button>
+                </td>
+                <td style="float: right">
+                    <button class="btn btn-outline-success btn-sm" ng-click="filter=null">Очистить фильтр</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br>
+    <div class="table table-hover" ng-show="filter && (!Users || !Users.length>0)" align="center">Нет пользователей по заданным условиям поиска</div>
+    <div class="table table-hover" ng-show="!filter && (!Users || !Users.length>0)" align="center">Нет пользователей</div>
+
+    <table class="table table-hover" ng-show="Users.length>0">
+        <tr style="border-top: ridge">
+
+            <td width="10%">ID пользователя</td>
+            <td width="20%">Username</td>
+            <td width="30%">Фамилия</td>
+            <td width="20%">Сменить роль</td>
+            <td width="20%">Редактировать</td>
+
+        </tr>
+        <tbody>
+        <tr ng-repeat="user in Users">
+
+            <td>{{user.id}}</td>
+            <td>{{user.username}}</td>
+            <td>{{user.shortName}}</td>
+            <td>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Роль
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'USER')">Пользователь</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'EXECUTOR')">Исполнитель</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'MANAGER')">Мэнеджер</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'ADMIN')">Администратор</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'SENIOR')">Директор</a></li>
+                    </ul>
+                </div>
+            </td>
+            <td>
+
+                <button type="button" class="btn btn-primary" ng-click="edit(user.id)"  >
+                    Редактировать
+                </button>
+
+
+            </td>
+
+
+        </tr>
+        </tbody>
+    </table>
+
+
+    <p align="center" ng-show="Users.length>0">
+        <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isFirstPage" ng-click="loadUsers(currentPage-1)"><</button>
+        <span>{{currentPage}}</span>
+        <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isLastPage" ng-click="loadUsers(currentPage+1)">></button>
+    </p>
+</div>

@@ -3,11 +3,18 @@ package com.sanjati.auth.converters;
 import com.sanjati.api.auth.NewUserDtoRq;
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.auth.UserDto;
+
+import com.sanjati.api.auth.UserTinyDto;
+
+
+
+
 import com.sanjati.auth.configs.SecurityConfig;
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -51,5 +58,20 @@ public class UserConverter {
                 newUserDto.getOffice(),newUserDto.getBuilding());
 
 
+    }
+    public User dtoToEntity(NewUserDtoRq newUserDto){
+
+        return new User(newUserDto.getUsername(), securityConfig.passwordEncoder().encode(newUserDto.getPassword()),
+                newUserDto.getFirstName(),newUserDto.getLastName(),
+                newUserDto.getMiddleName(),newUserDto.getEmail(),
+                newUserDto.getCompany(),newUserDto.getCompanyEmail(),
+                newUserDto.getWorkPosition(),newUserDto.getPhone(),
+                newUserDto.getOffice(),newUserDto.getBuilding());
+
+
+    }
+    public UserTinyDto entityToTinyDto(User entity,String fio){
+
+        return new UserTinyDto(entity.getId(), entity.getUsername(), fio);
     }
 }

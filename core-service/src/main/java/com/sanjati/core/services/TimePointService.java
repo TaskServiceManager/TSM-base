@@ -1,7 +1,6 @@
 package com.sanjati.core.services;
 
 
-import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.TimePoint;
@@ -22,8 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -115,12 +113,7 @@ public class TimePointService {
     @Scheduled(fixedRateString = "${interval.closingTimePoints}")
     @Transactional
     public void autoClosingTimePoints() {
-        List<TimePoint> activeTimePoints = timePointRepository.findAllByStatus(TimePointStatus.IN_PROCESS);
-        for (TimePoint point : activeTimePoints) {
-            if (LocalDateTime.now().isAfter(point.getFinishedAt())){
-                point.setStatus(TimePointStatus.FINISHED);
-            }
-        }
+        timePointRepository.updateAllStatusByFinishedAt(TimePointStatus.FINISHED);
     }
 
     /*

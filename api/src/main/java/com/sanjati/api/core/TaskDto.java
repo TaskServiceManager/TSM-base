@@ -29,7 +29,7 @@ public class TaskDto {
     @Schema(description = "Список назначенных исполнителей", example = "2022-07-10 16:30:19")
     private List<UserLightDto> executors;
 
-    @Schema(description = "Назначенный отвественным, исполнитель по заявке")
+    @Schema(description = "Назначенный ответственным, исполнитель по заявке")
     private UserLightDto chief;
 
     @Schema(description = "Дата создания заявки", example = "2022-07-10 16:30:19")

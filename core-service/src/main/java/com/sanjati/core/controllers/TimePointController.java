@@ -1,12 +1,10 @@
 package com.sanjati.core.controllers;
 
-import com.sanjati.api.core.CommentDto;
 import com.sanjati.api.core.TimePointDto;
 import com.sanjati.core.converters.TimePointConverter;
 import com.sanjati.core.services.TimePointService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -39,9 +37,9 @@ public class TimePointController {
     )
     @GetMapping
     public void createTimePointOrChangeStatus(@Parameter(description = "ID пользователя", required = true) @RequestHeader Long id,
-                           @Parameter(description = "ID задачи", required = true) @RequestParam Long taskId,
-                           @Parameter(description = "ID временной отметки если надо её закрыть", required = false) @RequestParam(required = false) Long timePointId) {
-        timePointService.changeStatusOrCreateTimePoint(taskId,id,timePointId);
+                                              @Parameter(description = "ID задачи", required = true) @RequestParam Long taskId,
+                                              @Parameter(description = "ID временной отметки если надо её закрыть", required = false) @RequestParam(required = false) Long timePointId) {
+        timePointService.changeStatusOrCreateTimePoint(taskId, id, timePointId);
     }
 
     @Operation(
@@ -54,16 +52,16 @@ public class TimePointController {
     )
     @GetMapping("/report")
     public Page<TimePointDto> getAllTimePoints(@Parameter(description = "ID исполнителя", required = true)
-                                                     @RequestHeader Long id,
-                                                 @Parameter(description = "номер страницы", required = true)
-                                                     @RequestParam Integer page,
-                                                 @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
-                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                     @RequestParam(required = false) LocalDateTime from,
-                                                 @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'.", required = false)
-                                                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                     @RequestParam(required = false) LocalDateTime to){
-        return timePointService.getAllTimePointsBySpec(id,null,page,from,to).map(timePointConverter::entityToDto);
+                                               @RequestHeader Long id,
+                                               @Parameter(description = "номер страницы", required = true)
+                                               @RequestParam Integer page,
+                                               @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
+                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                               @RequestParam(required = false) LocalDateTime from,
+                                               @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'.", required = false)
+                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                               @RequestParam(required = false) LocalDateTime to) {
+        return timePointService.getAllTimePointsBySpec(id, null, page, from, to).map(timePointConverter::entityToDto);
 
     }
 
@@ -77,20 +75,20 @@ public class TimePointController {
     )
     @GetMapping("/report/{taskId}")
     public Page<TimePointDto> getAllTimePointsByTaskId(@Parameter(description = "ID пользователя", required = true)
-                                                            @RequestHeader Long id,
-                                                         @Parameter(description = "номер страницы", required = true)
-                                                            @RequestParam Integer page,
-                                                         @Parameter(description = "ID задачи", required = true)
-                                                            @PathVariable Long taskId,
-                                                         @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
-                                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                            @RequestParam(required = false) LocalDateTime from,
-                                                         @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'.", required = false)
-                                                            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-                                                            @RequestParam(required = false) LocalDateTime to,
-                                                         @Parameter(description = "ID исполнителя", required = false)
-                                                             @RequestParam(required = false) Long executorId){
-        return timePointService.getAllTimePointsBySpec(executorId,taskId,page,from,to).map(timePointConverter::entityToDto);
+                                                       @RequestHeader Long id,
+                                                       @Parameter(description = "номер страницы", required = true)
+                                                       @RequestParam Integer page,
+                                                       @Parameter(description = "ID задачи", required = true)
+                                                       @PathVariable Long taskId,
+                                                       @Parameter(description = "Граница по времени ОТ. Пример '2022-23-23T00:00'.", required = false)
+                                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                       @RequestParam(required = false) LocalDateTime from,
+                                                       @Parameter(description = "Граница по времени ДО. Пример '2022-23-23T00:00'.", required = false)
+                                                       @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+                                                       @RequestParam(required = false) LocalDateTime to,
+                                                       @Parameter(description = "ID исполнителя", required = false)
+                                                       @RequestParam(required = false) Long executorId) {
+        return timePointService.getAllTimePointsBySpec(executorId, taskId, page, from, to).map(timePointConverter::entityToDto);
     }
 
     @Operation(
@@ -104,7 +102,7 @@ public class TimePointController {
     )
     @GetMapping("/current")
     public TimePointDto getCurrentUserTimePoint(@Parameter(description = "ID пользователя", required = true)
-                                                   @RequestHeader(name = "id") Long userId){
+                                                @RequestHeader(name = "id") Long userId) {
         return timePointConverter.entityToDto(timePointService.getCurrentTimePointByUserId(userId));
     }
 }

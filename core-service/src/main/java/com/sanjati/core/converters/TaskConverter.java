@@ -5,6 +5,7 @@ import com.sanjati.api.auth.UserLightDto;
 
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.integrations.AuthServiceIntegration;
+import com.sanjati.core.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +21,7 @@ import static java.util.Objects.isNull;
 @RequiredArgsConstructor
 public class TaskConverter {
 
-    private final AuthServiceIntegration authServiceIntegration;
+    private final AuthService authService;
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     private String formatDate(LocalDateTime dateTime) {
@@ -31,7 +32,7 @@ public class TaskConverter {
 
         List<UserLightDto> executorsList = new ArrayList<>();
         if(!isNull(entity.getExecutors())) {
-            List<UserLightDto> userLightDtos = authServiceIntegration.getUserLightListByIds(entity.getExecutors());
+            List<UserLightDto> userLightDtos = authService.getUserLightListByIds(entity.getExecutors());
             if(userLightDtos!=null) {
                 executorsList.addAll(userLightDtos);
             }
@@ -40,18 +41,17 @@ public class TaskConverter {
         String formattedCreatedAt = formatDate(entity.getCreatedAt());
         String formattedCompletedAt = formatDate(entity.getCompletedAt());
         String formattedUpdatedAt = formatDate(entity.getUpdatedAt());
-
-        return TaskDto.builder()
-                .id(entity.getId())
-                .status(entity.getStatus().getRus())
-                .title(entity.getTitle())
-                .description(entity.getDescription())
-                .owner(entity.getOwnerId()!=null ? authServiceIntegration.getUserLightById(entity.getOwnerId()) : null)
-                .executors(executorsList)
-                .chief(entity.getChiefId() !=null ? authServiceIntegration.getUserLightById(entity.getChiefId()) : null)
-                .createdAt(formattedCreatedAt)
-                .completedAt(formattedCompletedAt)
-                .updatedAt(formattedUpdatedAt)
-                .build();
+        TaskDto taskDto = new TaskDto();
+        taskDto.setId(entity.getId());
+        taskDto.setStatus(entity.getStatus().getRus());
+        taskDto.setTitle(entity.getTitle());
+        taskDto.setDescription(entity.getDescription());
+        taskDto.setOwner(entity.getOwnerId()!=null ? authService.getUserLightById(entity.getOwnerId()) : null);
+        taskDto.setExecutors(executorsList);
+        taskDto.setChief(entity.getChiefId() !=null ? authService.getUserLightById(entity.getChiefId()) : null);
+        taskDto.setCreatedAt(formattedCreatedAt);
+        taskDto.setCompletedAt(formattedCompletedAt);
+        taskDto.setUpdatedAt(formattedUpdatedAt);
+        return taskDto;
     }
 }

@@ -59,17 +59,14 @@
                     <li class="nav-item" ng-show="isAllowed('pending')">
                         <a class="nav-link" href="#!/pending">Утверждение заявок</a>
                     </li>
-<!--                    <li class="nav-item" ng-show="isUserLoggedIn()&&isAllowed('ROLE_SENIOR')">-->
-<!--                        <a class="nav-link" href="#!/personal">Статистика</a>-->
-<!--                    </li>-->
                 </ul>
                 <div>
-<!--                    <form class="form-inline my-2 my-lg-0" id="login" ng-show="!isUserLoggedIn()" ng-submit="goToLogin()">-->
-<!--                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Войти</button>-->
-<!--                    </form>-->
-<!--                    <form class="form-inline my-2 my-lg-0" ng-show="isUserLoggedIn()" ng-submit="goToSignUp()">-->
-<!--                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Зарегистрироваться</button>-->
-<!--                    </form>-->
+                    <form style="width: 250px" class="form-inline my-2 my-lg-0" ng-show="isUserLoggedIn()" ng-submit="goToDetails(searchValue)">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Найти заявку по ID" aria-label="Search" ng-model="searchValue">
+                    </form>
+                    <form class="form-inline my-2 my-lg-0" id="login" ng-show="!isUserLoggedIn()" ng-submit="goToLogin()">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Войти</button>
+                    </form>
                     <form class="form-inline my-2 my-lg-0" ng-submit="showModalForCreateTask()" ng-show="isUserLoggedIn()" id="createTask">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Создать заявку</button>
                     </form>
@@ -95,10 +92,16 @@
     <script src="pending/pending.js"></script>
     <script src="details/details.js"></script>
     <script src="records/records.js"></script>
+
     <script src="users/users.js"></script>
     <script src="edit/edit.js"></script>
 
+
+
+    <script src="registration/registration.js"></script>
+
 <!--<script src="statistics/statistics.js"></script>-->
+
 
 </div>
 
@@ -161,14 +164,14 @@
         <p><b>{{renderFullUserName(CurrentUser)}}</b></p>
         <p>{{CurrentUser.email}}</p>
         <p>{{CurrentUser.phone}}</p>
-        <br>
+        <hr>
         <table style="width:100%;">
             <tr>
                 <td>Место работы</td>
                 <td>{{CurrentUser.company}}</td>
             </tr>
             <tr>
-                <td>Электронная почта</td>
+                <td>Корпоративная почта</td>
                 <td>{{CurrentUser.companyEmail}}</td>
             </tr>
             <tr>
@@ -184,16 +187,42 @@
                 <td>{{CurrentUser.building}}</td>
             </tr>
         </table>
-        <br><br>
+        <hr>
+        <br>
         <p>{{'Роли в системе: '+ renderRoles()}}</p>
+        <br>
+        <form novalidate ng-submit="updateWorktime()" ng-show="isUserLoggedIn()&&isAllowed('records')">
+            <table style="width: 100%">
+                <tr>
+                    <td style="width:40%">
+                        <label for="workdayFrom">Рабочий день с:</label>
+                    </td>
+                    <td>
+                        <input type="time" class="form-control" id="workdayFrom" placeholder="" value="{{CurrentUser.startWorkTime}}" ng-model="workday.startWorkTime">
+                    </td>
+                    <td style="width:8%; padding-left: 1%">
+                        <label for="workdayTo">по:</label>
+                    </td>
+                    <td>
+                        <input type="time" class="form-control" id="workdayTo" placeholder="" value="{{CurrentUser.endWorkTime}}" ng-model="workday.endWorkTime">
+                    </td>
+                </tr>
+            </table>
+            <div style="margin-top: 3%; margin-bottom: 15%; float: right;">
+                <button style="font-size: x-small" class="btn btn-outline-success my-2 my-sm-0" type="submit">Сохранить</button>
+            </div>
+        </form>
         <br><br>
-        <form style="text-align: center" class="form-inline my-2 my-lg-0" ng-submit="goToRecords()" ng-show="isUserLoggedIn()" id="records">
+        <form style="text-align: center" class="form-inline my-2 my-lg-0" ng-submit="goToRecords()" ng-show="isUserLoggedIn()&&isAllowed('records')" id="records">
             <button style="width: 100%" class="btn btn-outline-success my-2 my-sm-0" data-bs-dismiss="offcanvas" type="submit">Статистика выполнения работ по заявкам</button>
         </form>
     </div>
     <div class="offcanvas-body" ng-show="CurrentUser==null" style="text-align: center">
         Нет информации о текущем пользователе
     </div>
+    <footer>
+        <p style="font-size: small; text-align-last: center;">&copy; 2022 Geekbrains &#8226; TaskServiceManager</p>
+    </footer>
 </div>
 
 </body>

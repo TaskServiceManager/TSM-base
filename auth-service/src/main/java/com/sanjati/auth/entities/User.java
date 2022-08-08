@@ -1,6 +1,7 @@
 package com.sanjati.auth.entities;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -12,6 +13,7 @@ import java.util.Collection;
 
 @Entity
 @Data
+
 @Table(name = "users")
 @Schema(description = "Таблица пользователей")
 public class User {
@@ -87,6 +89,7 @@ public class User {
         this.phone = phone;
         this.office = office;
         this.building = building;
+
     }
 
     public User() {

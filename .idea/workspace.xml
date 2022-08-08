@@ -4,9 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="А-8-1 , А-8-2. удалил мэнеджер дто">
+
+    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="А-7-1 , А-7-2. правки">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/controllers/AdministrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/controllers/AdministrationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/NewUserDtoRq.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/NewUserDtoRq.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/RoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/RoleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/RegistrationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/RegistrationService.java" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,9 +21,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+
         <option value="Interface" />
         <option value="Enum" />
         <option value="Class" />
+
       </list>
     </option>
   </component>
@@ -58,6 +65,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectId" id="2Cncj3FhRnLoE8sa5s4p2ge1axY" />
   <component name="ProjectLevelVcsManager">
     <OptionsSetting value="false" id="Update" />
@@ -67,6 +77,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -85,6 +96,25 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.FrontApp">
+
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/NC.TECHNOSPARK.RU/timonin.aa/IdeaProjects/TSM-base/front-service/src/main/resources/static/registration&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.ignored.files&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/front-service/src/main/resources/static/registration" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.CoreApp">
+
     <configuration name="CoreApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sanjati.core.CoreApp" />
       <module name="core-service" />
@@ -150,7 +180,11 @@
     </configuration>
     <recent_temporary>
       <list>
+
+        <item itemvalue="Application.CoreApp" />
+
         <item itemvalue="Application.FrontApp" />
+        <item itemvalue="Application.GatewayApp" />
         <item itemvalue="Application.WebAuthServiceApplication" />
         <item itemvalue="Application.CoreApp" />
         <item itemvalue="Application.GatewayApp" />
@@ -194,6 +228,7 @@
       <option name="project" value="LOCAL" />
       <updated>1659820984040</updated>
     </task>
+
     <task id="LOCAL-00005" summary="A-8-1. A-8-2 админка черновик">
       <created>1659913429340</created>
       <option name="number" value="00005" />
@@ -216,6 +251,23 @@
       <updated>1659960108340</updated>
     </task>
     <option name="localTasksCounter" value="8" />
+
+    <task id="LOCAL-00005" summary="А-7-1 , А-7-2. Регистрация фронт и бэк">
+      <created>1659881621483</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1659881621483</updated>
+    </task>
+    <task id="LOCAL-00006" summary="А-7-1 , А-7-2. правки">
+      <created>1659882395533</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1659882395533</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -234,9 +286,15 @@
     <MESSAGE value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
     <MESSAGE value="С-0-13. замечания" />
     <MESSAGE value="С-0-13. замечания 2" />
+
     <MESSAGE value="A-8-1. A-8-2 админка черновик" />
     <MESSAGE value="А-8-1 , А-8-2. правки для Иры" />
     <MESSAGE value="А-8-1 , А-8-2. удалил мэнеджер дто" />
     <option name="LAST_COMMIT_MESSAGE" value="А-8-1 , А-8-2. удалил мэнеджер дто" />
+
+    <MESSAGE value="А-7-1 , А-7-2. Регистрация фронт и бэк" />
+    <MESSAGE value="А-7-1 , А-7-2. правки" />
+    <option name="LAST_COMMIT_MESSAGE" value="А-7-1 , А-7-2. правки" />
+
   </component>
 </project>

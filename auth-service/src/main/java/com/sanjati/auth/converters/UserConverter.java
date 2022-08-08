@@ -3,11 +3,21 @@ package com.sanjati.auth.converters;
 import com.sanjati.api.auth.NewUserDtoRq;
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.auth.UserDto;
+
 import com.sanjati.api.auth.UserTinyDto;
+
+
+
+
 import com.sanjati.auth.configs.SecurityConfig;
+import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 
 @Component
 public class UserConverter {
@@ -20,22 +30,34 @@ public class UserConverter {
         return new UserDto(user.getId(),user.getUsername(),user.getFirstName(),
                 user.getLastName(), user.getMiddleName(), user.getEmail(),
                 user.getCompany(), user.getCompanyEmail(), user.getWorkPosition(),
-                user.getPhone(), user.getOffice(), user.getBuilding());
+                user.getPhone(), user.getOffice(), user.getBuilding(),
+                user.getStartWorkTime(), user.getEndWorkTime());
     }
 
     public UserLightDto modelToLightDto(User user){
         if(user==null) {
             return null;
         }
-        return UserLightDto.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .middleName(user.getMiddleName())
-                .email(user.getEmail())
-                .startWorkTime(user.getStartWorkTime())
-                .endWorkTime(user.getEndWorkTime())
-                .build();
+        UserLightDto userLightDto = new UserLightDto();
+        userLightDto.setId(user.getId());
+        userLightDto.setFirstName(user.getFirstName());
+        userLightDto.setLastName(user.getLastName());
+        userLightDto.setMiddleName(user.getMiddleName());
+        userLightDto.setEmail(user.getEmail());
+        userLightDto.setStartWorkTime(user.getStartWorkTime());
+        userLightDto.setEndWorkTime(user.getEndWorkTime());
+        return userLightDto;
+    }
+    public User dtoToEntity(NewUserDtoRq newUserDto){
+
+        return new User(newUserDto.getUsername(), securityConfig.passwordEncoder().encode(newUserDto.getPassword()),
+                newUserDto.getFirstName(),newUserDto.getLastName(),
+                newUserDto.getMiddleName(),newUserDto.getEmail(),
+                newUserDto.getCompany(),newUserDto.getCompanyEmail(),
+                newUserDto.getWorkPosition(),newUserDto.getPhone(),
+                newUserDto.getOffice(),newUserDto.getBuilding());
+
+
     }
     public User dtoToEntity(NewUserDtoRq newUserDto){
 

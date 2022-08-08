@@ -55,12 +55,12 @@ public class UserService implements UserDetailsService {
         return userRepository.getAllByRoleName(roleName);
     }
 
+    @Transactional
     public void updateWorkTime(Long executorId, WorkTimeDtoRq workTimeDtoRq){
         User user = userRepository.findById(executorId).orElseThrow(
-                () -> new ResourceNotFoundException("Пользователь с указанный ID не найден"));
+                () -> new ResourceNotFoundException("Не найден пользователь с ID "+ executorId));
         user.setStartWorkTime(workTimeDtoRq.getStartWorkTime());
         user.setEndWorkTime(workTimeDtoRq.getEndWorkTime());
-        userRepository.save(user);
     }
 
     public List<UserLightDto> getLightUserDataById(List<Long> userIds) {

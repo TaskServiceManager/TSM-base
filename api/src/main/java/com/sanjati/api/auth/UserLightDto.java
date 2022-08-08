@@ -1,11 +1,9 @@
 package com.sanjati.api.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 
 import java.time.LocalTime;
 
-@Builder
 @Schema(description = "Короткая информация о пользователе")
 public class UserLightDto {
     @Schema(description = "ID пользователя", example = "3")

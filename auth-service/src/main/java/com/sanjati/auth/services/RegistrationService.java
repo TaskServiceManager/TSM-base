@@ -25,7 +25,7 @@ public class RegistrationService {
     public void createNewUser(NewUserDtoRq newUserDto){
 
         User user = userConverter.dtoToEntity(newUserDto);
-        Role userRole = roleRepository.findById(1L).orElseThrow(()->new ResourceNotFoundException("Роль с id = 1 не найдена"));
+        Role userRole = roleRepository.findByName("ROLE_USER").orElseThrow(()->new ResourceNotFoundException("Роль USER не найдена"));
         List<Role> role = new ArrayList<>();
         role.add(userRole);
         user.setRoles(role);

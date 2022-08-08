@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -183,7 +184,7 @@ public class TaskService {
             spec = spec.and(TaskSpecifications.executorIdContainsIn(searchParams.getExecutorId()));
         }
 
-        return this.taskRepository.findAll(spec, PageRequest.of(searchParams.getPage() - 1, 8));
+        return this.taskRepository.findAll(spec, PageRequest.of(searchParams.getPage() - 1, 8, Sort.by(Sort.Direction.DESC, "createdAt")));
     }
 
 

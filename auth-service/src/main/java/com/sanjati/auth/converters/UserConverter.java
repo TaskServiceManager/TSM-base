@@ -59,17 +59,7 @@ public class UserConverter {
 
 
     }
-    public User dtoToEntity(NewUserDtoRq newUserDto){
 
-        return new User(newUserDto.getUsername(), securityConfig.passwordEncoder().encode(newUserDto.getPassword()),
-                newUserDto.getFirstName(),newUserDto.getLastName(),
-                newUserDto.getMiddleName(),newUserDto.getEmail(),
-                newUserDto.getCompany(),newUserDto.getCompanyEmail(),
-                newUserDto.getWorkPosition(),newUserDto.getPhone(),
-                newUserDto.getOffice(),newUserDto.getBuilding());
-
-
-    }
     public UserTinyDto entityToTinyDto(User entity,String fio){
 
         return new UserTinyDto(entity.getId(), entity.getUsername(), fio);

@@ -19,7 +19,7 @@ public interface RoleRepository extends JpaRepository<Role, Long> {
 
 
     List<Role> findAllByNameIn(List<String> names);
-}
+
 
     Optional<Role> findByName(String name);
 }

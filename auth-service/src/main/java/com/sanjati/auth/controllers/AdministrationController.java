@@ -31,7 +31,7 @@ public class AdministrationController {
             }
     )
     @PutMapping("/users/{id}")
-    public void updateWorkTime(@Parameter(description = "ID пользователя")
+    public void updateUser(@Parameter(description = "ID пользователя")
                                @PathVariable(name = "id") Long userId,
                                @Parameter(description = "Список ролей")
                                @RequestHeader String role,

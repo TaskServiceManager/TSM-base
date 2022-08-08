@@ -4,7 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="А-8-1 , А-8-2. правки для Иры" />
+    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="А-8-1 , А-8-2. удалил мэнеджер дто">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/controllers/AdministrationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/controllers/AdministrationController.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -64,17 +67,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;D:/OneDrive/JAVA/TSM/TSM-base/front-service/src/main/resources/static/edit&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.ignored.files&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/home/NC.TECHNOSPARK.RU/timonin.aa/IdeaProjects/EasyGen",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.ignored.files"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\OneDrive\JAVA\TSM\TSM-base\front-service\src\main\resources\static\edit" />
@@ -205,7 +208,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659960036971</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="А-8-1 , А-8-2. удалил мэнеджер дто">
+      <created>1659960108340</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1659960108340</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -226,6 +236,7 @@
     <MESSAGE value="С-0-13. замечания 2" />
     <MESSAGE value="A-8-1. A-8-2 админка черновик" />
     <MESSAGE value="А-8-1 , А-8-2. правки для Иры" />
-    <option name="LAST_COMMIT_MESSAGE" value="А-8-1 , А-8-2. правки для Иры" />
+    <MESSAGE value="А-8-1 , А-8-2. удалил мэнеджер дто" />
+    <option name="LAST_COMMIT_MESSAGE" value="А-8-1 , А-8-2. удалил мэнеджер дто" />
   </component>
 </project>

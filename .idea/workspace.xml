@@ -4,22 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="С-0-13. замечания 3">
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/NewUserDtoRq.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/UserTinyDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/controllers/AdministrationController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/enums/UserRole.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/RoleRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/specifications/UserSpecifications.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/AdministrationService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/RoleService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/users/users.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/users/users.js" afterDir="false" />
+    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="A-8-1. A-8-2 админка черновик">
+      <change afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/edit/edit.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/edit/edit.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/converters/UserConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/converters/UserConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/entities/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-service/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-service/src/main/resources/static/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-service/src/main/resources/static/users/users.html" beforeDir="false" afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/users/users.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/front-service/src/main/resources/static/users/users.js" beforeDir="false" afterPath="$PROJECT_DIR$/front-service/src/main/resources/static/users/users.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +77,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "last_opened_file_path": "D:/OneDrive/JAVA/TSM/TSM-base/front-service/src/main/resources/static/users",
+    "last_opened_file_path": "D:/OneDrive/JAVA/TSM/TSM-base/front-service/src/main/resources/static/edit",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.0",
@@ -93,10 +86,11 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\OneDrive\JAVA\TSM\TSM-base\front-service\src\main\resources\static\edit" />
       <recent name="D:\OneDrive\JAVA\TSM\TSM-base\front-service\src\main\resources\static\users" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.CoreApp">
+  <component name="RunManager" selected="Application.FrontApp">
     <configuration name="CoreApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sanjati.core.CoreApp" />
       <module name="core-service" />
@@ -162,9 +156,9 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CoreApp" />
-        <item itemvalue="Application.GatewayApp" />
         <item itemvalue="Application.FrontApp" />
+        <item itemvalue="Application.GatewayApp" />
+        <item itemvalue="Application.CoreApp" />
         <item itemvalue="Application.WebAuthServiceApplication" />
       </list>
     </recent_temporary>
@@ -206,7 +200,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659820984040</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="A-8-1. A-8-2 админка черновик">
+      <created>1659913429340</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1659913429341</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -225,6 +226,7 @@
     <MESSAGE value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
     <MESSAGE value="С-0-13. замечания" />
     <MESSAGE value="С-0-13. замечания 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="С-0-13. замечания 2" />
+    <MESSAGE value="A-8-1. A-8-2 админка черновик" />
+    <option name="LAST_COMMIT_MESSAGE" value="A-8-1. A-8-2 админка черновик" />
   </component>
 </project>

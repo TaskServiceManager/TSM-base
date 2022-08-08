@@ -42,6 +42,10 @@
                                templateUrl: 'users/users.html',
                                controller: 'usersController'
                         })
+            .when('/edit', {
+                                           templateUrl: 'edit/edit.html',
+                                           controller: 'editController'
+                                    })
             .otherwise({
                 redirectTo: '/'
             });

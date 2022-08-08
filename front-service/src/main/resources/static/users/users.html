@@ -1,6 +1,7 @@
 <div>
     <h4>Статистика выполнения работ по заявкам</h4>
     <br>
+    <div id="liveAlertPlaceholder"></div>
     <form novalidate ng-submit="loadUsers()" style="display: flex">
         <table style="width: 100%">
             <tr>
@@ -58,17 +59,17 @@
                         Роль
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#" ng-click="changeRole({{user.id}},1)">Пользователь</a></li>
-                        <li><a class="dropdown-item" href="#" ng-click="changeRole({{user.id}},2)">Исполнитель</a></li>
-                        <li><a class="dropdown-item" href="#" ng-click="changeRole({{user.id}},3)">Мэнеджер</a></li>
-                        <li><a class="dropdown-item" href="#" ng-click="changeRole({{user.id}},4)">Администратор</a></li>
-                        <li><a class="dropdown-item" href="#" ng-click="changeRole({{user.id}},5)">Директор</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,1)">Пользователь</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,2)">Исполнитель</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,3)">Мэнеджер</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,4)">Администратор</a></li>
+                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,5)">Директор</a></li>
                     </ul>
                 </div>
             </td>
             <td>
 
-                <button type="button" class="btn btn-primary" ng-click="edit({{user.id}})" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                <button type="button" class="btn btn-primary" ng-click="edit(user.id)"  >
                     Редактировать
                 </button>
 
@@ -79,117 +80,7 @@
         </tr>
         </tbody>
     </table>
-    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form class="row g-3 needs-validation" id="registration-form" ng-submit="update(CurrentUser.id)" novalidate>
 
-                        <h4>Заполните форму регистрации (все поля обязательные)</h4>
-                        <div id="liveAlertPlaceholder"></div>
-                        <table style="width:100%; border-color:white;">
-                            <tr>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom02" class="form-label">{{CurrentUser.lastName}}</label>
-                                        <input type="text" class="form-control" id="validationCustom02" ng-model="dto.lastName" >
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom02" class="form-label">{{CurrentUser.email}}</label>
-                                        <input type="text" class="form-control" id="validationCustom07" ng-model="dto.email" >
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom01" class="form-label">{{CurrentUser.firstName}}</label>
-                                        <input type="text" class="form-control" id="validationCustom01" ng-model="dto.firstName" >
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom01" class="form-label">{{CurrentUser.phone}}</label>
-                                        <input type="text" class="form-control" id="validationCustom11" ng-model="dto.phone" >
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom01" class="form-label">{{CurrentUser.middleName}}</label>
-                                        <input type="text" class="form-control" id="validationCustom03" ng-model="dto.middleName" >
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom01" class="form-label">{{CurrentUser.company}}</label>
-                                        <input type="text" class="form-control" id="validationCustom08" ng-model="dto.company" >
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom02" class="form-label">{{CurrentUser.login}}</label>
-                                        <input type="text" class="form-control" id="validationCustom04" ng-model="dto.username" >
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom02" class="form-label">{{CurrentUser.companyEmail}}</label>
-                                        <input type="text" class="form-control" id="validationCustom09" ng-model="dto.companyEmail" >
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom01" class="form-label">Пароль</label>
-                                        <input type="password" class="form-control" id="validationCustom05" ng-model="dto.password" >
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom02" class="form-label">{{CurrentUser.workPosition}}</label>
-                                        <input type="text" class="form-control" id="validationCustom10" ng-model="dto.workPosition" >
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="col-md-4">
-                                        <label for="validationCustom02" class="form-label">Повторить пароль</label>
-                                        <input type="password" class="form-control" id="validationCustom06" ng-model="validation.password" >
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="col-md-4" style="margin-left: 30%;">
-                                        <label style="width:10%" for="validationCustom02" class="form-label">{{CurrentUser.building}}</label>
-                                        <input style="width:15%" type="text" class="form-control" id="validationCustom13" ng-model="dto.building" >
-                                        <label style="width:10%" for="validationCustom02" class="form-label">{{CurrentUser.office}}</label>
-                                        <input style="width:15%" type="text" class="form-control" id="validationCustom12" ng-model="dto.office" >
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                        <div style="margin-top: 3%;">
-                            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Редактировать</button>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <p align="center" ng-show="Users.length>0">
         <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isFirstPage" ng-click="loadUsers(currentPage-1)"><</button>

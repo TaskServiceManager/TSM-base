@@ -17,6 +17,7 @@ spring:
               - GET
               - POST
               - PATCH
+              - PUT
             allowedHeaders: "*"
       routes:
         - id: core-service

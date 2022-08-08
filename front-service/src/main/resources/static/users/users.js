@@ -17,7 +17,7 @@ angular.module('ttsystem-front').controller('usersController', function ($scope,
                     page: pageIndex ? pageIndex : 1,
                     id: $scope.filter ? $scope.filter.id : null,
                     usernamePart: $scope.filter ? $scope.filter.usernamePart : null,
-                    roleId: $scope.filter ? $scope.filter.role : null,
+                    roleId: $scope.filter ? $scope.filter.roleId : null,
 
                 }
         }).then(function (response) {
@@ -28,34 +28,22 @@ angular.module('ttsystem-front').controller('usersController', function ($scope,
         });
     }
     $scope.edit = function (userId){
+
         $http({
                         url: contextPath + 'api/v1/users/'+userId+'/data',
-                        method: 'GET',
+                        method: 'GET'
 
-                }).then(function (response) {
-                    $scope.CurrentUser = response.data;
+                }).then(function successCallback(response) {
+                                            $rootScope.CurrentUser = response.data;
+                                            $location.path('/edit');
 
-                });
+                                    }, function errorCallback(response) {
+                                            console.log(response);
+                                            alert("Ошибка редактирования!",'danger');
+                                    });
     }
-    $rootScope.update = function (userId) {
-            if($scope.dto.password == $scope.validation.password){
 
-
-                $http.put(contextPath+'api/v1/admin'+'/edit/user/'+userId, $scope.dto)
-                     .then(function successCallback(response) {
-                           $scope.validation = null;
-                           $scope.dto = null
-                          $location.path('/users');
-                     }, function errorCallback(response) {
-                          console.log(response);
-                          alert("Ошибка при редактировании!",'danger');
-                     });
-            }else{
-                alert("Пароли не совпадают",'danger');
-            }
-
-        };
-    $scope.changeRole= function(userId,roleId){
+    $scope.changeRole = function(userId,roleId){
            $http({
                           url: contextPath + 'api/v1/admin' + '/change/role/user/'+ userId,
                           method: 'PATCH',
@@ -65,6 +53,7 @@ angular.module('ttsystem-front').controller('usersController', function ($scope,
                   }).then(function successCallback(response) {
 
                           $location.path('/users');
+                          alert("Роль назначена!",'success');
                   }, function errorCallback(response) {
                           console.log(response);
                           alert("Ошибка при смене роли!",'danger');

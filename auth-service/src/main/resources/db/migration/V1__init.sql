@@ -50,12 +50,12 @@ values  ('ROLE_USER'),
 
 
 
-insert into users (username, password,first_name, last_name,middle_name ,email,company,company_email,work_position,phone,building,office)
-values ('user', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Vasiliy','Vasiliev','Vasilievich','v@gmail.com','CTO','CTO@lalla.lu','worker','2-22-222','B','105'),
-       ('executor', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Boris','Borisov','Borisovich','b@gmail.com','SUP','SUp@kuku.ku','admin','1-11-111','G','106'),
-       ('manager', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Dmitriy','Dmitriev','Dmitrievich','d@gmail.com','SUP','SUp@kuku.ku','manager','3-33-333','G','105'),
-       ('senior', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Tatiana','Tatianova','Tatianovna','t@gmail.com','SUP','SUp@kuku.ku','director','5-55-555','A','205'),
-       ('admin', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Alexandr','Alexandrov','Alexandrovich','a@gmail.com','SUP','SUp@kuku.ku','super admin','7-77-777','G','105');
+insert into users (username, password,first_name, last_name,middle_name ,email,company,company_email,work_position,phone,building,office,start_work_time,end_work_time)
+values ('user', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Vasiliy','Vasiliev','Vasilievich','v@gmail.com','CTO','CTO@lalla.lu','worker','2-22-222','B','105','09:00:00','18:00:00'),
+       ('executor', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Boris','Borisov','Borisovich','b@gmail.com','SUP','SUp@kuku.ku','admin','1-11-111','G','106','09:00:00','18:00:00'),
+       ('manager', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Dmitriy','Dmitriev','Dmitrievich','d@gmail.com','SUP','SUp@kuku.ku','manager','3-33-333','G','105','09:00:00','18:00:00'),
+       ('senior', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Tatiana','Tatianova','Tatianovna','t@gmail.com','SUP','SUp@kuku.ku','director','5-55-555','A','205','09:00:00','18:00:00'),
+       ('admin', '$2a$04$Fx/SX9.BAvtPlMyIIqqFx.hLY2Xp8nnhpzvEEVINvVpwIPbA3v/.i', 'Alexandr','Alexandrov','Alexandrovich','a@gmail.com','SUP','SUp@kuku.ku','super admin','7-77-777','G','105','09:00:00','18:00:00');
 
 insert into users_roles (user_id, role_id)
 values (1, 1),

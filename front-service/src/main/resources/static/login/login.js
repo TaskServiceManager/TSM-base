@@ -31,6 +31,10 @@ angular.module('ttsystem-front').controller('loginController', function ($scope,
                                                 {view: 'completedButton', roles: ['ROLE_MANAGER']},
                                                 {view: 'returnToAcceptedButton', roles: ['ROLE_MANAGER']}];
                     $location.path('/');
+
+                    $rootScope.loadDetailsOpen();
+                    $rootScope.loadFullUserData();
+                    $rootScope.loadCurrentUserTimepoint();
                 }
             }, function errorCallback(response) {
                 console.log(response);

@@ -21,10 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -205,8 +202,8 @@ public class TaskService {
         taskRepository.save(task);
     }
 
-    public boolean checkTaskOwnerId(Long userId, Long taskId) {
-        return taskRepository.isCountMoreThanZeroByOwnerIdAndTaskId(taskId, userId);
+    public boolean isUserTaskOwner(Long taskId, Long userId) {
+        return taskRepository.existsByIdAndOwnerId(taskId, userId);
     }
 
     public TaskStatus getStatusByTaskId(Long taskId) {

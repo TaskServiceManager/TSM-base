@@ -220,3 +220,20 @@ select:focus-visible {
 .custom-button-bar form {
   margin-left:1%;
 }
+
+#registration-form .col-md-4 {
+  display: flex;
+  width: 100%;
+}
+
+#registration-form label {
+  width: 30%;
+  align-self: center;
+  margin-left: 3%;
+}
+
+#registration-form input {
+  width: 70%;
+  margin-right: 3%;
+}
+

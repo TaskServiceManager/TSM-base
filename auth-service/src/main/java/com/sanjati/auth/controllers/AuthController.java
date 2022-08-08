@@ -35,6 +35,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
+
     private final UserConverter userConverter;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;

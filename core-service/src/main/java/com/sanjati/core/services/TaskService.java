@@ -3,13 +3,13 @@ package com.sanjati.core.services;
 
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.core.AssignDtoRq;
+import com.sanjati.api.core.SearchParamsTaskDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
 import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.enums.TaskStatus;
 import com.sanjati.core.exceptions.ChangeTaskStatusException;
-import com.sanjati.core.integrations.AuthServiceIntegration;
 import com.sanjati.core.repositories.TaskRepository;
 import com.sanjati.core.repositories.specifications.TaskSpecifications;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final CommentService commentService;
-    private final AuthServiceIntegration authServiceIntegration;
+    private final AuthService authService;
     private final TimePointService timePointService;
 
 
@@ -115,7 +115,7 @@ public class TaskService {
         Task task = getTaskAvailableForChanges(taskId);
         //id того, на кого будет назначаться заявка
         Long actualId = (executorId == null) ? assignerId : executorId;
-        UserLightDto executor = authServiceIntegration.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
+        UserLightDto executor = authService.getUserLightById(actualId);//проверяет есть ли исполнитель с указанным id
         if (task.getStatus() == TaskStatus.CREATED) task.setStatus(TaskStatus.ASSIGNED);
         task.getExecutors().add(actualId);
         if (task.getExecutors().size() == 1) {
@@ -135,14 +135,14 @@ public class TaskService {
             Set<Long> taskExecutorsCurrent = new HashSet<>(taskExecutors);
             taskExecutorsCurrent.forEach(e -> {
                 //если удалили исполнителя, то нужно закрыть его открытый таймпоинт в этой заявке
-                if (!assignDtoRq.getExecutorIds().contains(e)) {
+                if(!assignDtoRq.getExecutorIds().contains(e)) {
                     timePointService.closeTimePointByTaskAndExecutorId(taskId, e);
                     taskExecutors.remove(e);
                 }
             });
         }
         List<UserLightDto> executors = assignDtoRq.getExecutorIds().stream()
-                .map(authServiceIntegration::getUserLightById)
+                .map(authService::getUserLightById)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         executors.forEach(ex -> taskExecutors.add(ex.getId()));
@@ -160,35 +160,30 @@ public class TaskService {
         return task;
     }
 
-    public Page<Task> findAllTasksBySpec(Long id,
-                                         LocalDateTime from,
-                                         LocalDateTime to,
-                                         Integer page,
-                                         TaskStatus status,
-                                         Long executorId) {
+    public Page<Task> findAllTasksBySpec(SearchParamsTaskDtoRq searchParams) {
         Specification<Task> spec = Specification.where(null);
 
-        if (id != null) {
-            spec = spec.and(TaskSpecifications.ownerIdEquals(id));
+        if(searchParams.getOwnerId() != null) {
+            spec = spec.and(TaskSpecifications.ownerIdEquals(searchParams.getOwnerId()));
         }
 
-        if (status != null) {
-            spec = spec.and(TaskSpecifications.statusEquals(status));
+        if (searchParams.getStatus() != null) {
+            spec = spec.and(TaskSpecifications.statusEquals(TaskStatus.valueOf(searchParams.getStatus())));
         }
 
-        if (from != null) {
-            spec = spec.and(TaskSpecifications.timeGreaterOrEqualsThan(from));
+        if (searchParams.getFrom() != null) {
+            spec = spec.and(TaskSpecifications.timeGreaterOrEqualsThan(searchParams.getFrom()));
         }
 
-        if (to != null) {
-            spec = spec.and(TaskSpecifications.timeLessThanOrEqualsThan(to));
+        if (searchParams.getTo() != null) {
+            spec = spec.and(TaskSpecifications.timeLessThanOrEqualsThan(searchParams.getTo()));
         }
 
-        if (executorId != null) {
-            spec = spec.and(TaskSpecifications.executorIdContainsIn(executorId));
+        if (searchParams.getExecutorId() != null) {
+            spec = spec.and(TaskSpecifications.executorIdContainsIn(searchParams.getExecutorId()));
         }
 
-        return this.taskRepository.findAll(spec, PageRequest.of(page - 1, 8));
+        return this.taskRepository.findAll(spec, PageRequest.of(searchParams.getPage() - 1, 8));
     }
 
 
@@ -210,5 +205,10 @@ public class TaskService {
         return taskRepository.findStatusByTaskId(taskId);
     }
 
+    public void checkAccessToTask(String role, Long userId, Long taskId){
+        if(!role.contains("EXECUTOR")){
+            if(!isUserTaskOwner(userId, taskId)) throw new MandatoryCheckException("Нет доступа к чужим заявкам");
+        }
+    }
 
 }

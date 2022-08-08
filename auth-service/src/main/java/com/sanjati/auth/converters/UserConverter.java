@@ -31,15 +31,15 @@ public class UserConverter {
         if(user==null) {
             return null;
         }
-        return UserLightDto.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .middleName(user.getMiddleName())
-                .email(user.getEmail())
-                .startWorkTime(user.getStartWorkTime())
-                .endWorkTime(user.getEndWorkTime())
-                .build();
+        UserLightDto userLightDto = new UserLightDto();
+        userLightDto.setId(user.getId());
+        userLightDto.setFirstName(user.getFirstName());
+        userLightDto.setLastName(user.getLastName());
+        userLightDto.setMiddleName(user.getMiddleName());
+        userLightDto.setEmail(user.getEmail());
+        userLightDto.setStartWorkTime(user.getStartWorkTime());
+        userLightDto.setEndWorkTime(user.getEndWorkTime());
+        return userLightDto;
     }
     public User dtoToEntity(NewUserDtoRq newUserDto){
 

@@ -2,6 +2,7 @@ package com.sanjati.api.core;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Тело запроса для создания задачи")
 public class TaskDtoRq {
     @Schema(description = "Имя задачи")
     private String title;

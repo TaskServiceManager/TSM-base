@@ -1,9 +1,9 @@
 package com.sanjati.api.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalTime;
 
-@Schema(description = "Полная информация о пользователе")
-
+@Schema(description = "Основная модель пользователя")
 public class UserDto {
 
     @Schema(description = "ID пользователя", example = "3")

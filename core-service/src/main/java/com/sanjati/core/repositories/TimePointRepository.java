@@ -5,6 +5,8 @@ import com.sanjati.core.entities.TimePoint;
 import com.sanjati.core.enums.TimePointStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,6 +28,9 @@ public interface TimePointRepository extends JpaRepository<TimePoint, Long>, Jpa
 
     boolean existsByTaskIdAndStatus(Long taskId, TimePointStatus status);
 
-Optional<TimePoint> findByIdAndStatus(Long id,TimePointStatus status);
+    Optional<TimePoint> findByIdAndStatus(Long id,TimePointStatus status);
 
+    @Modifying
+    @Query("update TimePoint set status = :status where finishedAt <= current_timestamp")
+    void updateAllStatusByFinishedAt(TimePointStatus status);
 }

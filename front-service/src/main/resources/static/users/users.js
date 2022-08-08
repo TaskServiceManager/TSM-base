@@ -1,24 +1,15 @@
 angular.module('ttsystem-front').controller('usersController', function ($scope, $http, $location, $localStorage, $rootScope) {
     const contextPath = 'http://localhost:5555/auth/';
-     var alertPlaceholder = document.getElementById('liveAlertPlaceholder')
-        function alert(message, type) {
-          var wrapper = document.createElement('div')
-          wrapper.innerHTML = '<div class="alert alert-' + type + ' alert-dismissible" role="alert">' + message + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>'
-
-          alertPlaceholder.append(wrapper)
-        }
 
     $scope.loadUsers = function (pageIndex) {
         $http({
                 url: contextPath + 'api/v1/admin/users',
                 method: 'GET',
                 params: {
-
                     page: pageIndex ? pageIndex : 1,
                     id: $scope.filter ? $scope.filter.id : null,
                     usernamePart: $scope.filter ? $scope.filter.usernamePart : null,
-                    roleId: $scope.filter ? $scope.filter.roleId : null,
-
+                    roleName: $scope.filter && $scope.filter.roleName && $scope.filter.roleName!='' ? $scope.filter.roleName : null,
                 }
         }).then(function (response) {
             $scope.Users = response.data.content;
@@ -27,40 +18,54 @@ angular.module('ttsystem-front').controller('usersController', function ($scope,
             $scope.isLastPage = response.data.last;
         });
     }
-    $scope.edit = function (userId){
 
-        $http({
-                        url: contextPath + 'api/v1/users/'+userId+'/data',
-                        method: 'GET'
-
-                }).then(function successCallback(response) {
-                                            $rootScope.CurrentUser = response.data;
-                                            $location.path('/edit');
-
-                                    }, function errorCallback(response) {
-                                            console.log(response);
-                                            alert("Ошибка редактирования!",'danger');
-                                    });
+    $scope.goToEdit = function (userId){
+        $location.path('/users/'+userId+'/edit');
     }
 
-    $scope.changeRole = function(userId,newRole){
-           $http({
-
-                          url: contextPath + 'api/v1/admin' + '/users/'+ userId + '/role/',
-                          method: 'PATCH',
-                          params: {
-                               newRole: newRole
-                         }
-                  }).then(function successCallback(response) {
-
-                          $location.path('/users');
-                          alert("Роль назначена!",'success');
-                  }, function errorCallback(response) {
-                          console.log(response);
-                          alert("Ошибка при смене роли!",'danger');
-                  });
+    $scope.changeRoles = function(){
+       $http({
+              url: contextPath + 'api/v1/admin' + '/users/'+ $scope.modalUser.id  + '/roles/',
+              method: 'PATCH',
+              data: $scope.modalRoles
+      }).then(function successCallback(response) {
+              $location.path('/users');
+              $scope.closeChangeRoleModal();
+      }, function errorCallback(response) {
+              alert(response.data.message);
+              console.log('error');
+              console.log(response);
+      });
     }
 
+    $scope.addToModalRoles = function(roleName) {
+        if($scope.isRolePresent(roleName)) {
+            var index = $scope.modalRoles.indexOf(roleName);
+            $scope.modalRoles.splice(index, 1);
+        } else {
+            $scope.modalRoles.push(roleName);
+        }
+    }
+
+    $scope.renderRoles = function(user) {
+        return user && user.roles ? user.roles.join(', ') : '-';
+    }
+
+    $scope.showChangeRoleModal = function (user) {
+       $scope.modalRoles = user.roles;
+       $scope.modalUser = user;
+       $('#item-modal-change-role').show();
+    };
+
+    $scope.isRolePresent = function(roleName) {
+         return $scope.modalRoles ? $scope.modalRoles.indexOf(roleName)!=-1 : false;
+    }
+
+    $scope.closeChangeRoleModal = function () {
+        $('#item-modal-change-role').hide();
+        $scope.modalRoles = null;
+        $scope.modalUser = null;
+    };
 
     $scope.loadUsers();
 });

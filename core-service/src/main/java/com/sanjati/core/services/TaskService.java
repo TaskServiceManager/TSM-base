@@ -153,7 +153,7 @@ public class TaskService {
     }
 
     private Task getTaskAvailableForChanges(Long taskId) {
-        List<TaskStatus> statuses = Arrays.asList(TaskStatus.values());
+        List<TaskStatus> statuses = Arrays.stream(TaskStatus.values()).collect(Collectors.toList());
         statuses.remove(TaskStatus.CANCELLED);
         statuses.remove(TaskStatus.COMPLETED);
         Task task = taskRepository.findByIdAndStatusIn(taskId,statuses).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));

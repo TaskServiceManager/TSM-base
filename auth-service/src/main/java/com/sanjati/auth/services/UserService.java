@@ -68,7 +68,7 @@ public class UserService implements UserDetailsService {
                 .map(userConverter::modelToLightDto)
                 .collect(Collectors.toList());
     }
-    public Page<User> findUsersBySpec(Long id, String usernamePart, Long roleId, Integer page) {
+    public Page<User> findUsersBySpec(Long id, String usernamePart, String roleName, Integer page) {
         Specification<User> spec = Specification.where(null);
         if(id != null){
             spec = spec.and(UserSpecifications.userIdEquals(id));
@@ -77,8 +77,8 @@ public class UserService implements UserDetailsService {
         if(usernamePart != null){
             spec = spec.and(UserSpecifications.usernameLike(usernamePart));
         }
-        if (roleId!= null){
-            spec = spec.and(UserSpecifications.userRoleContainsIn(roleService.findById(roleId)));
+        if (roleName!= null){
+            spec = spec.and(UserSpecifications.userRoleContainsIn(roleService.findByName(roleName)));
         }
         return userRepository.findAll(spec, PageRequest.of(page - 1, 8));
 

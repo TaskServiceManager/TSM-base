@@ -161,7 +161,7 @@ nav a:hover{
   padding-left: calc(var(--bs-gutter-x) * .5);
 }
 
-#assigned:checked {
+#assigned:checked, .checkbox-custom:checked {
   accent-color: #d3f3de;
 }
 
@@ -221,18 +221,18 @@ select:focus-visible {
   margin-left:1%;
 }
 
-#registration-form .col-md-4 {
+#registration-form .col-md-4, #edit-form .col-md-4{
   display: flex;
   width: 100%;
 }
 
-#registration-form label {
+#registration-form label, #edit-form label {
   width: 30%;
   align-self: center;
   margin-left: 3%;
 }
 
-#registration-form input {
+#registration-form input, #edit-form input {
   width: 70%;
   margin-right: 3%;
 }

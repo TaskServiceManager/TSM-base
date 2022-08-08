@@ -1,27 +1,33 @@
-<div>
-    <h4>Статистика выполнения работ по заявкам</h4>
-    <br>
-    <div id="liveAlertPlaceholder"></div>
-    <form novalidate ng-submit="loadUsers()" style="display: flex">
+<div class="table table-hover" ng-show="!isAllowed('users')" align="center">Нет доступа для просмотра пользователей</div>
+
+<div ng-show="isAllowed('users')">
+    <form novalidate ng-submit="loadUsers()" style="display: flex" ng-show="Users && Users.length>0">
         <table style="width: 100%">
             <tr>
-                <td style="width:15%">
+                <td style="width:10%">
                     <label for="filterId">ID пользователя:</label>
                 </td>
                 <td style="width:10%">
                     <input type="text" class="form-control" id="filterId" placeholder="" ng-model="filter.id">
                 </td>
-                <td style="width:4%; padding-left: 1%">
-                    <label for="filterUsernamePart">Логин пользователя или его часть:</label>
+                <td style="width:5%; padding-left: 1%">
+                    <label for="filterUsernamePart">Логин:</label>
+                </td>
+                <td style="width:12%">
+                    <input type="text" class="form-control" id="filterUsernamePart" placeholder="ivanovii или ivan" ng-model="filter.usernamePart">
+                </td>
+                <td style="width:12%; padding-left: 1%">
+                    <label for="filterRole">Роль пользователя:</label>
                 </td>
                 <td style="width:10%">
-                    <input type="text" class="form-control" id="filterUsernamePart" placeholder="" ng-model="filter.usernamePart">
-                </td>
-                <td style="width:4%; padding-left: 1%">
-                    <label for="filterRole">Роль пользователя (id):</label>
-                </td>
-                <td style="width:10%">
-                    <input type="text" class="form-control" id="filterRole" placeholder="" ng-model="filter.roleId">
+                    <select id="filterRole" placeholder="" ng-model="filter.roleName">
+                        <option value=""></option>
+                        <option value="ROLE_USER">ROLE_USER</option>
+                        <option value="ROLE_EXECUTOR">ROLE_EXECUTOR</option>
+                        <option value="ROLE_MANAGER">ROLE_MANAGER</option>
+                        <option value="ROLE_SENIOR">ROLE_SENIOR</option>
+                        <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                    </select>
                 </td>
 
                 <td style="padding-left: 1%">
@@ -39,52 +45,73 @@
 
     <table class="table table-hover" ng-show="Users.length>0">
         <tr style="border-top: ridge">
-
-            <td width="10%">ID пользователя</td>
-            <td width="20%">Username</td>
-            <td width="30%">Фамилия</td>
-            <td width="20%">Сменить роль</td>
-            <td width="20%">Редактировать</td>
-
+            <td width="5%">ID</td>
+            <td width="15%">Username</td>
+            <td width="20%">Фамилия И.О.</td>
+            <td width="40%">Роли в системе</td>
+            <td width="20%">&nbsp;</td>
         </tr>
         <tbody>
-        <tr ng-repeat="user in Users">
-
-            <td>{{user.id}}</td>
-            <td>{{user.username}}</td>
-            <td>{{user.shortName}}</td>
+        <tr ng-repeat="user in Users" style="cursor: pointer">
+            <td data-ng-click="goToEdit(user.id)">{{user.id}}</td>
+            <td data-ng-click="goToEdit(user.id)">{{user.username}}</td>
+            <td data-ng-click="goToEdit(user.id)">{{user.shortName}}</td>
+            <td data-ng-click="goToEdit(user.id)">{{renderRoles(user)}}</td>
             <td>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        Роль
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'USER')">Пользователь</a></li>
-                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'EXECUTOR')">Исполнитель</a></li>
-                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'MANAGER')">Мэнеджер</a></li>
-                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'ADMIN')">Администратор</a></li>
-                        <li><a class="dropdown-item"  ng-click="changeRole(user.id,'SENIOR')">Директор</a></li>
-                    </ul>
-                </div>
+                <button style="font-size: small;" type="button" class="btn btn-outline-success my-2 my-sm-0" data-ng-click="showChangeRoleModal(user)">Изменить роли</button>
             </td>
-            <td>
-
-                <button type="button" class="btn btn-primary" ng-click="edit(user.id)"  >
-                    Редактировать
-                </button>
-
-
-            </td>
-
-
         </tr>
         </tbody>
     </table>
-
 
     <p align="center" ng-show="Users.length>0">
         <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isFirstPage" ng-click="loadUsers(currentPage-1)"><</button>
         <span>{{currentPage}}</span>
         <button class="btn btn-outline-success my-2 my-sm-0" data-ng-disabled="isLastPage" ng-click="loadUsers(currentPage+1)">></button>
     </p>
+</div>
+
+<!--Modal for role change-->
+<div id="item-modal-change-role" class="modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-ng-click="closeChangeRoleModal()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                Роли в системе
+            </div>
+            <div class="modal-body">
+                <form novalidate ng-submit="changeRoles()">
+                    <div>
+                        <span style="font-size: small;">Выберите роли</span>
+                        <br>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <input type="checkbox" class="custom-control-input checkbox-custom" ng-click="addToModalRoles('ROLE_USER')" ng-checked="isRolePresent('ROLE_USER')">
+                                <label class="custom-control-label">ROLE_USER</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input type="checkbox" class="custom-control-input checkbox-custom" ng-click="addToModalRoles('ROLE_EXECUTOR')" ng-checked="isRolePresent('ROLE_EXECUTOR')">
+                                <label class="custom-control-label">ROLE_EXECUTOR</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input type="checkbox" class="custom-control-input checkbox-custom" ng-click="addToModalRoles('ROLE_MANAGER')" ng-checked="isRolePresent('ROLE_MANAGER')">
+                                <label class="custom-control-label">ROLE_MANAGER</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input type="checkbox" class="custom-control-input checkbox-custom" ng-click="addToModalRoles('ROLE_SENIOR')" ng-checked="isRolePresent('ROLE_SENIOR')">
+                                <label class="custom-control-label">ROLE_SENIOR</label>
+                            </li>
+                            <li class="list-group-item">
+                                <input type="checkbox" class="custom-control-input checkbox-custom" ng-click="addToModalRoles('ROLE_ADMIN')" ng-checked="isRolePresent('ROLE_ADMIN')">
+                                <label class="custom-control-label">ROLE_ADMIN</label>
+                            </li>
+                        </ul>
+                    </div>
+                    <p></p>
+                    <button style="float:right" class="btn btn-outline-success" id="changeRoles" type="submit">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

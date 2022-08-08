@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,57 +22,28 @@ public class AdministrationService {
     private final RoleService roleService;
     private final UserService userService;
     private final UserConverter userConverter;
+
     @Transactional
-    public void changeRole(String newRole, Long userId){
-
-
-        List<String> roles = new ArrayList<>();
-        User user = userService.findByUserId(userId).orElseThrow(()->new ResourceNotFoundException("Пользователь не найден Id: "+userId));
-
-        switch (newRole){
-            case "USER" :
-                roles.add("ROLE_USER");
-                List<Role> userRoles = roleService.findAllByNameIn(roles);
-                user.setRoles(userRoles);
-                break;
-
-            case "EXECUTOR":
-                roles.add("ROLE_USER");
-                roles.add("ROLE_EXECUTOR");
-                List<Role> executorRoles = roleService.findAllByNameIn(roles);
-                user.setRoles(executorRoles);
-                break;
-
-            case "MANAGER":
-                roles.add("ROLE_USER");
-                roles.add("ROLE_EXECUTOR");
-                roles.add("ROLE_MANAGER");
-                List<Role> managerRoles = roleService.findAllByNameIn(roles);
-                user.setRoles(managerRoles);
-                break;
-
-            case "ADMIN":// можно дополнительно ввести исполнителя админа
-                roles.add("ROLE_USER");
-                roles.add("ROLE_EXECUTOR");
-                roles.add("ROLE_MANAGER");
-                roles.add("ROLE_ADMIN");
-                List<Role> adminManagerRoles = roleService.findAllByNameIn(roles);
-                user.setRoles(adminManagerRoles);
-                break;
-
-            case "SENIOR":
-                roles.add("ROLE_USER");
-                roles.add("ROLE_SENIOR");
-                List<Role> seniorRoles = roleService.findAllByNameIn(roles);
-                user.setRoles(seniorRoles);
-                break;
-
-
-
+    public void changeRoles(List<String> roles, Long userId){
+        User user = userService.findByUserId(userId).orElseThrow(()->new ResourceNotFoundException("Пользователь не найден по Id: "+userId));
+        if(roles==null || roles.isEmpty()) {
+            user.setRoles(new ArrayList<>());
+            return;
+        }
+        if(user.getRoles()!=null && !user.getRoles().isEmpty()) {
+            user.getRoles().clear();
         }
 
+        List<Role> allRoles = roleService.findAll();
+        List<Role> userRoles = new ArrayList<>();
+        roles.forEach(role -> allRoles.stream()
+                            .filter(r -> role.equals(r.getName()))
+                            .findFirst()
+                            .ifPresent(userRoles::add));
 
+        user.setRoles(userRoles);
     }
+
     @Transactional
     public void changeUserData(NewUserDtoRq update,Long userId){
         User old = userService.findByUserId(userId).orElseThrow(()-> new ResourceNotFoundException("Пользователь не найден Id: "+userId));
@@ -112,14 +84,13 @@ public class AdministrationService {
             old.setBuilding(update.getBuilding());
         }
 
-
     }
 
-    public Page<UserTinyDto> findUsersBySpec(Long id, String usernamePart, Long role, Integer page) {
-
-        return userService.findUsersBySpec(id,usernamePart,role,page).map(entity->{
-            String fio = String.format("%s %c.%c.",entity.getFirstName(),entity.getLastName().charAt(0),entity.getMiddleName().charAt(0));
-            return userConverter.entityToTinyDto(entity,fio);
+    public Page<UserTinyDto> findUsersBySpec(Long id, String usernamePart, String roleName, Integer page) {
+        return userService.findUsersBySpec(id, usernamePart, roleName, page).map(entity->{
+            String fio = String.format("%s %c.%c.",entity.getLastName(),entity.getFirstName().charAt(0),entity.getMiddleName().charAt(0));
+            List<String> roles = entity.getRoles().stream().map(Role::getName).collect(Collectors.toList());
+            return userConverter.entityToTinyDto(entity, fio, roles);
         });
 
     }

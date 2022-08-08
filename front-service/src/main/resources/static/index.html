@@ -59,15 +59,19 @@
                     <li class="nav-item" ng-show="isAllowed('pending')">
                         <a class="nav-link" href="#!/pending">Утверждение заявок</a>
                     </li>
+                    <!--Admin tabs-->
+                    <li class="nav-item" ng-show="isAllowed('users')">
+                        <a class="nav-link" href="#!/users">Пользователи</a>
+                    </li>
                 </ul>
                 <div>
-                    <form style="width: 250px" class="form-inline my-2 my-lg-0" ng-show="isUserLoggedIn()" ng-submit="goToDetails(searchValue)">
+                    <form style="width: 250px" class="form-inline my-2 my-lg-0" ng-show="isUserLoggedIn()&&isAllowed('taskSearch')" ng-submit="goToDetails(searchValue)">
                         <input class="form-control mr-sm-2" type="search" placeholder="Найти заявку по ID" aria-label="Search" ng-model="searchValue">
                     </form>
                     <form class="form-inline my-2 my-lg-0" id="login" ng-show="!isUserLoggedIn()" ng-submit="goToLogin()">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Войти</button>
                     </form>
-                    <form class="form-inline my-2 my-lg-0" ng-submit="showModalForCreateTask()" ng-show="isUserLoggedIn()" id="createTask">
+                    <form class="form-inline my-2 my-lg-0" ng-submit="showModalForCreateTask()" ng-show="isUserLoggedIn()&&isAllowed('createTask')" id="createTask">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Создать заявку</button>
                     </form>
                     <div id="delimiter" ng-show="isUserLoggedIn()">|</div>
@@ -92,16 +96,9 @@
     <script src="pending/pending.js"></script>
     <script src="details/details.js"></script>
     <script src="records/records.js"></script>
-
     <script src="users/users.js"></script>
     <script src="edit/edit.js"></script>
-
-
-
     <script src="registration/registration.js"></script>
-
-<!--<script src="statistics/statistics.js"></script>-->
-
 
 </div>
 

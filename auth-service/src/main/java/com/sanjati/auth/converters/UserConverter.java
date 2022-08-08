@@ -3,21 +3,12 @@ package com.sanjati.auth.converters;
 import com.sanjati.api.auth.NewUserDtoRq;
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.auth.UserDto;
-
 import com.sanjati.api.auth.UserTinyDto;
-
-
-
-
 import com.sanjati.auth.configs.SecurityConfig;
-import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

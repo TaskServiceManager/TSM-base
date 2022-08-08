@@ -14,9 +14,6 @@ public class TaskDto {
     @Schema(description = "Показывает в каком состоянии находится заявка", example = "CANCELLED")
     private String status;
 
-//    @Schema(description = "Временные отметки сотрудников")
-//    private List<TimePointDto> timePoints;// тут насколько я знаю если поместить в лист что-то кроме стринга могут быть проблемы с мапингом объекта
-
     @Schema(description = "Название заявки", example = "Сделать командный проект")
     private String title;
 
@@ -40,16 +37,6 @@ public class TaskDto {
 
     @Schema(description = "Дата последнего обновления", example = "2022-07-10 16:30:19")
     private String updatedAt;
-
-//    public List<TimePointDto> getTimePoints() {
-//        return timePoints;
-//    }
-//
-//    public void setTimePoints(List<TimePointDto> timePoints) {
-//        this.timePoints = timePoints;
-//    }
-//
-
 
     public String getUpdatedAt() {
         return updatedAt;

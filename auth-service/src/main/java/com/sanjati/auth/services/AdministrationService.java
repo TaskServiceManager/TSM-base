@@ -3,7 +3,6 @@ package com.sanjati.auth.services;
 
 import com.sanjati.api.auth.NewUserDtoRq;
 import com.sanjati.api.auth.UserTinyDto;
-import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
@@ -25,7 +24,7 @@ public class AdministrationService {
 
     @Transactional
     public void changeRoles(List<String> roles, Long userId){
-        User user = userService.findByUserId(userId).orElseThrow(()->new ResourceNotFoundException("Пользователь не найден по Id: "+userId));
+        User user = userService.findByUserId(userId);
         if(roles==null || roles.isEmpty()) {
             user.setRoles(new ArrayList<>());
             return;
@@ -46,7 +45,7 @@ public class AdministrationService {
 
     @Transactional
     public void changeUserData(NewUserDtoRq update,Long userId){
-        User old = userService.findByUserId(userId).orElseThrow(()-> new ResourceNotFoundException("Пользователь не найден Id: "+userId));
+        User old = userService.findByUserId(userId);
         if(update.getUsername()!=null){
             old.setUsername(update.getUsername());
         }

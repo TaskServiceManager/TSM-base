@@ -61,7 +61,6 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-
     @Operation(
             summary = "Чтение данных пользователя",
             responses = {
@@ -70,12 +69,11 @@ public class AuthController {
                     )
             }
     )
-
     @GetMapping("/users/{id}/data")
     public UserDto getFullUserDataById(@Parameter(description = "ID пользователя", required = true)
 
                                            @PathVariable(name = "id") Long userId){
-        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found ID : " + userId));
+        User user = userService.findByUserId(userId);
         return userConverter.modelToDto(user);
     }
 
@@ -90,7 +88,7 @@ public class AuthController {
     @GetMapping("/users/{id}")
     public UserLightDto getUserLightByUserId(@Parameter(description = "ID пользователя", required = true)
                                                  @PathVariable(name = "id") Long userId){
-        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found ID : " + userId));
+        User user = userService.findByUserId(userId);
         return userConverter.modelToLightDto(user);
     }
 

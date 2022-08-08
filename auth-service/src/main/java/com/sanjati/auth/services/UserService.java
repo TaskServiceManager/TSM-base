@@ -47,8 +47,8 @@ public class UserService implements UserDetailsService {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
-    public Optional<User> findByUserId(Long userId) {
-        return userRepository.findById(userId);
+    public User findByUserId(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден по ID : " + userId));
     }
 
     public List<User> getAllUsers(String roleName){

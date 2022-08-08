@@ -43,7 +43,7 @@ public class TaskService {
 
     @Transactional
     public void changeStatus(Long taskId, TaskStatus newStatus) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
+        Task task = findById(taskId);
         boolean timePointActive = timePointService.checkTimePointsStatusByTaskId(taskId);
         switch (newStatus) {
             case CREATED: {
@@ -157,8 +157,7 @@ public class TaskService {
         List<TaskStatus> statuses = Arrays.stream(TaskStatus.values()).collect(Collectors.toList());
         statuses.remove(TaskStatus.CANCELLED);
         statuses.remove(TaskStatus.COMPLETED);
-        Task task = taskRepository.findByIdAndStatusIn(taskId,statuses).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
-        return task;
+        return taskRepository.findByIdAndStatusIn(taskId,statuses).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
     }
 
     public Page<Task> findAllTasksBySpec(SearchParamsTaskDtoRq searchParams) {
@@ -189,6 +188,9 @@ public class TaskService {
 
 
     public void createTask(Long ownerId, TaskDtoRq taskCreateDto) {
+        if(taskCreateDto.getTitle()==null || taskCreateDto.getDescription()==null) {
+            throw new MandatoryCheckException("Не заполнены тема или описание заявки");
+        }
         Task task = new Task();
         task.setOwnerId(ownerId);
 

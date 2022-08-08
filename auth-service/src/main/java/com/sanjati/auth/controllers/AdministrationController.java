@@ -57,7 +57,6 @@ public class AdministrationController {
                                @Parameter(description = "Список ролей")
                                @RequestBody List<String> roles){
         administrationService.changeRoles(roles, userId);
-
     }
 
     @Operation(
@@ -80,6 +79,5 @@ public class AdministrationController {
                                             @Parameter(description = "роль пользователя", required = false)
                                            @RequestParam(required = false) String roleName){
         return administrationService.findUsersBySpec(id, usernamePart, roleName, page);
-
     }
 }

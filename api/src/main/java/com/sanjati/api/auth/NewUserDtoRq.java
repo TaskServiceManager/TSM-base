@@ -2,15 +2,14 @@ package com.sanjati.api.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "Полная информация о пользователе")
-
-public class UserDto {
-
-    @Schema(description = "ID пользователя", example = "3")
-    private Long id;
-
+import java.time.LocalTime;
+@Schema(description = "Очень короткая информация о пользователе")
+public class NewUserDtoRq {
     @Schema(description = "Короткое имя пользователя", example = "userHi")
     private String username;
+
+    @Schema(description = "Пароль", example = "1234567QWERTY")
+    private String password;
 
     @Schema(description = "Имя пользователя", example = "Дмитрий")
     private String firstName;
@@ -42,43 +41,20 @@ public class UserDto {
     @Schema(description = "Номер помещения на работе у пользователя", example = "3")
     private String building;
 
-    @Schema(description = "Время начала рабочего дня исполнителя", example = "09:06:00")
-    private LocalTime startWorkTime;
-
-    @Schema(description = "Время окончания рабочего дня исполнителя", example = "18:13:00")
-    private LocalTime endWorkTime;
-
-    public UserDto(Long id, String username, String firstName, String lastName, String middleName, String email, String company, String companyEmail, String workPosition, String phone, String office, String building, LocalTime startWorkTime, LocalTime endWorkTime) {
-        this.id = id;
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.middleName = middleName;
-        this.email = email;
-        this.company = company;
-        this.companyEmail = companyEmail;
-        this.workPosition = workPosition;
-        this.phone = phone;
-        this.office = office;
-        this.building = building;
-        this.startWorkTime = startWorkTime;
-        this.endWorkTime = endWorkTime;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getFirstName() {
@@ -161,22 +137,25 @@ public class UserDto {
         this.building = building;
     }
 
-    public LocalTime getStartWorkTime() {
-        return startWorkTime;
+    public NewUserDtoRq(String username, String password, String firstName,
+                        String lastName, String middleName, String email,
+                        String company, String companyEmail, String workPosition,
+                        String phone, String office, String building){
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.middleName = middleName;
+        this.email = email;
+        this.company = company;
+        this.companyEmail = companyEmail;
+        this.workPosition = workPosition;
+        this.phone = phone;
+        this.office = office;
+        this.building = building;
+
     }
 
-    public void setStartWorkTime(LocalTime startWorkTime) {
-        this.startWorkTime = startWorkTime;
-    }
-
-    public LocalTime getEndWorkTime() {
-        return endWorkTime;
-    }
-
-    public void setEndWorkTime(LocalTime endWorkTime) {
-        this.endWorkTime = endWorkTime;
-    }
-
-    public UserDto() {
+    public NewUserDtoRq() {
     }
 }

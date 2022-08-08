@@ -1,6 +1,7 @@
 package com.sanjati.api.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import java.time.LocalTime;
 
 @Schema(description = "Основная модель пользователя")
 public class UserDto {
@@ -41,10 +42,13 @@ public class UserDto {
     @Schema(description = "Номер помещения на работе у пользователя", example = "3")
     private String building;
 
-    public UserDto(Long id, String username, String firstName,
-                   String lastName, String middleName, String email,
-                   String company, String companyEmail, String workPosition,
-                   String phone, String office, String building) {
+    @Schema(description = "Время начала рабочего дня исполнителя", example = "09:06:00")
+    private LocalTime startWorkTime;
+
+    @Schema(description = "Время окончания рабочего дня исполнителя", example = "18:13:00")
+    private LocalTime endWorkTime;
+
+    public UserDto(Long id, String username, String firstName, String lastName, String middleName, String email, String company, String companyEmail, String workPosition, String phone, String office, String building, LocalTime startWorkTime, LocalTime endWorkTime) {
         this.id = id;
         this.username = username;
         this.firstName = firstName;
@@ -57,6 +61,8 @@ public class UserDto {
         this.phone = phone;
         this.office = office;
         this.building = building;
+        this.startWorkTime = startWorkTime;
+        this.endWorkTime = endWorkTime;
     }
 
     public Long getId() {
@@ -153,6 +159,22 @@ public class UserDto {
 
     public void setBuilding(String building) {
         this.building = building;
+    }
+
+    public LocalTime getStartWorkTime() {
+        return startWorkTime;
+    }
+
+    public void setStartWorkTime(LocalTime startWorkTime) {
+        this.startWorkTime = startWorkTime;
+    }
+
+    public LocalTime getEndWorkTime() {
+        return endWorkTime;
+    }
+
+    public void setEndWorkTime(LocalTime endWorkTime) {
+        this.endWorkTime = endWorkTime;
     }
 
     public UserDto() {

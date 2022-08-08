@@ -13,8 +13,9 @@ import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
-    @Query("select  count (t) > 0  from Task t where t.id = :taskId and t.ownerId = :id" )
-    public boolean isCountMoreThanZeroByOwnerIdAndTaskId(Long taskId, Long id);
+
+    public boolean existsByIdAndOwnerId(Long Id, Long ownerId);
+
     @Query("select t.status from Task t where t.id = :taskId")
     public TaskStatus findStatusByTaskId(Long taskId);
 

@@ -14,7 +14,8 @@ public class UserConverter {
         return new UserDto(user.getId(),user.getUsername(),user.getFirstName(),
                 user.getLastName(), user.getMiddleName(), user.getEmail(),
                 user.getCompany(), user.getCompanyEmail(), user.getWorkPosition(),
-                user.getPhone(), user.getOffice(), user.getBuilding());
+                user.getPhone(), user.getOffice(), user.getBuilding(),
+                user.getStartWorkTime(), user.getEndWorkTime());
     }
 
     public UserLightDto modelToLightDto(User user){

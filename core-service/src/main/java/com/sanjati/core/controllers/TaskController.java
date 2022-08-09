@@ -108,12 +108,14 @@ public class TaskController {
                     )
             }
     )
-    @PatchMapping("/{id}/status/{newStatus}")
+    @PatchMapping("/{taskId}/{userId}/status/{newStatus}")
     public void changeTaskStatus(@Parameter(description = "ID заявки", required = true)
-                                     @PathVariable Long id,
+                                     @PathVariable Long taskId,
+                                 @Parameter(description = "ID пользователя", required = true)
+                                     @PathVariable Long userId,
                                  @Parameter(description = "Новый статус заявки", required = true)
                                      @PathVariable TaskStatus newStatus){
-        taskService.changeStatus(id, newStatus);
+        taskService.changeStatus(taskId, newStatus);
     }
 
     @Operation(

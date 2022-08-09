@@ -4,35 +4,178 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+    <list default="true" id="d34b9f4e-1eee-478c-bfa5-75944f7537de" name="Changes" comment="А-7-1 , А-7-2. правки">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jpa-buddy.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/core/TaskDtoRq.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/core/TaskDtoRq.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/controllers/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/controllers/AuthController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/controllers/TaskController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/controllers/TaskController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/services/TaskService.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/services/TaskService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/compiler.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/jarRepositories.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__ch_qos_logback_logback_classic_1_2_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__com_fasterxml_classmate_1_5_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_annotations_2_12_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_core_2_12_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__com_fasterxml_jackson_core_jackson_databind_2_12_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jdk8_2_12_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__com_fasterxml_jackson_datatype_jackson_datatype_jsr310_2_12_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__com_fasterxml_jackson_module_jackson_module_parameter_names_2_12_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__com_jayway_jsonpath_json_path_2_5_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__com_vaadin_external_google_android_json_0_0_20131108_vaadin1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_jsonwebtoken_jjwt_0_9_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_buffer_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_codec_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_codec_dns_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_codec_http2_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_codec_http_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_codec_socks_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_common_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_handler_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_handler_proxy_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_resolver_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_resolver_dns_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_resolver_dns_native_macos_osx_x86_64_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_transport_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_transport_native_epoll_linux_x86_64_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_netty_netty_transport_native_unix_common_4_1_69_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_projectreactor_addons_reactor_extra_3_4_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_projectreactor_netty_reactor_netty_core_1_0_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_projectreactor_netty_reactor_netty_http_1_0_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__io_projectreactor_reactor_core_3_4_11.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__jakarta_activation_jakarta_activation_api_1_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__jakarta_annotation_jakarta_annotation_api_1_3_5.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__jakarta_validation_jakarta_validation_api_2_0_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__jakarta_xml_bind_jakarta_xml_bind_api_2_3_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__javax_activation_javax_activation_api_1_2_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__javax_xml_bind_jaxb_api_2_3_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__net_bytebuddy_byte_buddy_1_10_22.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__net_bytebuddy_byte_buddy_agent_1_10_22.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__net_minidev_accessors_smart_2_4_7.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__net_minidev_json_smart_2_4_7.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_14_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_apache_logging_log4j_log4j_to_slf4j_2_14_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_el_9_0_54.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_apiguardian_apiguardian_api_1_1_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_assertj_assertj_core_3_19_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_bouncycastle_bcpkix_jdk15on_1_68.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_bouncycastle_bcprov_jdk15on_1_68.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_hamcrest_hamcrest_2_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_hibernate_validator_hibernate_validator_6_2_0_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_jboss_logging_jboss_logging_3_4_2_Final.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_5_7_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_7_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_7_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_params_5_7_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_7_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_mockito_mockito_core_3_9_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_mockito_mockito_junit_jupiter_3_9_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_objenesis_objenesis_3_2.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_opentest4j_opentest4j_1_2_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_ow2_asm_asm_9_1.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_reactivestreams_reactive_streams_1_0_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_skyscreamer_jsonassert_1_5_0.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_slf4j_jul_to_slf4j_1_7_32.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_slf4j_slf4j_api_1_7_32.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_autoconfigure_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_json_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_logging_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_reactor_netty_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_test_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_validation_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_starter_webflux_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_test_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_boot_spring_boot_test_autoconfigure_2_5_6.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_commons_3_0_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_context_3_0_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_gateway_server_3_0_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_3_0_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_cloud_spring_cloud_starter_gateway_3_0_4.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_security_spring_security_crypto_5_5_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_security_spring_security_rsa_1_0_10_RELEASE.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_spring_aop_5_3_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_spring_beans_5_3_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_spring_context_5_3_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_spring_core_5_3_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_spring_expression_5_3_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_spring_jcl_5_3_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_spring_test_5_3_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_spring_web_5_3_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_springframework_spring_webflux_5_3_12.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_xmlunit_xmlunit_core_2_8_3.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/libraries/Maven__org_yaml_snakeyaml_1_28.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/.idea/modules.xml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="lesson-7" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
+  <component name="GithubProjectSettings">
+    <option name="branchProtectionPatterns">
+      <list>
+        <option value="develop" />
+        <option value="lesson.*" />
+        <option value="master" />
+      </list>
+    </option>
   </component>
   <component name="JpbToolWindowState">
     <option name="myId2FirstActivated">
       <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
         <entry key="com.haulmont.jpb.jpaStructure" value="true" />
       </map>
     </option>
     <option name="myId2Visible">
       <map>
-        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+        <entry key="com.haulmont.jpb.jpaInspector" value="false" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="false" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
       </map>
     </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2Cncj3FhRnLoE8sa5s4p2ge1axY" />
   <component name="ProjectLevelVcsManager">
@@ -43,19 +186,13 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/NC.TECHNOSPARK.RU/timonin.aa/IdeaProjects/TSM-base/statistics-service/statistics-service.iml&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.ignored.files&quot;
-  }
-}</component>
-  <component name="RunManager" selected="Application.CoreApp">
-    <configuration name="CoreApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/front-service/src/main/resources/static/registration" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Compound.TimeManagementService">
+    <configuration name="CoreApp" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sanjati.core.CoreApp" />
       <module name="core-service" />
       <extension name="coverage">
@@ -68,7 +205,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FrontApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="FrontApp" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sanjati.front.FrontApp" />
       <module name="front-service" />
       <extension name="coverage">
@@ -81,7 +218,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="GatewayApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="GatewayApp" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sanjati.gateway.GatewayApp" />
       <module name="gateway-service" />
       <extension name="coverage">
@@ -94,7 +231,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="WebAuthServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="WebAuthServiceApplication" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sanjati.auth.WebAuthServiceApplication" />
       <module name="auth-service" />
       <extension name="coverage">
@@ -107,6 +244,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="TimeManagementService" type="CompoundRunConfigurationType">
+      <toRun name="FrontApp" type="Application" />
+      <toRun name="WebAuthServiceApplication" type="Application" />
+      <toRun name="GatewayApp" type="Application" />
+      <toRun name="CoreApp" type="Application" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="CompoundRunConfigurationType">
+      <toRun name="FrontApp" type="Application" />
+      <toRun name="WebAuthServiceApplication" type="Application" />
+      <toRun name="GatewayApp" type="Application" />
+      <toRun name="CoreApp" type="Application" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <method v="2">
         <option name="Make" enabled="true" />
@@ -118,24 +269,78 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.CoreApp" />
+      <item itemvalue="Application.FrontApp" />
+      <item itemvalue="Application.GatewayApp" />
+      <item itemvalue="Application.WebAuthServiceApplication" />
+      <item itemvalue="Compound.TimeManagementService" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Application.CoreApp" />
-        <item itemvalue="Application.FrontApp" />
-        <item itemvalue="Application.GatewayApp" />
-        <item itemvalue="Application.WebAuthServiceApplication" />
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="" />
+      <changelist id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="фикс девелопа после мерджа - запускается" />
       <created>1659441921911</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1659441921911</updated>
     </task>
+    <task id="LOCAL-00001" summary="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености">
+      <created>1659777768646</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1659777768646</updated>
+    </task>
+    <task id="LOCAL-00002" summary="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса">
+      <created>1659812275733</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1659812275733</updated>
+    </task>
+    <task id="LOCAL-00003" summary="С-0-13. замечания">
+      <created>1659820141611</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1659820141611</updated>
+    </task>
+    <task id="LOCAL-00004" summary="С-0-13. замечания 2">
+      <created>1659820984040</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1659820984040</updated>
+    </task>
+    <task id="LOCAL-00005" summary="А-7-1 , А-7-2. Регистрация фронт и бэк">
+      <created>1659881621483</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1659881621483</updated>
+    </task>
+    <task id="LOCAL-00006" summary="А-7-1 , А-7-2. правки">
+      <created>1659882395533</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1659882395533</updated>
+    </task>
+    <task id="LOCAL-00007" summary="А-8-1 , А-8-2. удалил мэнеджер дто">
+      <created>1659960108340</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1659960108340</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -148,5 +353,18 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености" />
+    <MESSAGE value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
+    <MESSAGE value="С-0-13. замечания" />
+    <MESSAGE value="С-0-13. замечания 2" />
+    <MESSAGE value="A-8-1. A-8-2 админка черновик" />
+    <MESSAGE value="А-8-1 , А-8-2. правки для Иры" />
+    <MESSAGE value="А-8-1 , А-8-2. удалил мэнеджер дто" />
+    <MESSAGE value="А-7-1 , А-7-2. Регистрация фронт и бэк" />
+    <MESSAGE value="А-7-1 , А-7-2. правки" />
+    <option name="LAST_COMMIT_MESSAGE" value="А-7-1 , А-7-2. правки" />
   </component>
 </project>

@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
+import java.time.chrono.ChronoLocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -36,6 +37,7 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final CommentService commentService;
+    private final UserLightDto userLightDto;
     private final AuthServiceIntegration authServiceIntegration;
     private final TimePointService timePointService;
 
@@ -74,10 +76,10 @@ public class TaskService {
                 if (TaskStatus.ASSIGNED == task.getStatus() ||
                         TaskStatus.DELAYED == task.getStatus() ||
                         TaskStatus.APPROVED == task.getStatus()) {
-                    if (LocalDateTime.now().isBefore(LocalDateTime.of(0,0,0,6,0))
+                    if (LocalDateTime.now().isBefore(ChronoLocalDateTime.from(userLightDto.getStartWorkTime()))
                             ||
-                            LocalDateTime.now().isAfter(LocalDateTime.of(0,0,0,20,0))) {
-                        throw new ChangeTaskStatusException("Рабочее время от 6ти до 20ти часов. Вы не можете выполнять заявку в не рабочее время");
+                            LocalDateTime.now().isAfter(ChronoLocalDateTime.from(userLightDto.getEndWorkTime()))) {
+                        throw new ChangeTaskStatusException("Ваше рабочее время указано в профиле. Вы не можете выполнять заявку в не рабочее время");
                     }
                     task.setStatus(newStatus);
                     break;

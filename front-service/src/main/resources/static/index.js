@@ -38,21 +38,18 @@
                    templateUrl: 'records/records.html',
                    controller: 'recordsController'
             })
-
             .when('/users', {
-                               templateUrl: 'users/users.html',
-                               controller: 'usersController'
-                        })
-            .when('/edit', {
-                                           templateUrl: 'edit/edit.html',
-                                           controller: 'editController'
-                                    })
-
+                   templateUrl: 'users/users.html',
+                   controller: 'usersController'
+            })
+            .when('/users/:id/edit', {
+                   templateUrl: 'edit/edit.html',
+                   controller: 'editController'
+            })
             .when('/registration', {
-                               templateUrl: 'registration/registration.html',
-                               controller: 'registrationController'
-                        })
-
+                   templateUrl: 'registration/registration.html',
+                   controller: 'registrationController'
+            })
             .otherwise({
                 redirectTo: '/'
             });

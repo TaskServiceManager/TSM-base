@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,7 +43,7 @@ public class TaskService {
 
     @Transactional
     public void changeStatus(Long taskId, TaskStatus newStatus) {
-        Task task = taskRepository.findById(taskId).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
+        Task task = findById(taskId);
         boolean timePointActive = timePointService.checkTimePointsStatusByTaskId(taskId);
         switch (newStatus) {
             case CREATED: {
@@ -153,11 +154,10 @@ public class TaskService {
     }
 
     private Task getTaskAvailableForChanges(Long taskId) {
-        List<TaskStatus> statuses = Arrays.asList(TaskStatus.values());
+        List<TaskStatus> statuses = Arrays.stream(TaskStatus.values()).collect(Collectors.toList());
         statuses.remove(TaskStatus.CANCELLED);
         statuses.remove(TaskStatus.COMPLETED);
-        Task task = taskRepository.findByIdAndStatusIn(taskId,statuses).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
-        return task;
+        return taskRepository.findByIdAndStatusIn(taskId,statuses).orElseThrow(() -> new ResourceNotFoundException("Task not found ID : " + taskId));
     }
 
     public Page<Task> findAllTasksBySpec(SearchParamsTaskDtoRq searchParams) {
@@ -183,11 +183,14 @@ public class TaskService {
             spec = spec.and(TaskSpecifications.executorIdContainsIn(searchParams.getExecutorId()));
         }
 
-        return this.taskRepository.findAll(spec, PageRequest.of(searchParams.getPage() - 1, 8));
+        return this.taskRepository.findAll(spec, PageRequest.of(searchParams.getPage() - 1, 8, Sort.by(Sort.Direction.DESC, "createdAt")));
     }
 
 
     public void createTask(Long ownerId, TaskDtoRq taskCreateDto) {
+        if(taskCreateDto.getTitle()==null || taskCreateDto.getDescription()==null) {
+            throw new MandatoryCheckException("Не заполнены тема или описание заявки");
+        }
         Task task = new Task();
         task.setOwnerId(ownerId);
 

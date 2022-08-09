@@ -15,10 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/registration")
 @RequiredArgsConstructor
 public class RegistrationController {
     private final RegistrationService registrationService;
+
     @Operation(
             summary = "Регистрация",
             responses = {
@@ -27,11 +28,8 @@ public class RegistrationController {
                     )
             }
     )
-    @PostMapping("/registration")
+    @PostMapping
     public void registration(@Parameter(description = "Тело запроса запроса на регистрацию", required = true)@RequestBody NewUserDtoRq newUserDto) {
-
-
         registrationService.createNewUser(newUserDto);
-
     }
 }

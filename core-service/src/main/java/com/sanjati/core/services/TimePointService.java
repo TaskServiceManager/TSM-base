@@ -50,7 +50,7 @@ public class TimePointService {
         }
 
         if(timePointRepository.existsByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
-            throw new MandatoryCheckException("Нельзя открыть новую отметку пока есть незавершённые");
+            throw new MandatoryCheckException("Нельзя открыть новую отметку, пока есть незавершённые");
         }
 
         if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){

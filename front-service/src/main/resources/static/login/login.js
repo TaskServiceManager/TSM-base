@@ -31,7 +31,10 @@ angular.module('ttsystem-front').controller('loginController', function ($scope,
                                                 {view: 'timepointButton', roles: ['ROLE_EXECUTOR']},
                                                 {view: 'approvedButton', roles: ['ROLE_EXECUTOR']},
                                                 {view: 'completedButton', roles: ['ROLE_MANAGER']},
-                                                {view: 'returnToAcceptedButton', roles: ['ROLE_MANAGER']}];
+                                                {view: 'returnToAcceptedButton', roles: ['ROLE_MANAGER']},
+                                                {view: 'taskSearch', roles: ['ROLE_USER','ROLE_MANAGER','ROLE_EXECUTOR']},
+                                                {view: 'createTask', roles: ['ROLE_USER','ROLE_MANAGER','ROLE_EXECUTOR']},
+                                                {view: 'users', roles: ['ROLE_ADMIN']}];
                     $location.path('/');
 
                     $rootScope.loadDetailsOpen();

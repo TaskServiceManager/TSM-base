@@ -3,6 +3,8 @@ package com.sanjati.api.auth;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 
+import java.util.List;
+
 
 @Schema(description = "Очень короткая информация о пользователе")
 public class UserTinyDto {
@@ -12,6 +14,8 @@ public class UserTinyDto {
     private String username;
     @Schema(description = "Фамилия и инициалы", example = "Титов П.У.")
     private String shortName;
+    @Schema(description = "Роли в системе", example = "ROLE_USER, ROLE_EXECUTOR")
+    private List<String> roles;
 
     public Long getId() {
         return id;
@@ -37,10 +41,19 @@ public class UserTinyDto {
         this.shortName = shortName;
     }
 
-    public UserTinyDto(Long id, String username, String shortName) {
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
+    }
+
+    public UserTinyDto(Long id, String username, String shortName, List<String> roles) {
         this.id = id;
         this.username = username;
         this.shortName = shortName;
+        this.roles = roles;
     }
 
     public UserTinyDto() {

@@ -2,10 +2,7 @@ package com.sanjati.api.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.time.LocalTime;
-
 @Schema(description = "Очень короткая информация о пользователе")
-
 public class NewUserDtoRq {
     @Schema(description = "Короткое имя пользователя", example = "userHi")
     private String username;

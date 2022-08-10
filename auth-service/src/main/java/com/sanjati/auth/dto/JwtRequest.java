@@ -7,9 +7,9 @@ import lombok.Data;
 @Schema(description = "Запрос токена")
 public class JwtRequest {
 
-    @Schema(description = "Имя пользлваьеля")
+    @Schema(description = "Имя пользователя")
     private String username;
 
-    @Schema(description = "Пароль пользлваьеля")
+    @Schema(description = "Пароль пользователя")
     private String password;
 }

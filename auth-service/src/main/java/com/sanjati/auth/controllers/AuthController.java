@@ -6,6 +6,7 @@ import com.sanjati.api.auth.UserDto;
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.auth.WorkTimeDtoRq;
 
+import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.dto.JwtRequest;
@@ -17,16 +18,14 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,8 +35,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class AuthController {
-    private final String AUTH_PATH = "/auth";
-    private final String DATA_PATH = "/data";
+
     private final UserConverter userConverter;
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
@@ -51,7 +49,7 @@ public class AuthController {
                     )
             }
     )
-    @PostMapping(AUTH_PATH)
+    @PostMapping("/auth")
     public ResponseEntity<?> createAuthToken(@RequestBody JwtRequest authRequest) {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
@@ -63,7 +61,6 @@ public class AuthController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
-
     @Operation(
             summary = "Чтение данных пользователя",
             responses = {
@@ -72,12 +69,11 @@ public class AuthController {
                     )
             }
     )
-
     @GetMapping("/users/{id}/data")
     public UserDto getFullUserDataById(@Parameter(description = "ID пользователя", required = true)
 
                                            @PathVariable(name = "id") Long userId){
-        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found ID : " + userId));
+        User user = userService.findByUserId(userId);
         return userConverter.modelToDto(user);
     }
 
@@ -92,7 +88,7 @@ public class AuthController {
     @GetMapping("/users/{id}")
     public UserLightDto getUserLightByUserId(@Parameter(description = "ID пользователя", required = true)
                                                  @PathVariable(name = "id") Long userId){
-        User user = userService.findByUserId(userId).orElseThrow(() -> new ResourceNotFoundException("User not found ID : " + userId));
+        User user = userService.findByUserId(userId);
         return userConverter.modelToLightDto(user);
     }
 
@@ -108,9 +104,7 @@ public class AuthController {
     public List<UserLightDto> getAllUsers(@Parameter(description = "Роль пользователей")
                                           @RequestParam(required = false) String role) {
         return userService.getAllUsers(role).stream().map(userConverter::modelToLightDto).collect(Collectors.toList());
-
     }
-
 
     @Operation(
             summary = "Запрос на изменение времени работы исполнителя",
@@ -131,7 +125,7 @@ public class AuthController {
                                @Parameter(description = "Тело запроса с новым временем работы")
                                    @RequestBody WorkTimeDtoRq workTimeDtoRq){
         if (!role.contains("ROLE_EXECUTOR")){
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Нет доступа к смене рабочего времени");
+            throw new MandatoryCheckException("Нет доступа к смене рабочего времени");
         }
         userService.updateWorkTime(executorId, workTimeDtoRq);
     }
@@ -148,7 +142,6 @@ public class AuthController {
     public List<UserLightDto> getLightUserDataById(@Parameter(description = "список ID пользователей", required = true)
                                                    @RequestBody List<Long> usersId) {
         return userService.getLightUserDataById(usersId);
-
     }
 
 }

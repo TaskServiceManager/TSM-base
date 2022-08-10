@@ -23,9 +23,10 @@ public class TimePointConverter {
         dto.setId(entity.getId());
         dto.setTaskId(entity.getTaskId());
         dto.setExecutorId(entity.getExecutorId());
-        dto.setStatus(entity.getStatus().toString());
+        dto.setStatus(entity.getStatus()!= null? entity.getStatus().getRus() : null);
         dto.setStartedAt(formattedStartedAt);
         dto.setFinishedAt(formattedFinishedAt);
+        dto.setDuration(entity.getDuration());
         return dto;
     }
 

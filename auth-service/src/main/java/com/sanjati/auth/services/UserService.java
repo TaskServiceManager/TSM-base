@@ -1,35 +1,27 @@
 package com.sanjati.auth.services;
 
-
-
-
 import com.sanjati.api.auth.WorkTimeDtoRq;
-
 import com.sanjati.api.auth.UserLightDto;
-
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
-
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
 import com.sanjati.auth.repositories.RoleRepository;
 import com.sanjati.auth.repositories.UserRepository;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
+import com.sanjati.auth.repositories.specifications.UserSpecifications;
 
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -39,30 +31,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
+    private final RoleService roleService;
 
-    private final RoleRepository roleRepository;
     private final UserConverter userConverter;
 
-
-    @Operation(
-            summary = "Поиск имени пользователя",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )public Optional<User> findByUsername(String username) {
+    public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
-    @Operation(
-            summary = "Загрузка пользователя по имени",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username)  {
@@ -70,59 +46,45 @@ public class UserService implements UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
-    @Operation(
-            summary = "Загрузка псписка ролей",
-            responses = {
-                    @ApiResponse(
-                            description = "Успешный ответ", responseCode = "200"
-                    )
-            }
-    )
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
-
-
-
-    /*
-    *  Поиск пользователя по ID
-    * */
-    public Optional<User> findByUserId(Long userId) {
-        return userRepository.findById(userId);
+    public User findByUserId(Long userId) {
+        return userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден по ID : " + userId));
     }
 
-    //если будет много парамов, то потом надо переделать на спеку
     public List<User> getAllUsers(String roleName){
-        if (roleName != null){
-            Role role = roleRepository.findByName(roleName).orElseThrow(() -> new ResourceNotFoundException(String.format("Указанная роль %s не найдена.",roleName)));
-            return userRepository.findAllByRoles(role);
-        }
-        return userRepository.findAll();
+        return userRepository.getAllByRoleName(roleName);
     }
 
-
-
+    @Transactional
     public void updateWorkTime(Long executorId, WorkTimeDtoRq workTimeDtoRq){
         User user = userRepository.findById(executorId).orElseThrow(
-                () -> new ResourceNotFoundException("Пользователь с указанный ID не найден"));
+                () -> new ResourceNotFoundException("Не найден пользователь с ID "+ executorId));
         user.setStartWorkTime(workTimeDtoRq.getStartWorkTime());
         user.setEndWorkTime(workTimeDtoRq.getEndWorkTime());
-        userRepository.save(user);
     }
 
-    /*
-    * составление List<UserLightDto> по списку ID
-    *  */
-    public List<UserLightDto> getLightUserDataById(List<Long> usersId) {
-        List<UserLightDto> lightUsers = new ArrayList<>();
-        for (Long userId : usersId) {
-            User user = findByUserId(userId).get();
-            lightUsers.add(userConverter.modelToLightDto(user));
-            }
-        return lightUsers;
+    public List<UserLightDto> getLightUserDataById(List<Long> userIds) {
+        return userRepository.findAllUsersByIdIn(userIds).stream()
+                .map(userConverter::modelToLightDto)
+                .collect(Collectors.toList());
+    }
+    public Page<User> findUsersBySpec(Long id, String usernamePart, String roleName, Integer page) {
+        Specification<User> spec = Specification.where(null);
+        if(id != null){
+            spec = spec.and(UserSpecifications.userIdEquals(id));
+
+        }
+        if(usernamePart != null){
+            spec = spec.and(UserSpecifications.usernameLike(usernamePart));
+        }
+        if (roleName!= null){
+            spec = spec.and(UserSpecifications.userRoleContainsIn(roleService.findByName(roleName)));
+        }
+        return userRepository.findAll(spec, PageRequest.of(page - 1, 8));
 
     }
-
 
 }

@@ -4,11 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="фикс девелопа после мерджа - запускается" />
+
+    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="А-7-1 , А-7-2. правки">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/NewUserDtoRq.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/NewUserDtoRq.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/UserDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/RoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/RoleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/RegistrationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/RegistrationService.java" afterDir="false" />
+    </list>
+
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Enum" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -30,17 +47,26 @@
   <component name="JpbToolWindowState">
     <option name="myId2FirstActivated">
       <map>
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
         <entry key="com.haulmont.jpb.jpaStructure" value="true" />
       </map>
     </option>
     <option name="myId2Visible">
       <map>
-        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+
+        <entry key="com.haulmont.jpb.jpaInspector" value="true" />
+        <entry key="com.haulmont.jpb.jpaPalette" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
+
       </map>
     </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2Cncj3FhRnLoE8sa5s4p2ge1axY" />
   <component name="ProjectLevelVcsManager">
@@ -55,9 +81,20 @@
   &quot;keyToString&quot;: {
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+
+    &quot;last_opened_file_path&quot;: &quot;/home/NC.TECHNOSPARK.RU/timonin.aa/IdeaProjects/TSM-base/front-service/src/main/resources/static/registration&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.ignored.files&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/front-service/src/main/resources/static/registration" />
+    </key>
+  </component>
+
   <component name="RunManager" selected="Application.CoreApp">
     <configuration name="CoreApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sanjati.core.CoreApp" />
@@ -128,26 +165,88 @@
         <item itemvalue="Application.FrontApp" />
         <item itemvalue="Application.GatewayApp" />
         <item itemvalue="Application.WebAuthServiceApplication" />
+
+        <item itemvalue="Application.CoreApp" />
+
       </list>
     </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="" />
+      <changelist id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="фикс девелопа после мерджа - запускается" />
       <created>1659441921911</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1659441921911</updated>
     </task>
-    <task id="LOCAL-00001" summary="фикс девелопа после мерджа - запускается">
-      <created>1659527928464</created>
+
+    <task id="LOCAL-00001" summary="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености">
+      <created>1659777768646</created>
       <option name="number" value="00001" />
       <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
-      <updated>1659527928464</updated>
+      <updated>1659777768646</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса">
+      <created>1659812275733</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1659812275733</updated>
+    </task>
+    <task id="LOCAL-00003" summary="С-0-13. замечания">
+      <created>1659820141611</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1659820141611</updated>
+    </task>
+    <task id="LOCAL-00004" summary="С-0-13. замечания 2">
+      <created>1659820984040</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1659820984040</updated>
+    </task>
+    <task id="LOCAL-00005" summary="A-8-1. A-8-2 админка черновик">
+      <created>1659913429340</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1659913429341</updated>
+    </task>
+    <task id="LOCAL-00006" summary="А-8-1 , А-8-2. правки для Иры">
+      <created>1659960036971</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1659960036971</updated>
+    </task>
+    <task id="LOCAL-00007" summary="А-8-1 , А-8-2. удалил мэнеджер дто">
+      <created>1659960108340</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1659960108340</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00005" summary="А-7-1 , А-7-2. Регистрация фронт и бэк">
+      <created>1659881621483</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1659881621483</updated>
+    </task>
+    <task id="LOCAL-00006" summary="А-7-1 , А-7-2. правки">
+      <created>1659882395533</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1659882395533</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -162,7 +261,18 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="фикс девелопа после мерджа - запускается" />
-    <option name="LAST_COMMIT_MESSAGE" value="фикс девелопа после мерджа - запускается" />
+
+    <MESSAGE value="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености" />
+    <MESSAGE value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
+    <MESSAGE value="С-0-13. замечания" />
+    <MESSAGE value="С-0-13. замечания 2" />
+    <MESSAGE value="A-8-1. A-8-2 админка черновик" />
+    <MESSAGE value="А-8-1 , А-8-2. правки для Иры" />
+    <MESSAGE value="А-8-1 , А-8-2. удалил мэнеджер дто" />
+    <option name="LAST_COMMIT_MESSAGE" value="А-8-1 , А-8-2. удалил мэнеджер дто" />
+    <MESSAGE value="А-7-1 , А-7-2. Регистрация фронт и бэк" />
+    <MESSAGE value="А-7-1 , А-7-2. правки" />
+    <option name="LAST_COMMIT_MESSAGE" value="А-7-1 , А-7-2. правки" />
+
   </component>
 </project>

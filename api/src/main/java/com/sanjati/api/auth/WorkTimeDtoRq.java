@@ -7,7 +7,6 @@ import java.time.LocalTime;
 @Schema(description = "Тело запроса для изменения рабочего времени исполнителя")
 public class WorkTimeDtoRq {
 
-
     @Schema(description = "Начало рабочего дня.", example = "09:21:23")
     private LocalTime startWorkTime;
     @Schema(description = "Конец рабочего дня.", example = "21:49:56")

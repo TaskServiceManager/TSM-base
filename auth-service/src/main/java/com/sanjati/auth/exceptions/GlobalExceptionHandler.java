@@ -1,6 +1,7 @@
 package com.sanjati.auth.exceptions;
 
 import com.sanjati.api.exceptions.AppError;
+import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -21,5 +22,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<AppError> catchBadCredentialsException(BadCredentialsException e) {
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(new AppError("AUTH_SERVICE_INCORRECT_USERNAME_OR_PASSWORD", e.getMessage()), HttpStatus.UNAUTHORIZED);
+    }
+    @ExceptionHandler
+    public ResponseEntity<AppError> catchMandatoryCheckException(MandatoryCheckException e){
+        log.error(e.getMessage(),e);
+        return new ResponseEntity<>(new AppError(HttpStatus.UNPROCESSABLE_ENTITY.toString(), e.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
     }
 }

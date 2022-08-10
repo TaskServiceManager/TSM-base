@@ -1,0 +1,97 @@
+<div class="table table-hover" ng-show="!isAllowed('users')" align="center">Нет доступа для просмотра информации о пользователях</div>
+
+<form class="row g-3 " id="edit-form" ng-submit="update(EditUser.id)" novalidate ng-show="isAllowed('users')">
+    <h4>Редактирование карточки пользователя {{EditUser.username}}, ID: {{EditUser.id}}</h4>
+    <div id="liveAlertPlaceholder"></div>
+    <table style="width:100%; border-color:white;">
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom02" class="form-label">Фамилия</label>
+                    <input type="text" class="form-control" id="custom02" placeholder="{{EditUser.lastName}}" ng-model="dto.lastName" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom09" class="form-label">Почта</label>
+                    <input type="text" class="form-control" id="custom09" placeholder="{{EditUser.email}}" ng-model="dto.email" >
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom01" class="form-label">Имя</label>
+                    <input type="text" class="form-control" id="custom01" placeholder="{{EditUser.firstName}}" ng-model="dto.firstName" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom11" class="form-label">Телефон</label>
+                    <input type="text" class="form-control" id="custom11" placeholder="{{EditUser.phone}}" ng-model="dto.phone" >
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom22" class="form-label">Отчество</label>
+                    <input type="text" class="form-control" id="custom22" placeholder="{{EditUser.middleName}}" ng-model="dto.middleName" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom12" class="form-label">Компания</label>
+                    <input type="text" class="form-control" id="custom12" placeholder="{{EditUser.company}}" ng-model="dto.company" >
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom21" class="form-label">Логин</label>
+                    <input type="text" class="form-control" id="custom21" placeholder="{{EditUser.username}}" ng-model="dto.username" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom23" class="form-label">Корпоративная почта</label>
+                    <input type="text" class="form-control" id="custom23" placeholder="{{EditUser.companyEmail}}" ng-model="dto.companyEmail" >
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom14" class="form-label">Пароль</label>
+                    <input type="password" class="form-control" id="custom14" ng-model="dto.password" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom42" class="form-label">Должность</label>
+                    <input type="text" class="form-control" id="custom42" placeholder="{{EditUser.workPosition}}" ng-model="dto.workPosition" >
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div class="col-md-4">
+                    <label for="custom15" class="form-label">Повторить пароль</label>
+                    <input type="password" class="form-control" id="custom15" ng-model="validation.password" >
+                </div>
+            </td>
+            <td>
+                <div class="col-md-4" style="margin-left: 30%;">
+                    <label style="width:10%" for="custom07" class="form-label">Корпус</label>
+                    <input style="width:15%" type="text" class="form-control" id="custom07" placeholder="{{EditUser.building}}" ng-model="dto.building" >
+                    <label style="width:10%" for="custom08" class="form-label">Кабинет</label>
+                    <input style="width:15%" type="text" class="form-control" id="custom08" placeholder="{{EditUser.office}}" ng-model="dto.office" >
+                </div>
+            </td>
+        </tr>
+    </table>
+    <div style="margin-top: 3%;">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Сохранить изменения</button>
+    </div>
+</form>

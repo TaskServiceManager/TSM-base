@@ -37,10 +37,6 @@ public class JwtTokenUtil {
         User user =userService.findByUsername(userDetails.getUsername()).orElseThrow(()->new ResourceNotFoundException("пользователь не найден"));
         claims.put("id",user.getId().toString());
 
-
-
-
-
         Date issuedDate = new Date();
         Date expiredDate = new Date(issuedDate.getTime() + jwtLifetime);
         return Jwts.builder()

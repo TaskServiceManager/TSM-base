@@ -9,14 +9,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long>, JpaSpecificationExecutor<Task> {
-    @Query("select  count (t) > 0  from Task t where t.id = :taskId and t.ownerId = :id" )
-    public boolean isCountMoreThanZeroByOwnerIdAndTaskId(Long taskId, Long id);
+
+    public boolean existsByIdAndOwnerId(Long Id, Long ownerId);
+
     @Query("select t.status from Task t where t.id = :taskId")
     public TaskStatus findStatusByTaskId(Long taskId);
+
+    public Optional<Task> findByIdAndStatusIn(Long id, List<TaskStatus> statuses);
 
     @Query(value = "SELECT executor_id, count(executor_id) FROM tasks_executors" +
             " JOIN tasks ON tasks_executors.task_id = tasks.id " +

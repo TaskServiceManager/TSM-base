@@ -3,13 +3,13 @@ angular.module('ttsystem-front').controller('assignedController', function ($sco
 
     $scope.loadTasks = function (pageIndex) {
         $http({
-                url: contextPath + 'api/v1/tasks',
-                method: 'GET',
-                params: {
+                url: contextPath + 'api/v1/tasks/search',
+                method: 'POST',
+                data: {
                     page: pageIndex ? pageIndex : 1,
                     executorId: $localStorage.ttsystemUser ? $localStorage.ttsystemUser.userId : null,
-                    from: $scope.filter ? $scope.filter.from : null,
-                    to: $scope.filter ? $scope.filter.to : null,
+                    from: $scope.filter ? $rootScope.addTimezoneOffset($scope.filter.from) : null,
+                    to: $scope.filter ? $rootScope.addTimezoneOffset($scope.filter.to) : null,
                     status: $scope.filter ? $scope.filter.status : null
                 }
         }).then(function (response) {

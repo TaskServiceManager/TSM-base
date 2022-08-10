@@ -6,8 +6,11 @@ import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.entities.Role;
 import com.sanjati.auth.entities.User;
+import com.sanjati.auth.repositories.RoleRepository;
 import com.sanjati.auth.repositories.UserRepository;
+
 import com.sanjati.auth.repositories.specifications.UserSpecifications;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

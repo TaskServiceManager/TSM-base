@@ -124,10 +124,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CoreApp" />
-        <item itemvalue="Application.FrontApp" />
-        <item itemvalue="Application.GatewayApp" />
         <item itemvalue="Application.WebAuthServiceApplication" />
+        <item itemvalue="Application.GatewayApp" />
+        <item itemvalue="Application.FrontApp" />
+        <item itemvalue="Application.CoreApp" />
+        <item itemvalue="Application.CoreApp" />
       </list>
     </recent_temporary>
   </component>

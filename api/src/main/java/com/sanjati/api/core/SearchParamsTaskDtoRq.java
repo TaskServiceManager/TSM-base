@@ -12,7 +12,7 @@ public class SearchParamsTaskDtoRq {
     @Schema(description = "ID автора заявки", example = "3")
     private Long ownerId;
 
-    @Schema(description = "Номер страницы", example = "1")
+    @Schema(description = "Номер страницы", example = "1", required = true)
     private Integer page;
 
     @Schema(description = "Граница по времени ОТ", example = "2022-08-01T14:15")

@@ -6,10 +6,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Тело запроса для создания задачи")
 
 public class TaskDtoRq {
-    @Schema(description = "Имя задачи")
+    @Schema(description = "Имя задачи", required = true)
     private String title;
 
-    @Schema(description = "Описание задачи")
+    @Schema(description = "Описание задачи", required = true)
     private String description;
 
     public String getTitle() {

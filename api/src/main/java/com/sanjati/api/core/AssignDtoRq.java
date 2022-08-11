@@ -6,9 +6,9 @@ import java.util.List;
 
 @Schema(description = "Тело запроса для назначения исполнителей по заявке")
 public class AssignDtoRq {
-    @Schema(description = "Список ID исполнителей")
+    @Schema(description = "Список ID исполнителей", required = true)
     private List<Long> executorIds;
-    @Schema(description = "ID ответственного")
+    @Schema(description = "ID ответственного", required = true)
     private Long chiefId;
 
     public AssignDtoRq(List<Long> executorIds, Long chiefId) {

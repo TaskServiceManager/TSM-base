@@ -57,9 +57,7 @@ public class TaskController {
     @PostMapping("/search")
     public Page<TaskDto> getAllTasksBySpec(@Parameter(description = "Тело запроса с параметрами поиска", required = false)
                                                 @RequestBody SearchParamsTaskDtoRq searchParams) {
-        if (searchParams.getPage() < 1 || searchParams.getPage() == null) {
-            searchParams.setPage(1);
-        }
+
         return taskService.findAllTasksBySpec(searchParams).map(taskConverter::entityToDto);
     }
 

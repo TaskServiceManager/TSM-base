@@ -10,6 +10,7 @@ import com.sanjati.auth.repositories.RoleRepository;
 import com.sanjati.auth.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,14 +26,14 @@ public class RegistrationService {
     private final UserRepository userRepository;
     private final UserConverter userConverter;
 
-    @Autowired
-    SecurityConfig securityConfig;
+
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional
     public void createNewUser(NewUserDtoRq newUserDto){
 
         User user = userConverter.dtoToEntity(newUserDto);
-        newUserDto.setPassword(securityConfig.passwordEncoder().encode(newUserDto.getPassword()));
+        newUserDto.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
 
         Role userRole = roleRepository.findByName("ROLE_USER").orElseThrow(()->new ResourceNotFoundException("Роль USER не найдена"));
         List<Role> role = new ArrayList<>();

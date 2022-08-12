@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.chrono.ChronoLocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -73,9 +74,9 @@ public class TaskService {
                 if (TaskStatus.ASSIGNED == task.getStatus() ||
                         TaskStatus.DELAYED == task.getStatus() ||
                         TaskStatus.APPROVED == task.getStatus()) {
-                    if (LocalDateTime.now().isBefore(ChronoLocalDateTime.from(userLightDto.getStartWorkTime()))
+                    if (LocalTime.now().isBefore(userLightDto.getStartWorkTime())
                             ||
-                            LocalDateTime.now().isAfter(ChronoLocalDateTime.from(userLightDto.getEndWorkTime()))) {
+                            LocalTime.now().isAfter(userLightDto.getEndWorkTime())) {
                         throw new ChangeTaskStatusException("Ваше рабочее время указано в профиле. Вы не можете выполнять заявку в нерабочее время");
                     }
                     task.setStatus(newStatus);

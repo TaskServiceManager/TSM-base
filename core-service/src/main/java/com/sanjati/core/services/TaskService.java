@@ -210,7 +210,7 @@ public class TaskService {
 
     public void checkAccessToTask(String role, Long userId, Long taskId){
         if(!role.contains("EXECUTOR")){
-            if(!isUserTaskOwner(userId, taskId)) throw new MandatoryCheckException("Нет доступа к чужим заявкам");
+            if(!isUserTaskOwner(taskId, userId)) throw new MandatoryCheckException("Нет доступа к чужим заявкам");
         }
     }
 

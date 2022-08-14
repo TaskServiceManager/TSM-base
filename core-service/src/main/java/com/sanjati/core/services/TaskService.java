@@ -42,7 +42,7 @@ public class TaskService {
 
 
     @Transactional
-    public void changeStatus(Long taskId, TaskStatus newStatus) {
+    public void changeStatus(Long taskId, Long userId, TaskStatus newStatus, String comment) {
         Task task = findById(taskId);
         boolean timePointActive = timePointService.checkTimePointsStatusByTaskId(taskId);
         switch (newStatus) {
@@ -68,9 +68,15 @@ public class TaskService {
                 throw new ChangeTaskStatusException("Назначить заявку можно только из статуса 'Создана'");
             }
             case ACCEPTED: {
-                if (TaskStatus.ASSIGNED == task.getStatus() ||
-                        TaskStatus.DELAYED == task.getStatus() ||
-                        TaskStatus.APPROVED == task.getStatus()) {
+                if (TaskStatus.ASSIGNED == task.getStatus()) {
+                    task.setStatus(newStatus);
+                    break;
+                }
+                if (TaskStatus.DELAYED == task.getStatus() || TaskStatus.APPROVED == task.getStatus()) {
+                    if (comment == null) {
+                        throw new ChangeTaskStatusException("Не заполнен обязательный комментарий");
+                    }
+                    commentService.leaveComment(taskId, userId, comment);
                     task.setStatus(newStatus);
                     break;
                 }
@@ -78,6 +84,10 @@ public class TaskService {
             }
             case APPROVED: {
                 if (TaskStatus.ACCEPTED == task.getStatus()) {
+                    if (comment == null) {
+                        throw new ChangeTaskStatusException("Не заполнен обязательный комментарий");
+                    }
+                    commentService.leaveComment(taskId, userId, comment);
                     timePointService.closeAllTimePointsByTask(taskId);
                     task.setStatus(newStatus);
                     break;
@@ -98,7 +108,10 @@ public class TaskService {
             case COMPLETED: {
                 if (TaskStatus.APPROVED == task.getStatus()) {
                     if (!timePointActive) {
-                        commentService.leaveComment(taskId, task.getChiefId(), "заявка выполнена");
+                        if (comment == null) {
+                            throw new ChangeTaskStatusException("Не заполнен обязательный комментарий");
+                        }
+                        commentService.leaveComment(taskId, userId, comment);
                         task.setStatus(newStatus);
                       task.setCompletedAt(LocalDateTime.now());
                       break;

@@ -37,8 +37,8 @@ public class AdministrationService {
     }
 
     @Transactional
-    public void changeUserData(NewUserDtoRq update,Long userId){
-        User old = userService.findByUserId(userId);
+    public void changeUserData(NewUserDtoRq update){
+        User old = userService.findByUserId(update.getId());
         if(update.getUsername()!=null){
             old.setUsername(update.getUsername());
         }

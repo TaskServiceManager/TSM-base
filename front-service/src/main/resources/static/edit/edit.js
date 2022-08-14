@@ -14,7 +14,8 @@ angular.module('ttsystem-front').controller('editController', function ($scope, 
                 alert("Пароли не совпадают",'danger');
                 return;
             }
-            $http.put(contextPath+'api/v1/admin/users/'+userId, $scope.dto)
+            $scope.dto.id = userId;
+            $http.put(contextPath+'api/v1/admin/users', $scope.dto)
                  .then(function successCallback(response) {
                        $scope.validation = null;
                        $scope.dto = null;

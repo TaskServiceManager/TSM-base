@@ -20,8 +20,9 @@ angular.module('ttsystem-front').controller('editController', function ($scope, 
                        $scope.validation = null;
                        $scope.dto = null;
                        $scope.loadUserData();
+                       alert('Информация о пользователе обновлена', 'success');
                  }, function errorCallback(response) {
-                      alert(response.data.message);
+                      alert(response.data.message,'danger');
                       console.log('error');
                       console.log(response);
                  });

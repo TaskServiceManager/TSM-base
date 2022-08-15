@@ -33,7 +33,7 @@ public class RegistrationService {
     public void createNewUser(NewUserDtoRq newUserDto){
 
         User user = userConverter.dtoToEntity(newUserDto);
-        newUserDto.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
+        user.setPassword(passwordEncoder.encode(newUserDto.getPassword()));
 
         Role userRole = roleRepository.findByName("ROLE_USER").orElseThrow(()->new ResourceNotFoundException("Роль USER не найдена"));
         List<Role> role = new ArrayList<>();

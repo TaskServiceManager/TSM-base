@@ -8,6 +8,12 @@ utils:
 spring:
   application:
     name: core-service
+  cloud:
+      gateway:
+        discovery:
+          locator:
+            enabled: true
+            lowerCaseServiceId: true
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:file:./tasks;MODE=PostgreSQL
@@ -25,7 +31,7 @@ spring:
         web-allow-others: false
 integrations:
   auth-service:
-    url: http://localhost:auth-service:0/
+    url: http://localhost:5555/auth/
     connect-timeout: 2000
     read-timeout: 10000
     write-timeout: 2000

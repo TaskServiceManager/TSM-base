@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -30,7 +31,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-
+@Slf4j
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
@@ -141,6 +142,7 @@ public class AuthController {
     @PostMapping("/users")
     public List<UserLightDto> getLightUserDataById(@Parameter(description = "список ID пользователей", required = true)
                                                    @RequestBody List<Long> usersId) {
+
         return userService.getLightUserDataById(usersId);
     }
 

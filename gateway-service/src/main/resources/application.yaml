@@ -18,6 +18,7 @@ spring:
       discovery:
         locator:
           enabled: true
+          lowerCaseServiceId: true
       globalcors:
         add-to-simple-url-handler-mapping: true
         corsConfigurations:
@@ -33,23 +34,23 @@ spring:
               - PUT
             allowedHeaders: "*"
       routes:
-        - id: core-service
-          uri: http://localhost:9000/core
+        - id: core-service-id
+          uri: lb://core-service/core
           predicates:
             - Path=/core/**
           filters:
             - StripPrefix=1
             - PrefixPath=/ttsystem-core
             - JwtAuthFilter
-        - id: auth-service
-          uri: http://localhost:9000/auth
+        - id: auth-service-id
+          uri: lb://auth-service/auth
           predicates:
             - Path=/auth/**
           filters:
             - StripPrefix=1
             - PrefixPath=/ttsystem-auth
             - JwtAuthFilter
-        - id: front-service
+        - id: front-service-id
           uri: http://localhost:3000/tsm
           predicates:
             - Path=/tsm/**

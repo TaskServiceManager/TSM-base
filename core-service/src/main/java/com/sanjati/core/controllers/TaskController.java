@@ -20,6 +20,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 
 @Slf4j
 @RestController
@@ -41,7 +43,7 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createTask(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id,
-                           @Parameter(description = "Тело запроса", required = true)@RequestBody TaskDtoRq taskCreateDto) {
+                           @Parameter(description = "Тело запроса", required = true)@RequestBody @Valid TaskDtoRq taskCreateDto) {
         taskService.createTask(id,taskCreateDto);
     }
 
@@ -56,7 +58,7 @@ public class TaskController {
     )
     @PostMapping("/search")
     public Page<TaskDto> getAllTasksBySpec(@Parameter(description = "Тело запроса с параметрами поиска", required = false)
-                                                @RequestBody SearchParamsTaskDtoRq searchParams) {
+                                                @RequestBody @Valid SearchParamsTaskDtoRq searchParams) {
 
         return taskService.findAllTasksBySpec(searchParams).map(taskConverter::entityToDto);
     }
@@ -129,7 +131,7 @@ public class TaskController {
                                 @Parameter(description = "ID назначающего", required = true)
                                 @RequestHeader(name = "id") Long assignerId,
                                 @Parameter(description = "Тело запроса", required = true)
-                                @RequestBody AssignDtoRq assignDtoRq
+                                @RequestBody @Valid AssignDtoRq assignDtoRq
     ){
         taskService.assignTaskBatch(id, assignerId, assignDtoRq);
     }

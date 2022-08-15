@@ -2,13 +2,16 @@ package com.sanjati.api.core;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.validation.constraints.NotBlank;
+
 
 @Schema(description = "Тело запроса для создания задачи")
 
 public class TaskDtoRq {
-    @Schema(description = "Имя задачи", required = true)
+    @NotBlank(message = "Необходимо указать заголовок")
+    @Schema(description = "Заголовок", required = true)
     private String title;
-
+    @NotBlank(message = "Необходимо описание")
     @Schema(description = "Описание задачи", required = true)
     private String description;
 

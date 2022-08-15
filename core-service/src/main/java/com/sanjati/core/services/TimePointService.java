@@ -53,6 +53,12 @@ public class TimePointService {
             throw new MandatoryCheckException("Нельзя открыть новую отметку, пока есть незавершённые");
         }
 
+        if (LocalTime.now().isBefore(authService.getUserLightById(userId).getStartWorkTime())
+                ||
+                LocalTime.now().isAfter(authService.getUserLightById(userId).getEndWorkTime())) {
+            throw new MandatoryCheckException("Ваше рабочее время указано в профиле. Вы не можете выполнять заявку в нерабочее время");
+        }
+
         if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
             taskService.changeStatus(taskId, TaskStatus.ACCEPTED);
         }

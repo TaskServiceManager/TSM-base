@@ -1,6 +1,7 @@
 package com.sanjati.core.services;
 
 
+import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.TimePoint;
@@ -39,6 +40,7 @@ public class TimePointService {
 
     @Transactional
     public void changeStatusOrCreateTimePoint(Long taskId, Long userId, Long timePointId) {
+        UserLightDto userLightDto    = authService.getUserLightById(userId);
 
         if (timePointId != null) {
             TimePoint tp = timePointRepository.findByIdAndStatus(timePointId,TimePointStatus.IN_PROCESS).orElseThrow(()->new ResourceNotFoundException("Отметка не существует ID : " + timePointId));
@@ -53,9 +55,9 @@ public class TimePointService {
             throw new MandatoryCheckException("Нельзя открыть новую отметку, пока есть незавершённые");
         }
 
-        if (LocalTime.now().isBefore(authService.getUserLightById(userId).getStartWorkTime())
+        if (LocalTime.now().isBefore(userLightDto.getStartWorkTime())
                 ||
-                LocalTime.now().isAfter(authService.getUserLightById(userId).getEndWorkTime())) {
+                LocalTime.now().isAfter(userLightDto.getEndWorkTime())) {
             throw new MandatoryCheckException("Ваше рабочее время указано в профиле. Вы не можете выполнять заявку в нерабочее время");
         }
 
@@ -66,7 +68,7 @@ public class TimePointService {
         tp.setStatus(TimePointStatus.IN_PROCESS);
         tp.setExecutorId(userId);
         tp.setTaskId(taskId);
-        tp.setFinishedAt(correctFinishedAtForTimePoint(authService.getUserLightById(userId).getEndWorkTime()));
+        tp.setFinishedAt(correctFinishedAtForTimePoint(userLightDto.getEndWorkTime()));
         timePointRepository.save(tp);
 
     }

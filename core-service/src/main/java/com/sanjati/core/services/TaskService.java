@@ -150,7 +150,10 @@ public class TaskService {
                 }
             });
         }
-        List<UserLightDto> executors = authService.getAllUsersByRole("EXECUTOR");
+        List<UserLightDto> executors = assignDtoRq.getExecutorIds().stream()
+                .map(authService::getUserLightById)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
         executors.forEach(ex -> taskExecutors.add(ex.getId()));
         task.setChiefId(assignDtoRq.getChiefId());
         if (task.getStatus() == TaskStatus.CREATED) task.setStatus(TaskStatus.ASSIGNED);

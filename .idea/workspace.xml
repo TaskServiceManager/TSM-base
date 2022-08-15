@@ -4,15 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-
     <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="А-7-1 , А-7-2. правки">
+      <change afterPath="$PROJECT_DIR$/eureka-server/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eureka-server/src/main/java/aa/timonin/EurekaServerApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eureka-server/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/NewUserDtoRq.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/NewUserDtoRq.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/UserDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/auth/UserDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/RoleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/repositories/RoleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/RegistrationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/services/RegistrationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/WebAuthServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/WebAuthServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/resources/application.yaml" afterDir="false" />
     </list>
-
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,7 +36,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="lesson-7" />
+        <entry key="$PROJECT_DIR$" value="lesson-8" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -54,22 +60,27 @@
     </option>
     <option name="myId2Visible">
       <map>
-
         <entry key="com.haulmont.jpb.jpaInspector" value="true" />
         <entry key="com.haulmont.jpb.jpaPalette" value="true" />
-        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
-
+        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
       </map>
     </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2Cncj3FhRnLoE8sa5s4p2ge1axY" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="false" id="Update" />
     <ConfirmationsSetting value="2" id="Add" />
   </component>
@@ -77,31 +88,56 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-
-    &quot;last_opened_file_path&quot;: &quot;/home/NC.TECHNOSPARK.RU/timonin.aa/IdeaProjects/TSM-base/front-service/src/main/resources/static/registration&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.ignored.files&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "jdk.selected.JAVA_MODULE": "11",
+    "last_opened_file_path": "/home/NC.TECHNOSPARK.RU/timonin.aa/IdeaProjects/TSM-base/eureka-server",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.ignored.files"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/eureka-server/src/main/resources" />
       <recent name="$PROJECT_DIR$/front-service/src/main/resources/static/registration" />
     </key>
   </component>
-
-  <component name="RunManager" selected="Application.CoreApp">
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="mvn clean" />
+    </option>
+  </component>
+  <component name="RunDashboard">
+    <option name="configurationTypes">
+      <set>
+        <option value="MavenRunConfiguration" />
+      </set>
+    </option>
+  </component>
+  <component name="RunManager" selected="Application.EurekaServerApp">
     <configuration name="CoreApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.sanjati.core.CoreApp" />
       <module name="core-service" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.sanjati.core.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="EurekaServerApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="aa.timonin.EurekaServerApp" />
+      <module name="eureka-server" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="aa.timonin.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -161,13 +197,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CoreApp" />
+        <item itemvalue="Application.EurekaServerApp" />
+        <item itemvalue="Application.WebAuthServiceApplication" />
         <item itemvalue="Application.FrontApp" />
         <item itemvalue="Application.GatewayApp" />
-        <item itemvalue="Application.WebAuthServiceApplication" />
-
         <item itemvalue="Application.CoreApp" />
-
       </list>
     </recent_temporary>
   </component>
@@ -180,7 +214,6 @@
       <option name="presentableId" value="Default" />
       <updated>1659441921911</updated>
     </task>
-
     <task id="LOCAL-00001" summary="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености">
       <created>1659777768646</created>
       <option name="number" value="00001" />
@@ -209,28 +242,6 @@
       <option name="project" value="LOCAL" />
       <updated>1659820984040</updated>
     </task>
-    <task id="LOCAL-00005" summary="A-8-1. A-8-2 админка черновик">
-      <created>1659913429340</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1659913429341</updated>
-    </task>
-    <task id="LOCAL-00006" summary="А-8-1 , А-8-2. правки для Иры">
-      <created>1659960036971</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1659960036971</updated>
-    </task>
-    <task id="LOCAL-00007" summary="А-8-1 , А-8-2. удалил мэнеджер дто">
-      <created>1659960108340</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1659960108340</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
     <task id="LOCAL-00005" summary="А-7-1 , А-7-2. Регистрация фронт и бэк">
       <created>1659881621483</created>
       <option name="number" value="00005" />
@@ -245,8 +256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1659882395533</updated>
     </task>
+    <task id="LOCAL-00007" summary="А-8-1 , А-8-2. удалил мэнеджер дто">
+      <created>1659960108340</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1659960108340</updated>
+    </task>
     <option name="localTasksCounter" value="7" />
-
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -261,7 +278,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-
     <MESSAGE value="С-0-13. переделать changeStatusOrCreateTimePoint так чтобы было меньше вложености" />
     <MESSAGE value="С-0-13. переписать код дак чтобы база сразу искала нужные объекты и бросать исключение если не нашла. Убрать лишние проверки из сервиса" />
     <MESSAGE value="С-0-13. замечания" />
@@ -269,10 +285,8 @@
     <MESSAGE value="A-8-1. A-8-2 админка черновик" />
     <MESSAGE value="А-8-1 , А-8-2. правки для Иры" />
     <MESSAGE value="А-8-1 , А-8-2. удалил мэнеджер дто" />
-    <option name="LAST_COMMIT_MESSAGE" value="А-8-1 , А-8-2. удалил мэнеджер дто" />
     <MESSAGE value="А-7-1 , А-7-2. Регистрация фронт и бэк" />
     <MESSAGE value="А-7-1 , А-7-2. правки" />
     <option name="LAST_COMMIT_MESSAGE" value="А-7-1 , А-7-2. правки" />
-
   </component>
 </project>

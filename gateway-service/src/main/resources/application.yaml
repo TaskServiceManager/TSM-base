@@ -1,10 +1,23 @@
 server:
   port: 5555
+  servlet:
+    context-path: /gateway-service
+managment:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: gateway-service
 spring:
   application:
     name: gateway-service
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
       globalcors:
         add-to-simple-url-handler-mapping: true
         corsConfigurations:
@@ -20,22 +33,30 @@ spring:
               - PUT
             allowedHeaders: "*"
       routes:
-        - id: core-service
-          uri: http://localhost:8189/
+        - id: core-service-id
+          uri: http://localhost:8189/core
           predicates:
             - Path=/core/**
           filters:
             - StripPrefix=1
             - PrefixPath=/ttsystem-core
             - JwtAuthFilter
-        - id: auth-service
-          uri: http://localhost:8721/
+        - id: auth-service-id
+          uri: http://localhost:8721/auth
           predicates:
             - Path=/auth/**
           filters:
             - StripPrefix=1
             - PrefixPath=/ttsystem-auth
             - JwtAuthFilter
+        - id: front-service-id
+          uri: http://localhost:3000/tsm
+          predicates:
+            - Path=/tsm/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/ttsystem-front
+
 
 jwt:
   secret: h4f8093h4f983yhrt9834hr0934hf0hf493g493gf438rh438th34g34g

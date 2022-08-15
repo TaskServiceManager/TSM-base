@@ -17,6 +17,7 @@
         <module>statistics-service</module>
 
         <module>core-service</module>
+        <module>eureka-server</module>
 
     </modules>
     <parent>
@@ -27,6 +28,7 @@
     </parent>
     <properties>
         <java.version>11</java.version>
+
     </properties>
     <dependencies>
 

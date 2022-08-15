@@ -19,6 +19,7 @@
       <module name="api" target="11" />
       <module name="auth-service" target="11" />
       <module name="core-service" target="11" />
+      <module name="eureka-server" target="11" />
       <module name="front-service" target="11" />
       <module name="gateway-service" target="11" />
       <module name="statistics-service" target="11" />

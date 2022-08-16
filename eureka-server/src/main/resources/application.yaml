@@ -1,11 +1,21 @@
 server:
   port: 9000
 spring:
+  cloud:
+    inetutils:
+      ignored-interfaces:
+        # You can use wildcards as well
+
   application:
     name: eureka-server
 eureka:
+  instance:
+    hostname: 10.123.3.88
   client:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
       defaultZone: "http://localhost:9000/eureka"
+logging:
+  level:
+    org.springframework.cloud.commons.util.InetUtils: trace

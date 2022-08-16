@@ -58,6 +58,8 @@ spring:
             - StripPrefix=1
             - PrefixPath=/ttsystem-front
 eureka:
+  instance:
+    hostname: 10.123.3.88
   client:
     serviceUrl:
       defaultZone: "http://localhost:9000/eureka"

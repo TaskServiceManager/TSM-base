@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+
     <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="C-0-16 внезапно, ошибка при сохранении пароля">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/core/AssignDtoRq.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/core/AssignDtoRq.java" afterDir="false" />
@@ -12,6 +13,7 @@
       <change beforePath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/core/TaskDtoRq.java" beforeDir="false" afterPath="$PROJECT_DIR$/api/src/main/java/com/sanjati/api/core/TaskDtoRq.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/controllers/CommentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/controllers/CommentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/controllers/TaskController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/controllers/TaskController.java" afterDir="false" />
+
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,7 +32,9 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
+
         <entry key="$PROJECT_DIR$" value="feature/C-0-16" />
+
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -158,10 +162,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.CoreApp" />
-        <item itemvalue="Application.FrontApp" />
-        <item itemvalue="Application.GatewayApp" />
         <item itemvalue="Application.WebAuthServiceApplication" />
+
         <item itemvalue="Application.CoreApp" />
       </list>
     </recent_temporary>

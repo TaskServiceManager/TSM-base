@@ -5,7 +5,7 @@ import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.core.AssignDtoRq;
 import com.sanjati.api.core.SearchParamsTaskDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
-import com.sanjati.api.exceptions.MandatoryCheckException;
+import com.sanjati.api.exceptions.FieldValidationException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.enums.TaskStatus;
@@ -206,7 +206,7 @@ public class TaskService {
 
     public void checkAccessToTask(String role, Long userId, Long taskId){
         if(!role.contains("EXECUTOR")){
-            if(!isUserTaskOwner(userId, taskId)) throw new MandatoryCheckException("Нет доступа к чужим заявкам");
+            if(!isUserTaskOwner(userId, taskId)) throw new FieldValidationException("Нет доступа к чужим заявкам");
         }
     }
 

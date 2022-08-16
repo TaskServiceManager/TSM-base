@@ -43,7 +43,7 @@ public class UserConverter {
     }
 
     public User dtoToEntity(NewUserDtoRq newUserDto){
-        return new User(newUserDto.getUsername(), securityConfig.passwordEncoder().encode(newUserDto.getPassword()),
+        return new User(newUserDto.getUsername(),
                 newUserDto.getFirstName(),newUserDto.getLastName(),
                 newUserDto.getMiddleName(),newUserDto.getEmail(),
                 newUserDto.getCompany(),newUserDto.getCompanyEmail(),

@@ -4,15 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="G-1-1 не рабочее - не прикосаться!">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="G-1-1 рабочее - настройки для работы на работе">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/configs/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/configs/AppConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/integrations/AuthServiceIntegration.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/integrations/AuthServiceIntegration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/eureka-server/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/eureka-server/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gateway-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,9 +189,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.GatewayApp" />
+        <item itemvalue="Application.CoreApp" />
         <item itemvalue="Application.WebAuthServiceApplication" />
         <item itemvalue="Application.FrontApp" />
-        <item itemvalue="Application.CoreApp" />
         <item itemvalue="Application.EurekaServerApp" />
       </list>
     </recent_temporary>
@@ -258,7 +254,14 @@
       <option name="project" value="LOCAL" />
       <updated>1660590501924</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="G-1-1 рабочее - настройки для работы на работе">
+      <created>1660656485247</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1660656485247</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -283,6 +286,7 @@
     <MESSAGE value="А-7-1 , А-7-2. Регистрация фронт и бэк" />
     <MESSAGE value="А-7-1 , А-7-2. правки" />
     <MESSAGE value="G-1-1 правиьные настройки эврики" />
-    <option name="LAST_COMMIT_MESSAGE" value="G-1-1 правиьные настройки эврики" />
+    <MESSAGE value="G-1-1 рабочее - настройки для работы на работе" />
+    <option name="LAST_COMMIT_MESSAGE" value="G-1-1 рабочее - настройки для работы на работе" />
   </component>
 </project>

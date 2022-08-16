@@ -11,6 +11,7 @@ import com.sanjati.core.exceptions.AuthServiceIntegrationException;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -25,7 +26,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Slf4j
 public class AuthServiceIntegration {
-    private final WebClient authWebClient;
+
+    private final WebClient.Builder authWebClient;
 
     private final String DATA_PATH = "api/v1/users/{id}/data";
     private final String USER_PATH = "api/v1/users/{id}";
@@ -33,7 +35,7 @@ public class AuthServiceIntegration {
 
 
     public UserDto getUserById(Long userId) {
-        return authWebClient.get()
+        return authWebClient.build().get()
                 .uri(uriBuilder -> uriBuilder
                         .path(DATA_PATH)
                         .build(userId))
@@ -46,7 +48,7 @@ public class AuthServiceIntegration {
     }
 
     public UserLightDto getUserLightById(Long userId) {
-        return authWebClient.get()
+        return authWebClient.build().get()
                 .uri(uriBuilder -> uriBuilder
                         .path(USER_PATH)
                         .build(userId))
@@ -59,7 +61,7 @@ public class AuthServiceIntegration {
     }
 
     public List<UserLightDto> getUserLightListByIds(Set<Long> userIds) {
-        return authWebClient.post()
+        return authWebClient.build().post()
                 .uri(uriBuilder -> uriBuilder
                         .path(ALL_USERS_PATH)
                         .build())
@@ -73,7 +75,7 @@ public class AuthServiceIntegration {
     }
 
     public List<UserLightDto> getAllUsersByRole(String roleName){
-        return authWebClient.get()
+        return authWebClient.build().get()
                 .uri(uriBuilder -> uriBuilder
                         .path("api/v1/users")
                         .queryParam("role", roleName)

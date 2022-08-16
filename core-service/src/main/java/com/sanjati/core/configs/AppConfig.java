@@ -8,6 +8,7 @@ import io.netty.handler.timeout.WriteTimeoutHandler;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
@@ -26,19 +27,20 @@ public class AppConfig {
     private final AuthServiceIntegrationProperties authServiceIntegrationProperties;
 
     @Bean
-    public WebClient authWebClient() {
-        TcpClient tcpClient = TcpClient
-                .create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, authServiceIntegrationProperties.getConnectTimeout())
-                .doOnConnected(connection -> {
-                    connection.addHandlerLast(new ReadTimeoutHandler(authServiceIntegrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
-                    connection.addHandlerLast(new WriteTimeoutHandler(authServiceIntegrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
-                });
+    @LoadBalanced
+    public WebClient.Builder authWebClient() {
+//        TcpClient tcpClient = TcpClient
+//                .create()
+//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, authServiceIntegrationProperties.getConnectTimeout())
+//                .doOnConnected(connection -> {
+//                    connection.addHandlerLast(new ReadTimeoutHandler(authServiceIntegrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
+//                    connection.addHandlerLast(new WriteTimeoutHandler(authServiceIntegrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
+//                });
 
         return WebClient
                 .builder()
-                .baseUrl(authServiceIntegrationProperties.getUrl())
-                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
-                .build();
+                .baseUrl(authServiceIntegrationProperties.getUrl());
+//                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+
     }
 }

@@ -29,18 +29,19 @@ public class AppConfig {
     @Bean
     @LoadBalanced
     public WebClient.Builder authWebClient() {
-//        TcpClient tcpClient = TcpClient
-//                .create()
-//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, authServiceIntegrationProperties.getConnectTimeout())
-//                .doOnConnected(connection -> {
-//                    connection.addHandlerLast(new ReadTimeoutHandler(authServiceIntegrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
-//                    connection.addHandlerLast(new WriteTimeoutHandler(authServiceIntegrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
-//                });
+        TcpClient tcpClient = TcpClient
+                .create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, authServiceIntegrationProperties.getConnectTimeout())
+                .doOnConnected(connection -> {
+                    connection.addHandlerLast(new ReadTimeoutHandler(authServiceIntegrationProperties.getReadTimeout(), TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(authServiceIntegrationProperties.getWriteTimeout(), TimeUnit.MILLISECONDS));
+                });
 
         return WebClient
                 .builder()
+                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
                 .baseUrl(authServiceIntegrationProperties.getUrl());
-//                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+
 
     }
 }

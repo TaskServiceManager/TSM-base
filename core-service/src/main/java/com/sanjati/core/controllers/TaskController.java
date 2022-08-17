@@ -18,18 +18,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 
 import javax.validation.Valid;
-
+import javax.validation.constraints.NotNull;
 
 
 @Slf4j
 @RestController
+
 @RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
 @Tag(name = "Заявки", description = "Методы работы с заявками")
+@Validated
 public class TaskController {
     private final TaskService taskService;
     private final TaskConverter taskConverter;
@@ -45,7 +48,7 @@ public class TaskController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createTask(@Parameter(description = "ID пользователя", required = true)@RequestHeader Long id,
-                           @Parameter(description = "Тело запроса", required = true)@RequestBody @Valid TaskDtoRq taskCreateDto) {
+                           @Parameter(description = "Тело запроса", required = true)@RequestBody @Valid @NotNull TaskDtoRq taskCreateDto) {
         taskService.createTask(id,taskCreateDto);
     }
 
@@ -133,8 +136,9 @@ public class TaskController {
                                 @Parameter(description = "ID назначающего", required = true)
                                 @RequestHeader(name = "id") Long assignerId,
                                 @Parameter(description = "Тело запроса", required = true)
-                                @RequestBody @Valid AssignDtoRq assignDtoRq
+                                @RequestBody @Valid @NotNull AssignDtoRq assignDtoRq
     ){
+        log.warn("____________________________ZAPROS____________________________");
         taskService.assignTaskBatch(id, assignerId, assignDtoRq);
     }
 

@@ -3,7 +3,7 @@ package com.sanjati.api.core;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
@@ -14,7 +14,7 @@ public class SearchParamsTaskDtoRq {
     @Schema(description = "ID автора заявки", example = "3")
     private Long ownerId;
     @Positive(message = "номер строго больше нуля")
-    @NotBlank(message = "Необходимо указать номер страницы")
+    @NotNull(message = "Необходимо указать номер страницы")
     @Schema(description = "Номер страницы", example = "1", required = true)
     private Integer page;
 

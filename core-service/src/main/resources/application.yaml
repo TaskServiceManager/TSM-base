@@ -38,8 +38,8 @@ integrations:
 interval:
   closingTimePoints: 3600000
 eureka:
-  instance:
-    hostname: 10.123.3.88
   client:
     serviceUrl:
-      defaultZone: "http://localhost:9000/eureka"
+      defaultZone: http://kvakozaBrus836233:leruIOOO89637@localhost:8010/eureka
+  instance:
+    preferIpAddress: true

@@ -4,8 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="G-1-1 правильно настроена интеграция (не через гейт вэй)">
-      <change beforePath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/configs/AppConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/configs/AppConfig.java" afterDir="false" />
+    <list default="true" id="b5393e22-399a-458e-bcba-824cc22c198c" name="Changes" comment="A-C-0-1 валидация настроена и ругается - проверяйте">
+      <change afterPath="$PROJECT_DIR$/core-service/src/main/java/com/sanjati/core/configs/SecurityConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/eureka-server/src/main/java/aa/timonin/configs/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/configs/SecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/java/com/sanjati/auth/configs/SecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/auth-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/auth-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/core-service/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eureka-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/eureka-server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eureka-server/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/eureka-server/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gateway-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/gateway-service/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +60,7 @@
       <map>
         <entry key="com.haulmont.jpb.jpaInspector" value="true" />
         <entry key="com.haulmont.jpb.jpaPalette" value="true" />
-        <entry key="com.haulmont.jpb.jpaStructure" value="true" />
+        <entry key="com.haulmont.jpb.jpaStructure" value="false" />
       </map>
     </option>
   </component>
@@ -92,6 +102,11 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/eureka-server/src/main/resources" />
       <recent name="$PROJECT_DIR$/front-service/src/main/resources/static/registration" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.sanjati.core.configs" />
+      <recent name="com.sanjati.gateway.configs" />
+      <recent name="aa.timonin.configs" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -186,9 +201,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.GatewayApp" />
-        <item itemvalue="Application.FrontApp" />
         <item itemvalue="Application.WebAuthServiceApplication" />
         <item itemvalue="Application.CoreApp" />
+        <item itemvalue="Application.FrontApp" />
         <item itemvalue="Application.EurekaServerApp" />
       </list>
     </recent_temporary>

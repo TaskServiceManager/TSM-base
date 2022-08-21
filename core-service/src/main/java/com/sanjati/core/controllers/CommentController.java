@@ -11,14 +11,18 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
+
 @RequestMapping("/api/v1/comments")
 @RequiredArgsConstructor
+@Validated
 public class CommentController {
     private final CommentConverter commentConverter;
     private final CommentService commentService;
@@ -47,7 +51,7 @@ public class CommentController {
             }
     )
     @PostMapping
-    public void createComment(@Parameter(description = "Тело запроса", required = true)@RequestBody CommentRq commentRq,
+    public void createComment(@Parameter(description = "Тело запроса", required = true)@RequestBody @Valid CommentRq commentRq,
                               @Parameter(description = "ID пользователя", required = true)@RequestHeader Long id) {
         commentService.leaveComment(commentRq, id);
     }

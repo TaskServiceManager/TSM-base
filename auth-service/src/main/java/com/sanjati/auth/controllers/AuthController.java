@@ -6,8 +6,7 @@ import com.sanjati.api.auth.UserDto;
 import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.auth.WorkTimeDtoRq;
 
-import com.sanjati.api.exceptions.MandatoryCheckException;
-import com.sanjati.api.exceptions.ResourceNotFoundException;
+import com.sanjati.api.exceptions.FieldValidationException;
 import com.sanjati.auth.converters.UserConverter;
 import com.sanjati.auth.dto.JwtRequest;
 import com.sanjati.auth.dto.JwtResponse;
@@ -125,7 +124,7 @@ public class AuthController {
                                @Parameter(description = "Тело запроса с новым временем работы")
                                    @RequestBody WorkTimeDtoRq workTimeDtoRq){
         if (!role.contains("ROLE_EXECUTOR")){
-            throw new MandatoryCheckException("Нет доступа к смене рабочего времени");
+            throw new FieldValidationException("Нет доступа к смене рабочего времени");
         }
         userService.updateWorkTime(executorId, workTimeDtoRq);
     }

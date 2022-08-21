@@ -54,7 +54,7 @@ public class TimePointService {
         }
 
         if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
-            taskService.changeStatus(taskId, TaskStatus.ACCEPTED);
+            taskService.changeStatus(taskId, userId, TaskStatus.ACCEPTED, null);
         }
         TimePoint tp = new TimePoint();
         tp.setStatus(TimePointStatus.IN_PROCESS);

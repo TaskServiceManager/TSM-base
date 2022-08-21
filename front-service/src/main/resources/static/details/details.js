@@ -163,15 +163,31 @@ angular.module('ttsystem-front').controller('detailsController', function ($scop
    $scope.changeTaskStatus = function(newStatus) {
        $http({
             url: contextPath + 'api/v1/tasks/'+$scope.Task.id+'/status/'+newStatus,
-            method: 'PATCH'
+            method: 'PATCH',
+            params: {comment: $scope.comment ? $scope.comment : null}
           }).then(function successCallback(response) {
             $scope.loadTaskWithComments();
+            $scope.closeModalForComment();
           }, function errorCallback(response) {
             alert(response.data.message);
             console.log('error');
             console.log(response);
       });
    }
+
+   $scope.showModalForComment = function (status) {
+       $scope.showModal = true;
+       $scope.changingToStatus = status;
+       $('#item-modal-comment').show();
+   };
+
+    $scope.closeModalForComment = function () {
+        $scope.showModal = false;
+        $scope.comment = null;
+        $scope.changingToStatus = null;
+        $('#item-modal-comment').hide();
+    };
+
 
     $scope.loadTaskWithComments();
 });

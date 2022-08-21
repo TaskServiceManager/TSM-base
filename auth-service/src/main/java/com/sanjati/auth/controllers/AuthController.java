@@ -94,7 +94,7 @@ public class AuthController {
     }
 
     @Operation(
-            summary = "Запрос на получение короткой информации обо всех пользователей",
+            summary = "Запрос на получение короткой информации обо всех пользователях",
             responses = {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200"

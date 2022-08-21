@@ -1,0 +1,27 @@
+auth
+	/api/v1/auth - 										all
+	/api/v1/users 							post		executor
+	/api/v1/users 							get			executor
+	/api/v1/users/{id}						get			user
+	/api/v1/users/{id}/data					get			user
+	/api/v1/users/{id}/worktime 			patch		executor
+reg
+	/api/v1/registration - 								all
+admin
+	/api/v1/admin/** - 									admin
+
+
+
+comments
+	/api/v1/comments/**                 				user    
+statistics
+	/api/v1/statistics/** 								manager
+timepoint
+	/api/v1/time/**										executor
+task
+	/api/v1/tasks 							post		user
+	/api/v1/tasks/search					post		user
+	/api/v1/tasks/{id}						get			user 
+	/api/v1/tasks/{id}/status/{newStatus}	patch		executor 
+	/api/v1/tasks/assign/{id}				get			executor 
+	/api/v1/tasks/assign/{id}				post		manager 

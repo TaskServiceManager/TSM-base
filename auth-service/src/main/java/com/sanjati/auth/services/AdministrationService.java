@@ -24,28 +24,21 @@ public class AdministrationService {
 
     @Transactional
     public void changeRoles(List<String> roles, Long userId){
-        User user = userService.findByUserId(userId);
-        if(roles==null || roles.isEmpty()) {
-            user.setRoles(new ArrayList<>());
+        if(roles==null) {
             return;
         }
-        if(user.getRoles()!=null && !user.getRoles().isEmpty()) {
-            user.getRoles().clear();
+        User user = userService.findByUserId(userId);
+        if(user.getRoles()==null) {
+            user.setRoles(new ArrayList<>());
         }
+        user.getRoles().clear();
 
-        List<Role> allRoles = roleService.findAll();
-        List<Role> userRoles = new ArrayList<>();
-        roles.forEach(role -> allRoles.stream()
-                            .filter(r -> role.equals(r.getName()))
-                            .findFirst()
-                            .ifPresent(userRoles::add));
-
-        user.setRoles(userRoles);
+        roles.forEach(role -> user.getRoles().add(roleService.findByName(role)));
     }
 
     @Transactional
-    public void changeUserData(NewUserDtoRq update,Long userId){
-        User old = userService.findByUserId(userId);
+    public void changeUserData(NewUserDtoRq update){
+        User old = userService.findByUserId(update.getId());
         if(update.getUsername()!=null){
             old.setUsername(update.getUsername());
         }

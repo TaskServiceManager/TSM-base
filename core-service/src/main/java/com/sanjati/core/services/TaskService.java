@@ -127,9 +127,7 @@ public class TaskService {
 
     @Transactional
     public void assignTaskBatch(Long taskId, Long assignerId, AssignDtoRq assignDtoRq) {
-        if (assignDtoRq.getExecutorIds() == null || assignDtoRq.getChiefId() == null) {
-            throw new FieldValidationException("Не выбраны хотя бы один исполнитель и ответственный по заявке");
-        }
+
         Task task = getTaskAvailableForChanges(taskId);
         Set<Long> taskExecutors = task.getExecutors();
         if (taskExecutors.size() > 0) {
@@ -188,9 +186,7 @@ public class TaskService {
 
 
     public void createTask(Long ownerId, TaskDtoRq taskCreateDto) {
-        if(taskCreateDto.getTitle()==null || taskCreateDto.getDescription()==null) {
-            throw new FieldValidationException("Не заполнены тема или описание заявки");
-        }
+
         Task task = new Task();
         task.setOwnerId(ownerId);
 

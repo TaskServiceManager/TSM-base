@@ -3,6 +3,8 @@ package com.sanjati.api.core;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.time.LocalDateTime;
 
 
@@ -11,8 +13,9 @@ public class SearchParamsTaskDtoRq {
 
     @Schema(description = "ID автора заявки", example = "3")
     private Long ownerId;
-
-    @Schema(description = "Номер страницы", example = "1")
+    @Positive(message = "номер строго больше нуля")
+    @NotNull(message = "Необходимо указать номер страницы")
+    @Schema(description = "Номер страницы", example = "1", required = true)
     private Integer page;
 
     @Schema(description = "Граница по времени ОТ", example = "2022-08-01T14:15")

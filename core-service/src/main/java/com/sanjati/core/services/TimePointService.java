@@ -1,7 +1,7 @@
 package com.sanjati.core.services;
 
 
-import com.sanjati.api.exceptions.MandatoryCheckException;
+import com.sanjati.api.exceptions.FieldValidationException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.TimePoint;
 import com.sanjati.core.enums.TaskStatus;
@@ -50,7 +50,7 @@ public class TimePointService {
         }
 
         if(timePointRepository.existsByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
-            throw new MandatoryCheckException("Нельзя открыть новую отметку, пока есть незавершённые");
+            throw new FieldValidationException("Нельзя открыть новую отметку, пока есть незавершённые");
         }
 
         if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
@@ -67,7 +67,7 @@ public class TimePointService {
 
     @Transactional
     public void closeTimePointByTaskAndExecutorId(Long taskId, Long executorId) {
-        TimePoint timePoint = timePointRepository.findByTaskIdAndExecutorIdAndStatus(taskId, executorId, TimePointStatus.IN_PROCESS).orElseThrow(()-> new MandatoryCheckException("открытых отметок не найдено"));
+        TimePoint timePoint = timePointRepository.findByTaskIdAndExecutorIdAndStatus(taskId, executorId, TimePointStatus.IN_PROCESS).orElseThrow(()-> new FieldValidationException("открытых отметок не найдено"));
 
         // убрал if  так как мы и так вынули тайм поинт по статусу
         timePoint.setStatus(TimePointStatus.FINISHED);

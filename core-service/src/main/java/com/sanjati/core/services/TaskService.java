@@ -5,7 +5,7 @@ import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.core.AssignDtoRq;
 import com.sanjati.api.core.SearchParamsTaskDtoRq;
 import com.sanjati.api.core.TaskDtoRq;
-import com.sanjati.api.exceptions.MandatoryCheckException;
+import com.sanjati.api.exceptions.FieldValidationException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.Task;
 import com.sanjati.core.enums.TaskStatus;
@@ -140,9 +140,7 @@ public class TaskService {
 
     @Transactional
     public void assignTaskBatch(Long taskId, Long assignerId, AssignDtoRq assignDtoRq) {
-        if (assignDtoRq.getExecutorIds() == null || assignDtoRq.getChiefId() == null) {
-            throw new MandatoryCheckException("Не выбраны хотя бы один исполнитель и ответственный по заявке");
-        }
+
         Task task = getTaskAvailableForChanges(taskId);
         Set<Long> taskExecutors = task.getExecutors();
         if (taskExecutors.size() > 0) {
@@ -201,9 +199,7 @@ public class TaskService {
 
 
     public void createTask(Long ownerId, TaskDtoRq taskCreateDto) {
-        if(taskCreateDto.getTitle()==null || taskCreateDto.getDescription()==null) {
-            throw new MandatoryCheckException("Не заполнены тема или описание заявки");
-        }
+
         Task task = new Task();
         task.setOwnerId(ownerId);
 
@@ -223,7 +219,7 @@ public class TaskService {
 
     public void checkAccessToTask(String role, Long userId, Long taskId){
         if(!role.contains("EXECUTOR")){
-            if(!isUserTaskOwner(userId, taskId)) throw new MandatoryCheckException("Нет доступа к чужим заявкам");
+            if(!isUserTaskOwner(userId, taskId)) throw new FieldValidationException("Нет доступа к чужим заявкам");
         }
     }
 

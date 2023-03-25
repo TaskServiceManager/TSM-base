@@ -14,13 +14,13 @@
         <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="changeTimepoint(Timepoint.id)" ng-show="isAllowed('timepointButton')&&isTaskAssignedToMe()&&Timepoint&&Timepoint.taskId==Task.id&&Timepoint.status=='В процессе'">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Завершить работу</button>
         </form>
-        <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="changeTaskStatus('APPROVED')" ng-show="isAllowed('approvedButton')&&isCurrentUserChief()&&Task.status=='В работе'">
+        <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="showModalForComment('APPROVED')" ng-show="isAllowed('approvedButton')&&isCurrentUserChief()&&Task.status=='В работе'">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Отправить на утверждение</button>
         </form>
-        <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="changeTaskStatus('COMPLETED')" ng-show="isAllowed('completedButton')&&Task.status=='Утверждается'">
+        <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="showModalForComment('COMPLETED')" ng-show="isAllowed('completedButton')&&Task.status=='Утверждается'">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Утвердить выполнение</button>
         </form>
-        <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="changeTaskStatus('ACCEPTED')" ng-show="isAllowed('returnToAcceptedButton')&&Task.status=='Утверждается'">
+        <form class="form-inline my-2 my-lg-0 animate-show-hide" ng-submit="showModalForComment('ACCEPTED')" ng-show="isAllowed('returnToAcceptedButton')&&Task.status=='Утверждается'">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Вернуть на доработку</button>
         </form>
     </div>
@@ -179,6 +179,27 @@
                     </div>
                     <p></p>
                     <button style="float:right" class="btn btn-outline-success" id="assignExecutors" type="submit">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Modal for required comment-->
+<div id="item-modal-comment" class="modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" data-ng-click="closeModalForComment()" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                Комментарий
+            </div>
+            <div class="modal-body">
+                <form novalidate ng-submit="changeTaskStatus(changingToStatus)">
+                    <textarea class="form-control" maxlength="2000" id="comment" placeholder="Заполните обязательный комментарий" rows="6" ng-model="comment" required></textarea>
+                    <span style="font-size: x-small; float:right">{{(comment ? comment.length : 0) +'/2000'}}</span>
+                    <p></p>
+                    <button class="btn btn-outline-success" id="changeTaskStatus" type="submit">Отправить</button>
                 </form>
             </div>
         </div>

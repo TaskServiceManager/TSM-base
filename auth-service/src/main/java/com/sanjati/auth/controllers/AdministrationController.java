@@ -32,12 +32,9 @@ public class AdministrationController {
                     )
             }
     )
-    @PutMapping("/users/{id}")
-    public void updateUser(@Parameter(description = "ID пользователя")
-                               @PathVariable(name = "id") Long userId,
-                               @Parameter(description = "Тело запроса с изменениями в профиль пользователя")
-                               @RequestBody NewUserDtoRq update){
-        administrationService.changeUserData(update,userId);
+    @PutMapping("/users")
+    public void updateUser(@Parameter(description = "Тело запроса с изменениями в профиль пользователя") @RequestBody NewUserDtoRq userDtoRq){
+        administrationService.changeUserData(userDtoRq);
     }
 
     @Operation(

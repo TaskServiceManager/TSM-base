@@ -2,8 +2,12 @@ package com.sanjati.api.auth;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "Очень короткая информация о пользователе")
+@Schema(description = "Запрос : модель нового пользователя")
 public class NewUserDtoRq {
+
+    @Schema(description = "ID пользователя (используется для обновления)", example = "1")
+    private Long id;
+
     @Schema(description = "Короткое имя пользователя", example = "userHi")
     private String username;
 
@@ -41,6 +45,14 @@ public class NewUserDtoRq {
 
     @Schema(description = "Номер помещения на работе у пользователя", example = "3")
     private String building;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;

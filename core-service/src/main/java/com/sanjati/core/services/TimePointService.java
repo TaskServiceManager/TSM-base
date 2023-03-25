@@ -1,6 +1,7 @@
 package com.sanjati.core.services;
 
 
+import com.sanjati.api.auth.UserLightDto;
 import com.sanjati.api.exceptions.MandatoryCheckException;
 import com.sanjati.api.exceptions.ResourceNotFoundException;
 import com.sanjati.core.entities.TimePoint;
@@ -39,6 +40,7 @@ public class TimePointService {
 
     @Transactional
     public void changeStatusOrCreateTimePoint(Long taskId, Long userId, Long timePointId) {
+        UserLightDto userLightDto    = authService.getUserLightById(userId);
 
         if (timePointId != null) {
             TimePoint tp = timePointRepository.findByIdAndStatus(timePointId,TimePointStatus.IN_PROCESS).orElseThrow(()->new ResourceNotFoundException("Отметка не существует ID : " + timePointId));
@@ -50,24 +52,30 @@ public class TimePointService {
         }
 
         if(timePointRepository.existsByExecutorIdAndStatus(userId,TimePointStatus.IN_PROCESS)) {
-            throw new MandatoryCheckException("Нельзя открыть новую отметку, пока есть незавершённые");
+            throw new FieldValidationException("Нельзя открыть новую отметку, пока есть незавершённые");
+        }
+
+        if (LocalTime.now().isBefore(userLightDto.getStartWorkTime())
+                ||
+                LocalTime.now().isAfter(userLightDto.getEndWorkTime())) {
+            throw new MandatoryCheckException("Ваше рабочее время указано в профиле. Вы не можете выполнять заявку в нерабочее время");
         }
 
         if(TaskStatus.ASSIGNED==taskService.getStatusByTaskId(taskId)){
-            taskService.changeStatus(taskId, TaskStatus.ACCEPTED);
+            taskService.changeStatus(taskId, userId, TaskStatus.ACCEPTED, null);
         }
         TimePoint tp = new TimePoint();
         tp.setStatus(TimePointStatus.IN_PROCESS);
         tp.setExecutorId(userId);
         tp.setTaskId(taskId);
-        tp.setFinishedAt(correctFinishedAtForTimePoint(authService.getUserLightById(userId).getEndWorkTime()));
+        tp.setFinishedAt(correctFinishedAtForTimePoint(userLightDto.getEndWorkTime()));
         timePointRepository.save(tp);
 
     }
 
     @Transactional
     public void closeTimePointByTaskAndExecutorId(Long taskId, Long executorId) {
-        TimePoint timePoint = timePointRepository.findByTaskIdAndExecutorIdAndStatus(taskId, executorId, TimePointStatus.IN_PROCESS).orElseThrow(()-> new MandatoryCheckException("открытых отметок не найдено"));
+        TimePoint timePoint = timePointRepository.findByTaskIdAndExecutorIdAndStatus(taskId, executorId, TimePointStatus.IN_PROCESS).orElseThrow(()-> new FieldValidationException("открытых отметок не найдено"));
 
         // убрал if  так как мы и так вынули тайм поинт по статусу
         timePoint.setStatus(TimePointStatus.FINISHED);

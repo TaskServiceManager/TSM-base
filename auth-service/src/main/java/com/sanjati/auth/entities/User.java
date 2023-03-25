@@ -76,9 +76,8 @@ public class User {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    public User(String username, String password, String firstName, String lastName, String middleName, String email, String company, String companyEmail, String workPosition, String phone, String office, String building) {
+    public User(String username, String firstName, String lastName, String middleName, String email, String company, String companyEmail, String workPosition, String phone, String office, String building) {
         this.username = username;
-        this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.middleName = middleName;

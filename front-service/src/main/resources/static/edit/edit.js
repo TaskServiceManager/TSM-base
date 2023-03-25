@@ -14,13 +14,15 @@ angular.module('ttsystem-front').controller('editController', function ($scope, 
                 alert("Пароли не совпадают",'danger');
                 return;
             }
-            $http.put(contextPath+'api/v1/admin/users/'+userId, $scope.dto)
+            $scope.dto.id = userId;
+            $http.put(contextPath+'api/v1/admin/users', $scope.dto)
                  .then(function successCallback(response) {
                        $scope.validation = null;
                        $scope.dto = null;
                        $scope.loadUserData();
+                       alert('Информация о пользователе обновлена', 'success');
                  }, function errorCallback(response) {
-                      alert(response.data.message);
+                      alert(response.data.message,'danger');
                       console.log('error');
                       console.log(response);
                  });

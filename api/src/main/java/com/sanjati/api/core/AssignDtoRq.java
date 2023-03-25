@@ -2,13 +2,22 @@ package com.sanjati.api.core;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Schema(description = "Тело запроса для назначения исполнителей по заявке")
 public class AssignDtoRq {
-    @Schema(description = "Список ID исполнителей")
+    @NotNull(message = "Необходимо указать Список ID исполнителей")
+    @NotEmpty(message = "Необходимо указать Список ID исполнителей")
+    @Schema(description = "Список ID исполнителей", required = true)
     private List<Long> executorIds;
-    @Schema(description = "ID ответственного")
+    @NotBlank(message = "Необходимо указать Список ID исполнителей")
+    @NotNull(message = "Необходимо указать отвественного")
+    @Schema(description = "ID ответственного", required = true)
     private Long chiefId;
 
     public AssignDtoRq(List<Long> executorIds, Long chiefId) {
